@@ -1,10 +1,9 @@
-import logo from './logo.svg';
-import './App.css';
+import { AuthWrapper } from "./services/AuthService.js";
 
 function App() {
   return (
     <div className="App">
-     <h1> SECURE </h1>
+     <AuthWrapper/>
     </div>
   );
 }

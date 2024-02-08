@@ -1,0 +1,89 @@
+.mainContainer{
+    /* position: relative; */
+    position: absolute;
+    background-image: url("https://i.pinimg.com/564x/ec/a9/94/eca9943abcc82085df0ced58a266f39a.jpg");
+    background-size: cover;
+    background-repeat : no-repeat;
+    width: 100vw;
+    padding-top: -75px;
+  height: 100vh;
+  z-index: -1;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  margin-top: -73px;
+
+  
+  /* background-position: 8vw -20vh; */
+  /* background-size: 80vw 190vh; */
+  /* overflow: hidden; */
+  
+}
+
+.secureHeading{
+    display : flex;
+    color : white;
+    font-size : 5rem;
+    font-weight : bold;
+    align-items : center;
+    justify-content: center;
+    margin-top : 10rem;
+    /* z-index : 10000; */
+    flex-direction : column;
+    
+}
+
+
+
+.firstLetter{
+    color : rgb(222, 143, 83);
+}
+
+.fullForm {
+    font-size : 2rem;
+    font-weight : 100;
+    display : flex;
+    width : 80rem;
+    justify-content: center;
+    align-items: center;
+    color : rgb(165, 160, 160);
+}
+
+
+.buttonGroup{
+    margin-top: 3rem;
+    color: white;
+    display : flex;
+    flex-direction : row;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginBtn{
+    margin-right: 1rem;
+    border: 2px solid white;
+    padding : 0.9rem;
+    width : 8.5rem;
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    font-size : 1.2rem;
+    font-weight : bold;
+    color : rgb(222, 143, 83);
+    border-radius : 1.2rem;
+}
+
+.signupBtn{
+    margin-left : 1rem;
+    border : 1px solid rgb(222, 143, 83);
+    background-color: rgb(222, 143, 83);
+    font-size : 1.2rem;
+    font-weight : bold;
+    padding : 0.9rem;
+    width : 8.5rem;
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    border-radius : 1.2rem;
+    color : white;
+
+}
