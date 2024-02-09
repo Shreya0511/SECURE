@@ -27,7 +27,7 @@ const Home = () => {
           {/* <a href="/signup" style={{ textDecoration: "none" }}>
             <div className="signupBtn">SignUp</div>
           </a> */}
-          <Link to="/login" style={{ textDecoration: "none" }}>
+          <Link to="/signup" style={{ textDecoration: "none" }}>
           <div className="signupBtn" >SignUp</div>
           </Link>
         </div>
