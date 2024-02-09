@@ -1,5 +1,6 @@
 import React from "react";
 import NavBar from "../components/NavBar";
+import { Link } from "react-router-dom";
 import "./../styles/Home.css";
 const Home = () => {
   return (
@@ -16,12 +17,19 @@ const Home = () => {
           </div>
         </div>
         <div className="buttonGroup">
-          <a href="/login" style={{ textDecoration: "none" }}>
+          {/* <a href="/login" style={{ textDecoration: "none" }}>
             <div className="loginBtn">Login</div>
-          </a>
-          <a href="/signup" style={{ textDecoration: "none" }}>
+          </a> */}
+          <Link to="/login" style={{ textDecoration: "none" }}>
+            <div className="loginBtn" >Login</div>
+
+          </Link>
+          {/* <a href="/signup" style={{ textDecoration: "none" }}>
             <div className="signupBtn">SignUp</div>
-          </a>
+          </a> */}
+          <Link to="/login" style={{ textDecoration: "none" }}>
+          <div className="signupBtn" >SignUp</div>
+          </Link>
         </div>
       </div>
     </div>
