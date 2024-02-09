@@ -17,19 +17,19 @@ const NavBar = () => {
            <span className = "firstLetter">S</span>ECURE
          </div>
          <div className = "navbarMenu">
-            <a className = {window.location.pathname === "/" ? "activet" : "inactivet"} href = "/" style ={{textDecoration:"none"}}>
+            <Link to="/home" className = {window.location.pathname === "/" ? "activet" : "inactivet"} href = "/" style ={{textDecoration:"none"}}>
             Home
-            </a>
-            <a className = {window.location.pathname === "/aboutUs" ? "activet" : "inactivet"} href = "/aboutUs" style = {{textDecoration: "none"}}>
+            </Link>
+            <Link  to="/aboutUs" className = {window.location.pathname === "/aboutUs" ? "activet" : "inactivet"} href = "/aboutUs" style = {{textDecoration: "none"}}>
             About Us
-            </a>
-            <a className = {window.location.pathname === "/contactUs" ? "activet" : "inactivet"} href = "/contactUs" style = {{textDecoration: "none"}}>
+            </Link>
+            <Link to="contactUs" className = {window.location.pathname === "/contactUs" ? "activet" : "inactivet"} href = "/contactUs" style = {{textDecoration: "none"}}>
             Contacts
-            </a>
+            </Link>
             <div className = "button">
-            <a className = {window.location.pathname === "/signUp" ? "activeSignUp" : "inactiveSignUp"} href = "/signup" style = {{textDecoration: "none"}}>
+            <Link to="/signup" className = {window.location.pathname === "/signUp" ? "activeSignUp" : "inactiveSignUp"} href = "/signup" style = {{textDecoration: "none"}}>
                 Sign Up
-            </a>
+            </Link>
             </div>
 
 
