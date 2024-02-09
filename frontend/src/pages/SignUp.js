@@ -42,6 +42,9 @@ const SignUp = () => {
               id="passwordConfirm"
               required
             />
+             <div className="loginLink">
+            Already a user? <Link to="/login">Login</Link>
+          </div>
             <button class="signupBtn1">Sign Up</button>
           </div>
 
