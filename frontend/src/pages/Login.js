@@ -1,21 +1,24 @@
 import React from "react";
 import NavBar from "../components/NavBar";
 import { Link } from "react-router-dom";
-import "./../styles/Home.css";
+import "./../styles/Login.css";
 const Login = () => {
   return (
     <div>
       <NavBar />
-      <div className="mainContainer">
-        <div className="secureHeading">
-          <div className="name">
-            <span className="firstLetter">L</span>ogin
-          </div>
-          
-
-        </div>
+      <div className="maincontainer">
         <div className="form">
-            <label for="name">Name : </label>
+          <div className="secureheading">
+            <div className="heading">
+              <span className="firstletter">L</span>ogin
+            </div>
+          </div>
+          <div className=" field nameField">
+          <div className="label labelName"><label for="name">
+              Name :
+            </label>
+            </div>
+            <div className = "forminput">
             <input
               type="text"
               name="name"
@@ -24,7 +27,15 @@ const Login = () => {
               autocomplete="on"
               required
             />
-            <label for="email">Email ID : </label>
+            </div>
+          </div>
+          <div className=" field emailField">
+          <div className="label labelEmail">
+            <label  for="email">
+              Email ID :{" "}
+            </label>
+            </div>
+            <div className = "forminput">
             <input
               type="text"
               name="email"
@@ -33,12 +44,34 @@ const Login = () => {
               autocomplete="on"
               required
             />
-            <label for="password">Password : </label>
-            <input type="password" name="password" id="password" required />
-            <button class="signupBtn1">Login</button>
+            </div>
           </div>
 
-        
+          <div className="field passwordField">
+          <div className="label labelPw">
+            <label for="password">
+              Password :{" "}
+            </label>
+            </div>
+            <div className="forminput"
+>
+            <input
+              type="password"
+              name="password"
+              placeholder="*******"
+              id="password"
+              required
+            />
+            </div>
+          </div>
+          <div className="signupLink">
+            Don't have an Account ? <Link to="/signup" style ={{textDecoration: "none", marginLeft : "0.5rem", color : "rgb(222, 143, 83)", fontWeight: "bold"}}>Sign Up</Link>
+          </div>
+
+          <div className="btnfield">
+            <button class="signupBtn1">Login</button>
+          </div>
+        </div>
       </div>
     </div>
   );

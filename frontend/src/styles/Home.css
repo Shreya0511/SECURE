@@ -1,5 +1,4 @@
 .mainContainer{
-    /* position: relative; */
     position: absolute;
     background-image: url("https://i.pinimg.com/564x/ec/a9/94/eca9943abcc82085df0ced58a266f39a.jpg");
     background-size: cover;
@@ -12,10 +11,6 @@
   overflow-y: hidden;
   margin-top: -73px;
 
-  
-  /* background-position: 8vw -20vh; */
-  /* background-size: 80vw 190vh; */
-  /* overflow: hidden; */
   
 }
 

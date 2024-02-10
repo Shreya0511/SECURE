@@ -1,0 +1,107 @@
+.maincontainer{
+    position: absolute;
+    background-image: url("https://i.pinimg.com/564x/ec/a9/94/eca9943abcc82085df0ced58a266f39a.jpg");
+    background-size: cover;
+    background-repeat : no-repeat;
+    width: 100vw;
+    padding-top: -75px;
+  height: 100vh;
+  z-index: -1;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  margin-top: -73px;
+  display : flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.secureheading{
+    margin-top : 0px;
+    font-size : 2.5rem;
+    display : flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-bottom : 1.5rem;
+    padding-left : 0px;
+
+}
+.heading{
+    color : white;
+}
+
+.firstletter{
+    color : rgb(222, 143, 83);
+
+}
+.form{
+    background-color: rgb(104, 102, 97, 0.6);
+    border-radius : 1rem;
+    overflow-y : hidden;
+
+}
+
+.field{
+  display : flex;
+  font-size : 1.2rem;
+  /* width : 10rem; */
+
+  margin-bottom : 1rem;
+
+
+}
+
+
+
+.label{
+    display : flex;
+    margin : 0px;
+    padding : 0px;
+    color : white;
+    flex : 1;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 1.3rem;
+}
+
+.forminput{
+    display : flex;
+    flex : 5;
+    /* width : 10rem; */
+    align-items: center;
+    justify-content: center;
+    padding-top: 0.2rem;
+    /* margin : auto; */
+}
+
+.forminput input{
+    margin: 0px;
+    width : 100%;
+}
+
+.form button {
+    background-color :rgb(222, 143, 83);
+}
+
+.form button:hover{
+    background-color :rgb(244, 184, 140);
+}
+
+.btnfield{
+    margin-top : 1rem;
+    width : 7rem;
+    background-color :rgb(222, 143, 83);
+    border-radius: 1rem;
+}
+
+.signupLink{
+    color : rgb(210, 201, 201);
+    font-size: medium;
+    display : flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+

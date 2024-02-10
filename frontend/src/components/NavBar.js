@@ -14,7 +14,9 @@ const NavBar = () => {
       <Navbar bg="dark" data-bs-theme="dark" className = "navbar_main_container">
         <Container className = "navbar_container">
          <div className = "navbarSecure">
+          <Link to = "/home" style ={{textDecoration:"none", color : "white"}}>
            <span className = "firstLetter">S</span>ECURE
+         </Link>
          </div>
          <div className = "navbarMenu">
             <Link to="/home" className = {window.location.pathname === "/" ? "activet" : "inactivet"} href = "/" style ={{textDecoration:"none"}}>
@@ -23,7 +25,7 @@ const NavBar = () => {
             <Link  to="/aboutUs" className = {window.location.pathname === "/aboutUs" ? "activet" : "inactivet"} href = "/aboutUs" style = {{textDecoration: "none"}}>
             About Us
             </Link>
-            <Link to="contactUs" className = {window.location.pathname === "/contactUs" ? "activet" : "inactivet"} href = "/contactUs" style = {{textDecoration: "none"}}>
+            <Link to="/contactUs" className = {window.location.pathname === "/contactUs" ? "activet" : "inactivet"} href = "/contactUs" style = {{textDecoration: "none"}}>
             Contacts
             </Link>
             <div className = "button">
