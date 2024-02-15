@@ -3,6 +3,7 @@ import ContactUs from "../pages/ContactUs";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import SignUp from "../pages/SignUp";
+import Dashboard from "../pages/Dashboard";
 
 const routes = [
 	{
@@ -35,6 +36,12 @@ const routes = [
 		name: "Sign Up",
 		isPrivate: false,
 	},
+	{
+		path: "/dashboard",
+		component: <Dashboard />,
+		name: "Dashboard",
+		isPrivate: false,
+	}
 ];
 
 export default routes;

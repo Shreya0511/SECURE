@@ -1,0 +1,117 @@
+.dashboardContainer{
+    display: flex;
+    position: absolute;
+    background-image: url("https://i.pinimg.com/564x/ec/a9/94/eca9943abcc82085df0ced58a266f39a.jpg");
+    background-size: cover;
+    background-repeat : no-repeat;
+    width: 100vw;
+    padding-top: -75px;
+  height: 100vh;
+  z-index: -1;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  margin-top: -73px;
+
+  
+}
+.dashboardWrapper {
+    display: flex; /* Enable horizontal layout */
+    justify-content: space-between; /* Distribute elements evenly */
+    align-items: center; /* Vertically align elements */
+    padding: 20px; /* Add some padding for aesthetics */
+  }
+
+  .leftSection{
+    width: auto;
+    padding: 20px;
+    margin-left: 50px;
+  }
+  .leftSection h2{
+    margin-top: 100px;
+    margin-bottom: 20px;
+    color: white;
+  }
+  .rightSection {
+    width: auto; /* Adjust width as needed */
+    padding: 20px;
+    /* border-right: 1px solid #ccc; */
+    border-left: 1px solid #ccc;
+    margin-left: 100px;
+
+  }
+
+  .rightSection h2 {
+    margin-top: 100px;
+    margin-bottom: 20px;
+    color: white;
+  }
+  
+  .addSensorButton {
+    background-color: #007bff; /* Use your preferred color */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 500px;
+    margin-top: 70px;
+
+
+  }
+  
+  .sensorList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .sensorList h3{
+    color: white;
+  }
+  
+  .sensorList li {
+    margin-bottom: 15px;
+  }
+  
+  .sensorDetails {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    color: white;
+  }
+  
+  .sensorActions {
+    display: flex;
+    /* justify-content: space-between; */
+  }
+  
+  /* Media queries for different screen sizes */
+
+@media (max-width: 768px) {
+    .dashboardContainer {
+      background-image: none; /* Remove background image on smaller screens */
+    }
+  
+    .leftSection {
+      width: 100%; /* Make left section full width */
+      margin: 0;
+      padding: 10px;
+    }
+  
+    .rightSection {
+      width: 100%; /* Make right section full width */
+      margin: 0;
+      padding: 10px;
+      border: none;
+    }
+  
+    .addSensorButton {
+      margin-left: 0;
+      margin-top: 20px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .sensorDetails {
+      flex-direction: column; /* Stack content vertically on small screens */
+    }
+  }
