@@ -1,0 +1,76 @@
+.rightcontainer{
+    margin-top : 4rem;
+    background-image : none;
+    display : flex;
+    flex-direction : column;
+    width : 100%;
+
+}
+
+.sensorList{
+    background-color : rgb(84, 83, 83,0.8);
+    width : 100%;
+    padding : 1.3rem;
+    border-radius : 1rem;
+    /* padding-left : 1rem;
+    padding-right : 1rem; */
+
+}
+
+
+.sensorTopDetails {
+    display : flex;
+    flex-direction: row;
+    font-size : 1.5rem;
+    align-items : center;
+}
+
+.seonsorName{
+    flex : 2;
+    font-weight: bold;
+    color : rgb(222, 143, 83);
+}
+.menuIcon{
+   flex : 6;
+   display : flex;
+   color : white;
+   justify-content: flex-end;;
+}
+
+.sensorDetails{
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    color : rgb(189, 188, 188);
+}
+
+.active{
+    color : rgb(248, 128, 128);
+}
+
+.header{
+    display : flex;
+    flex-direction : row;
+    padding : 1rem;
+    margin-bottom : 1rem;
+}
+
+.registered{
+    flex : 2;
+    color : white;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+.addSensors{
+    flex : 5;
+    color : white;
+    display : flex;
+    align-items : center;
+    justify-content: flex-end;
+    font-size : 1.2rem;
+    width : 10rem;
+}
+
+.bttn{
+    background-color: red;
+}
+

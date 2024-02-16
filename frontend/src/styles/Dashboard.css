@@ -1,9 +1,10 @@
 .dashboardContainer{
     display: flex;
     position: absolute;
-    background-image: url("https://i.pinimg.com/564x/ec/a9/94/eca9943abcc82085df0ced58a266f39a.jpg");
+    background-color: black;
+    /* background-image: url("https://i.pinimg.com/564x/ec/a9/94/eca9943abcc82085df0ced58a266f39a.jpg");
     background-size: cover;
-    background-repeat : no-repeat;
+    background-repeat : no-repeat; */
     width: 100vw;
     padding-top: -75px;
   height: 100vh;
@@ -18,13 +19,13 @@
     display: flex; /* Enable horizontal layout */
     justify-content: space-between; /* Distribute elements evenly */
     align-items: center; /* Vertically align elements */
-    padding: 20px; /* Add some padding for aesthetics */
+    padding: 3rem; /* Add some padding for aesthetics */
+    align-items: center;
   }
 
   .leftSection{
-    width: auto;
-    padding: 20px;
-    margin-left: 50px;
+    flex : 1;
+    /* background-color:  #3a3a3a97; */
   }
   .leftSection h2{
     margin-top: 120px;
@@ -32,11 +33,12 @@
     color: white;
   }
   .rightSection {
-    width: auto; /* Adjust width as needed */
-    padding: 20px;
+    /* width: auto; /* Adjust width as needed */
+    /* padding: 20px; */
     /* border-right: 1px solid #ccc; */
-    border-left: 1px solid #ccc;
-    margin-left: 100px;
+    /* border-left: 1px solid #ccc;
+    margin-left: 100px; */
+    flex : 4;
 
   }
 
@@ -88,7 +90,8 @@
 
 @media (max-width: 768px) {
     .dashboardContainer {
-      background-image: none; /* Remove background image on smaller screens */
+      background-image: none;
+      background-color : black; /* Remove background image on smaller screens */
     }
   
     .leftSection {
