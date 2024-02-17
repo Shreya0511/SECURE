@@ -4,6 +4,7 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import SignUp from "../pages/SignUp";
 import Dashboard from "../pages/Dashboard";
+import ActiveSensors from "../pages/ActiveSensors.js";
 
 const routes = [
 	{
@@ -41,7 +42,14 @@ const routes = [
 		component: <Dashboard />,
 		name: "Dashboard",
 		isPrivate: false,
-	}
+	},
+	{
+		path: "/activeSensors",
+		component: <ActiveSensors />,
+		name: "ActiveSensors",
+		isPrivate: false,
+	},
+	
 ];
 
 export default routes;

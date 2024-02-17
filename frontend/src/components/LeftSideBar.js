@@ -34,12 +34,12 @@ const LeftSideBar = () => {
           </li>
           <li
             className={
-              window.location.pathname === "/active-sensors"
+              window.location.pathname === "/activeSensors"
                 ? "activeEle"
                 : "inactiveEle"
             }
           >
-            <Link to="/active-sensors" className="navigationLink">
+            <Link to="/activeSensors" className="navigationLink">
               <FontAwesomeIcon icon={faClipboard} />
               <span className="navitem">Active Sensors</span>
             </Link>
