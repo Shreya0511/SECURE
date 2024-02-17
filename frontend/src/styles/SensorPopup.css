@@ -1,0 +1,60 @@
+.sensor-popup-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background-color: black;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .sensor-popup-header {
+    margin-bottom: 20px;
+    
+
+  }
+  .sensor-popup-header h2 {
+    margin: auto;
+    
+
+  }
+ 
+  
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
+  
+  .sensor-popup-form {
+    /* display: flex;
+    flex-direction: column; */
+    gap: 10px;
+    color: white;
+    display: grid; /* Use grid layout for more control */
+  grid-template-columns: 1fr auto; /* Define two columns: label & input/button */
+  gap: 10px; 
+    
+  }
+  .sensor-popup-form label {
+    display: block; /* Make labels block-level for vertical alignment */
+    margin-bottom: 5px;
+    align-self: center;
+  }
+
+  .sensor-popup-form input ,
+  .sensor-popup-form button{
+
+  width: 100%; /* Make inputs and button full width */
+  padding: 8px;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 8px;
+  border: 1px solid #eee;
+  border-radius: 3px;
+}
+/*  */
+  
