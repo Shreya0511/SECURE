@@ -4,8 +4,9 @@ import "./../styles/Dashboard.css";
 import NavBarProfile from '../components/NavBarProfile';
 import LeftSideBar from '../components/LeftSideBar';
 // import RightComponent from '../components/RightComponent';
-import RightDashboard from '../components/RightDasboard';
-const Dashboard = () => {
+import RightActive from '../components/RightActive';
+
+const ActiveSensors = () => {
   return (
     <div>
       <NavBarProfile />
@@ -15,7 +16,7 @@ const Dashboard = () => {
         </div>
         <div className="rightSection">
           <div className="dashboardWrapper">
-            <RightDashboard />
+            <RightActive />
       </div>
     </div>
     </div>
@@ -23,4 +24,4 @@ const Dashboard = () => {
   );
 }
 
-export default Dashboard
+export default ActiveSensors

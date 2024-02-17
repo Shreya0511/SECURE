@@ -1,8 +1,14 @@
 import React from "react";
 import NavBar from "../components/NavBar";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 import "./../styles/Login.css";
 const Login = () => {
+  const navigate = useNavigate();
+  const handleLogin = () => {
+    // Perform login logic here (e.g., send a request to an authentication server)
+    // Assuming successful login:
+    navigate("/dashboard"); // Redirect to the dashboard route
+  };
   return (
     <div>
       <NavBar />
@@ -69,7 +75,7 @@ const Login = () => {
           </div>
 
           <div className="btnfield">
-            <button class="signupBtn1">Login</button>
+            <button class="signupBtn1" onClick={handleLogin}>Login</button>
           </div>
         </div>
       </div>
