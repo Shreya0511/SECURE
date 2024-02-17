@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 
 const RightDashboard = () => {
   // Define sensor data as an array of objects
+  //This hardcoded array will be replaced with a useState varaible which will get data via an axios request to the backend
   const sensors = [
     {
       name: "Sensor I",
