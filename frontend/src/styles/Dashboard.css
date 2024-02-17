@@ -118,3 +118,8 @@
       flex-direction: column; /* Stack content vertically on small screens */
     }
   }
+
+  .sensorListContainer {
+    max-height: 500px; /* Adjust as needed */
+    overflow-y: auto;
+  }
