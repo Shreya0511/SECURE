@@ -47,33 +47,33 @@ const SensorPopup = ({ onClose, onAddSensor }) => {
             <label htmlFor="name">Manufacturer:</label>
             <input
               type="text"
-              id="name"
-              name="name"
-              value={sensorData.name}
+              id="manufacturer"
+              name="manufacturer"
+              value={sensorData.manufacturer}
               onChange={handleInputChange}
             />
             <label htmlFor="name">Model:</label>
             <input
               type="text"
-              id="name"
-              name="name"
-              value={sensorData.name}
+              id="model"
+              name="model"
+              value={sensorData.model}
               onChange={handleInputChange}
             />
             <label htmlFor="name">Parameter:</label>
             <input
               type="text"
-              id="name"
-              name="name"
-              value={sensorData.name}
+              id="parameter"
+              name="parameter"
+              value={sensorData.parameter}
               onChange={handleInputChange}
             />
             <label htmlFor="name">Threshold Value:</label>
             <input
               type="text"
-              id="name"
-              name="name"
-              value={sensorData.name}
+              id="thresholdValue"
+              name="thresholdValue"
+              value={sensorData.thresholdValue}
               onChange={handleInputChange}
             />
             

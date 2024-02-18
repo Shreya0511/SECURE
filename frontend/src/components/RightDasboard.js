@@ -7,6 +7,7 @@ import { useState } from 'react';
 
 const RightDashboard = () => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+  
   // console.log(isPopupVisible);
   const handleAddSensorClick = () => {
     setIsPopupVisible(!isPopupVisible); // Toggle visibility
@@ -14,7 +15,7 @@ const RightDashboard = () => {
   };
   // Define sensor data as an array of objects
   //This hardcoded array will be replaced with a useState varaible which will get data via an axios request to the backend
-  const sensors = [
+  const [sensors, setSensors] = useState([
     {
       name: "Sensor I",
       manufacturer: "Acme Sensors",
@@ -31,8 +32,7 @@ const RightDashboard = () => {
       thresholdValue: 12,
       status: "active",
     },
-    // Add more sensor objects as needed
-  ];
+  ]);
 
   return (
     <div className="rightcontainer">
@@ -71,7 +71,7 @@ const RightDashboard = () => {
       onClose={() => setIsPopupVisible(false)}
       onAddSensor={(newSensorData) => {
         // Update sensors array here (e.g., using concat or spread operator)
-        // setSensors([...sensors, newSensorData]);
+        setSensors([...sensors, newSensorData]);
       }}
     />
   )}
