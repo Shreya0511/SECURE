@@ -1,5 +1,5 @@
 .rightcontainer{
-    margin-top : 4rem;
+    margin-top : 1.6rem;
     background-image : none;
     display : flex;
     flex-direction : column;
@@ -8,10 +8,11 @@
 }
 
 .sensorList{
-    background-color : rgb(84, 83, 83,0.8);
+    background-color : rgb(84, 83, 83,0.7);
     width : 100%;
     padding : 1.3rem;
     border-radius : 1rem;
+    padding-bottom : 0px;
     /* padding-left : 1rem;
     padding-right : 1rem; */
 
