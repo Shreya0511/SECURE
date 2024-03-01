@@ -1,5 +1,5 @@
 import React from 'react';
-import "../styles/RightComponent.css";
+// import "../styles/RightComponent.css";
 import MenuIcon from './MenuIcon';
 import Button from 'react-bootstrap/Button';
 
@@ -32,8 +32,9 @@ const RightActive = () => {
             <div className = "registered">Active Sensors</div>
             {/* <div className = "addSensors"> <Button variant="primary">+ Add Devices</Button>{' '}</div> */}
         </div>
-          <div className="sensorList">
+        <div>
             {sensors.map((sensor, index) => (
+          <div className="sensorList" style ={{marginBottom : "1.5rem"}}>
           <div key={index} className="sensor">
             <div className="sensorTopDetails">
               <div className="sensorName" style={{ color: "rgb(222, 143, 83)" }}>
@@ -45,6 +46,7 @@ const RightActive = () => {
               <p>Current Supply: {sensor.current}</p>
               <p>Voltage Supply: {sensor.voltage}</p>
             </div>
+          </div>
           </div>
         ))}
             </div>
