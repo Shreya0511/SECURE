@@ -5,6 +5,7 @@ import Login from "../pages/Login";
 import SignUp from "../pages/SignUp";
 import Dashboard from "../pages/Dashboard";
 import ActiveSensors from "../pages/ActiveSensors.js";
+import ReadData from "../components/ReadData.js";
 
 const routes = [
 	{
@@ -47,6 +48,12 @@ const routes = [
 		path: "/activeSensors",
 		component: <ActiveSensors />,
 		name: "ActiveSensors",
+		isPrivate: false,
+	},
+	{
+		path: "/readData",
+		component: <ReadData />,
+		name: "readData",
 		isPrivate: false,
 	},
 	
