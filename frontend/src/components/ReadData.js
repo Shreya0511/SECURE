@@ -1,107 +1,145 @@
-// import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
-// import { Chart } from 'chart.js/auto';
-// import moment from 'moment'; // Ensure moment.js is installed
-// import LineChart from './LineChart';
-// const API_URL = 'https://api.thingspeak.com/channels/2349053/feeds.json'; // Replace with your API endpoint
-// const API_KEY = '0H5Z4Y2DMQCL7ULK'; // Replace with your API key
-// const RESULTS = 2; // Number of data points to fetch
-// const UserData = [
-//   {
-//     id: 0,
-//     time: 0,
-//     voltage:100
-//   },
-//   {
-//     id: 1,
-//     time: 5,
-//     voltage:200
-//   },
-//   {
-//     id: 2,
-//     time: 10,
-//     voltage:150
-//   },
-//   {
-//     id: 3,
-//     time: 15,
-//     voltage:300
-//   },
-//   {
-//     id: 4,
-//     time: 20,
-//     voltage:10
-//   },
-// ];
-// const ReadData = () => {
-//   const fetchData=async()=>{
-//     const response = await axios.get(`${API_URL}?api_key=${API_KEY}&results=${RESULTS}`)
-//     console.log(response.data.feeds[0]);
-//   }
-//   fetchData();
-//   const [userData,setuserData]=useState({
-//     labels:UserData.map((data)=>data.time),
-//     datasets:[{
-//       label:"Voltage",
-//       data:UserData.map((data)=>data.voltage),
-//       borderColor:"black",
-//       borderWidth:2
-
-//     }]
-//   });
-//   return(
-//     <div style={{width:700}}><LineChart chartData={userData}/></div>
-//   )
-// };
-
-// export default ReadData;
-
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Chart } from 'chart.js/auto';
 import moment from 'moment'; // Ensure moment.js is installed
-import LineChart from './LineChart';
+import ApexChart from "apexcharts";
+import Chart from "react-apexcharts";
 
 const API_URL = 'https://api.thingspeak.com/channels/2349053/feeds.json';
 const API_KEY = '0H5Z4Y2DMQCL7ULK'; // Replace with your API key
 const RESULTS = 2; // Number of data points to fetch
 
 const ReadData = () => {
-  const [userData, setUserData] = useState({
-    labels: [],
-    datasets: [{
-      label: "Voltage",
-      data: [],
-      borderColor: "black",
-      borderWidth: 2,
-    }],
-  });
+  // Use the spread operator to initialize dataStream with an object
+  const [pauseData,setPauseData]=useState(false);
+  const [dataStream, setDataStream] = useState([{
+    x: 0,
+    y: 0,
+  }]);
+
+  const series = [
+    {
+      name: "Voltage",
+      data: dataStream.map((point) => ({ x: point.x, y: point.y }))
+    },
+  ];
+
+  const options = {
+    chart: {
+      id: 'realtime',
+      type: 'line',
+      animations: {
+        enabled: true,
+        easing: 'linear',
+        
+      },
+      toolbar: {
+        show: true,
+        offsetX: 0,
+        offsetY: 0,
+        tools: {
+          download: true,
+          selection: false,
+          zoom: true,
+          zoomin: true,
+          zoomout: true,
+          pan: false,
+          reset: true | '<img src="/static/icons/reset.png" width="20">',
+          customIcons: []
+        },
+        // autoSelected: 'zoom' 
+      },
+      zoom: {
+        enabled: true,
+        type: 'x',  
+        autoScaleYaxis: false,  
+        zoomedArea: {
+          fill: {
+            color: '#90CAF9',
+            opacity: 0.4
+          },
+          stroke: {
+            color: '#0D47A1',
+            opacity: 0.4,
+            width: 1
+          }
+        }
+      }
+    },
+    dataLabels: {
+      enabled: true,
+    },
+    stroke: {
+      curve: 'smooth',
+    },
+    title: {
+      text: "Voltage vs time",
+      align: 'left',
+    },
+    markers: {
+      size: 5,
+    },
+    xaxis: {
+      range:7,
+      type: 'numeric',
+      tickAmount: 'dataPoints', 
+      tickPlacement: 'on',
+      labels:{
+        show:false
+      }
+      
+    },
+    yaxis: {
+      min: -6,
+      max: 6,
+    },
+  };
+
+  const appendData = async (dataPoint) => {
+    const prev = dataStream[dataStream.length - 1];
+    const newX = prev['x']+5;
+
+    const randomY = Math.random() * 3 - 1.5;
+    const roundedY=randomY.toFixed(2);
+    const newY=roundedY+dataPoint;
+    console.log(newY);
+    // console.log(dataPoint);
+    setDataStream([...dataStream, { x: newX, y: newY}]);
+
+   
+    ApexChart.exec('realtime', 'updateSeries', [{ data: dataStream }]);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(`${API_URL}?api_key=${API_KEY}&results=${RESULTS}`);
-      const fetchedData = response.data.feeds[0];
+      try {
+        const response = await axios.get(`${API_URL}?api_key=${API_KEY}&results=${RESULTS}`);
+        const fetchedData = response.data.feeds[0];
+        const y = fetchedData.field1;
 
-      setUserData((prevData) => ({
-        labels: [...prevData.labels, moment(fetchedData.created_at).add(prevData.labels.length * 5, 'seconds').format('HH:mm:ss')],
-        datasets: [{
-          ...prevData.datasets[0],
-          data: [...prevData.datasets[0].data, fetchedData.field1],
-        }],
-      }));
+        appendData(y).then(console.log(y)); 
+        console.log(dataStream);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
+    console.log(pauseData);
 
-    const intervalId = setInterval(fetchData, 1000); // Fetch data every 5 seconds
+    if(!pauseData)
+    {
+      setTimeout(fetchData, 10000);
 
-    return () => clearInterval(intervalId); // Clear interval on component unmount
-  }, []);
+    }
+    // const intervalId = setInterval(fetchData, 5000); // Fetch data every 5 seconds
 
-  
-  
+    // return () => clearInterval(intervalId); // Clear interval on component unmount
+  }, [dataStream,pauseData]);
+  const handlePauseResume = () => {
+    setPauseData(!pauseData); 
+  };
   return (
-    <div style={{ width: 700 }}>
-      <LineChart chartData={userData} />
+    <div>
+      <Chart series={series} options={options} height={500} />
+      <button onClick={handlePauseResume}>Pause/Resume</button>
     </div>
   );
 };
