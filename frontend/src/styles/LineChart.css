@@ -1,12 +1,22 @@
-.chart-container {
+/* .chart-container {
     width: 700px; /* Adjust width as needed */
-    height: 500px; /* Adjust height as needed */
-    border: 1px solid #ccc; /* Optional styling */
-    display: flex; /* Allow horizontal layout */
-    overflow-x: scroll;
+    /* height: 500px; /* Adjust height as needed */
+    /* border: 1px solid #ccc; Optional styling */
+    /* display: flex; Allow horizontal layout */
+    /* overflow-x: scroll; */
+  /* } */
+  
+  /* .chart-wrapper { */
+    /* flex: 1; Flex-grow fills available space */
+  /* } */ 
+
+  .chart-container {
+    width: 100%;
+    overflow-x: auto;
   }
   
   .chart-wrapper {
-    flex: 1; /* Flex-grow fills available space */
+    min-width: 800px; /* Ensure that the chart has a minimum width */
   }
+  
   

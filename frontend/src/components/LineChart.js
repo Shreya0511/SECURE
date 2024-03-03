@@ -77,7 +77,7 @@ const LineChart = ({ chartData }) => {
   return (
     <div className="chart-container" style={{ width: '100%', overflowX: 'auto' }}>
       <div className="chart-wrapper" style={{ minWidth: '800px' }}>
-        <Line data={displayedData} options={{ maintainAspectRatio: false }} />
+        <Line data={displayedData} />
       </div>
     </div>
   );
