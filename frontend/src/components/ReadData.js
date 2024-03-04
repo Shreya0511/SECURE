@@ -3,6 +3,7 @@ import axios from 'axios';
 import moment from 'moment'; // Ensure moment.js is installed
 import ApexChart from "apexcharts";
 import Chart from "react-apexcharts";
+import NavBarProfile from './NavBarProfile';
 
 const API_URL = 'https://api.thingspeak.com/channels/2349053/feeds.json';
 const API_KEY = '0H5Z4Y2DMQCL7ULK'; // Replace with your API key
@@ -102,10 +103,16 @@ const ReadData = () => {
   };
 
   return (
+  <>
+   <NavBarProfile />
     <div>
-      <Chart series={series} options={options} height={500} />
-      <button onClick={handlePauseResume}>Pause/Resume</button>
+      <Chart series={series} options={options} height={400} style ={{padding : "1.5rem"}}  />
+      <button style ={{display : "flex", alignItems: "center", justifyContent: "center", marginLeft : "2rem", marginBottom : "2rem"}}onClick={handlePauseResume}>Pause/Resume</button>
     </div>
+
+    </>
+
+
   );
 };
 
