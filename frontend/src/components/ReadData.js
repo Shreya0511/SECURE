@@ -10,16 +10,13 @@ const RESULTS = 2; // Number of data points to fetch
 
 const ReadData = () => {
   // Use the spread operator to initialize dataStream with an object
-  const [pauseData,setPauseData]=useState(false);
-  const [dataStream, setDataStream] = useState([{
-    x: 0,
-    y: 0,
-  }]);
+  const [pauseData, setPauseData] = useState(false);
+  const [dataStream, setDataStream] = useState([]); // Initialize with empty array
 
   const series = [
     {
       name: "Voltage",
-      data: dataStream.map((point) => ({ x: point.x, y: point.y }))
+      data: [], // Initially empty data
     },
   ];
 
@@ -27,43 +24,11 @@ const ReadData = () => {
     chart: {
       id: 'realtime',
       type: 'line',
-      animations: {
-        enabled: true,
-        easing: 'linear',
-        
-      },
-      toolbar: {
-        show: true,
-        offsetX: 0,
-        offsetY: 0,
-        tools: {
-          download: true,
-          selection: false,
-          zoom: true,
-          zoomin: true,
-          zoomout: true,
-          pan: false,
-          reset: true | '<img src="/static/icons/reset.png" width="20">',
-          customIcons: []
-        },
-        // autoSelected: 'zoom' 
-      },
       zoom: {
         enabled: true,
-        type: 'x',  
-        autoScaleYaxis: false,  
-        zoomedArea: {
-          fill: {
-            color: '#90CAF9',
-            opacity: 0.4
-          },
-          stroke: {
-            color: '#0D47A1',
-            opacity: 0.4,
-            width: 1
-          }
-        }
-      }
+        type: 'x',
+        autoScaleYaxis: true,
+      },
     },
     dataLabels: {
       enabled: true,
@@ -75,37 +40,39 @@ const ReadData = () => {
       text: "Voltage vs time",
       align: 'left',
     },
-    markers: {
-      size: 5,
-    },
     xaxis: {
-      range:7,
-      type: 'numeric',
-      tickAmount: 'dataPoints', 
-      tickPlacement: 'on',
-      labels:{
-        show:false
-      }
+      type: 'datetime',
+      tickAmount: 'dataPoints', // Show ticks for all data points
+      labels: {
+        show:false,
+        formatter: function (val) {
+          return moment(val).format('HH:mm:ss'); // Format x-axis labels as HH:MM:SS
+        },
+      },
       
     },
     yaxis: {
       min: -6,
       max: 6,
     },
+    tooltip: {
+      x: {
+        formatter: function (val) {
+          return moment(val).format('HH:mm:ss'); // Format tooltip x-axis as HH:MM:SS
+        },
+      },
+    },
   };
 
   const appendData = async (dataPoint) => {
-    const prev = dataStream[dataStream.length - 1];
-    const newX = prev['x']+5;
-
+    const currentTimestamp = moment();
+    const newX = currentTimestamp.valueOf(); // Convert timestamp to milliseconds for x-axis
     const randomY = Math.random() * 3 - 1.5;
     const roundedY=randomY.toFixed(2);
     const newY=roundedY+dataPoint;
-    console.log(newY);
-    // console.log(dataPoint);
-    setDataStream([...dataStream, { x: newX, y: newY}]);
 
-   
+    setDataStream([...dataStream, { x: newX, y: newY }]);
+    // series[0].data = dataStream.map((point) => ({ x: point.x, y: point.y })); // Update series data
     ApexChart.exec('realtime', 'updateSeries', [{ data: dataStream }]);
   };
 
@@ -115,27 +82,25 @@ const ReadData = () => {
         const response = await axios.get(`${API_URL}?api_key=${API_KEY}&results=${RESULTS}`);
         const fetchedData = response.data.feeds[0];
         const y = fetchedData.field1;
+        console.log(y);
 
-        appendData(y).then(console.log(y)); 
-        console.log(dataStream);
+        appendData(y); 
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-    console.log(pauseData);
 
-    if(!pauseData)
-    {
-      setTimeout(fetchData, 10000);
-
+    if (!pauseData) {
+      setTimeout(fetchData, 1000);
     }
-    // const intervalId = setInterval(fetchData, 5000); // Fetch data every 5 seconds
 
-    // return () => clearInterval(intervalId); // Clear interval on component unmount
-  }, [dataStream,pauseData]);
+    return () => clearTimeout(); // Clear any remaining timeout on component unmount
+  }, [dataStream, pauseData]);
+
   const handlePauseResume = () => {
-    setPauseData(!pauseData); 
+    setPauseData(!pauseData);
   };
+
   return (
     <div>
       <Chart series={series} options={options} height={500} />
