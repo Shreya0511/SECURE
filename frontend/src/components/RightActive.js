@@ -1,6 +1,6 @@
 import React from 'react';
-// import "../styles/RightComponent.css";
-import MenuIcon from './MenuIcon';
+import "../styles/RightComponent.css";
+import MenuIconAnalysis from './MenuIconAnalysis';
 import Button from 'react-bootstrap/Button';
 
 
@@ -21,24 +21,22 @@ const RightActive = () => {
       current:100,
       voltage:90
     },
-    // Add more sensor objects as needed
   ];
-  // <p>Power Consumption - P Kw</p>
-  //               <p>Current Supply - I A</p>
-  //               <p>Voltage Supply - V V</p>
   return (
-    <div className = "rightcontainer">
+    <div className = "rightcontainer" style ={{}}>
         <div className = "header">
             <div className = "registered">Active Sensors</div>
-            {/* <div className = "addSensors"> <Button variant="primary">+ Add Devices</Button>{' '}</div> */}
         </div>
-        <div>
+        <div className = "sensorListContainer">
             {sensors.map((sensor, index) => (
-          <div className="sensorList" style ={{marginBottom : "1.5rem"}}>
-          <div key={index} className="sensor">
+          <div className="sensorList">
+          <div key={index} className="sensor" style ={{}}>
             <div className="sensorTopDetails">
               <div className="sensorName" style={{ color: "rgb(222, 143, 83)" }}>
                 {sensor.name}
+              </div>
+              <div className = "menuIcon">
+                <MenuIconAnalysis />
               </div>
             </div>
             <div className="sensorDetails">
