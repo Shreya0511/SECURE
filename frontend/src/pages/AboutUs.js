@@ -16,7 +16,7 @@ const AboutUs = () => {
         </div>
       </div>
     </div>
-    <div style ={{marginTop : "29.5rem", backgroundColor : "black", color : "white", display : "flex",justifyContent: "center", alignItems: "center", padding : "1.5rem", fontSize : "1.5rem", flexDirection: "column", width : "100vw", overflowX : "hidden"}}>
+    <div style ={{marginTop : "88vh", backgroundColor : "black", color : "white", display : "flex",justifyContent: "center", alignItems: "center", padding : "1.5rem", fontSize : "1.5rem", flexDirection: "column", width : "100vw", overflowX : "hidden"}}>
         <div>Welcome to </div>
         <div style ={{fontWeight: "bold"}}><span className = "firstLetter">S</span>ECURE : <span className='firstLetter'>S</span>mart Energy Consumption and Over-Usage Detection System with Real-Time Alerts</div>
       </div>

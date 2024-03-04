@@ -26,7 +26,7 @@ const NavBar = () => {
             About Us
             </Link>
             <Link to="/contactUs" className = {window.location.pathname === "/contactUs" ? "activet" : "inactivet"} href = "/contactUs" style = {{textDecoration: "none"}}>
-            Contacts
+            Contact Us
             </Link>
             <div className = "button">
             <Link to="/signup" className = {window.location.pathname === "/signUp" ? "activeSignUp" : "inactiveSignUp"} href = "/signup" style = {{textDecoration: "none"}}>

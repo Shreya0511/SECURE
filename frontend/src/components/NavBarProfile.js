@@ -26,7 +26,7 @@ const NavBarProfile = () => {
             About Us
             </Link>
             <Link to="/contactUs" className = {window.location.pathname === "/contactUs" ? "activet" : "inactivet"} href = "/contactUs" style = {{textDecoration: "none"}}>
-            Contacts
+            Contact Us
             </Link>
             <div className = "Profile" style ={{display : "flex"}}>
                 <div className = "profImage" style ={{borderRadius : "50%", backgroundColor : "white", height : "2.5rem", width : "2.5rem"}}><img style ={{height : "2.5rem", width : "2.5rem", borderRadius: "50%"}}src = "https://as2.ftcdn.net/v2/jpg/05/89/93/27/1000_F_589932782_vQAEAZhHnq1QCGu5ikwrYaQD0Mmurm0N.jpg"/></div>
