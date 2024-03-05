@@ -5,6 +5,9 @@ import ApexChart from "apexcharts";
 import Chart from "react-apexcharts";
 import NavBarProfile from './NavBarProfile';
 import { useNavigate } from 'react-router-dom';
+import Threshold from './Threshold';
+
+
 const API_URL = 'https://api.thingspeak.com/channels/2349053/feeds.json';
 const API_KEY = '0H5Z4Y2DMQCL7ULK'; // Replace with your API key
 const RESULTS = 2; // Number of data points to fetch
@@ -14,6 +17,9 @@ const ReadData = () => {
   
   const [pauseData, setPauseData] = useState(false);
   const [dataStream, setDataStream] = useState([]); 
+  const [threshold, setThreshold] = useState(0);
+  const [showWarning, setShowWarning] = useState(false);
+  const [warningTimestamp, setWarningTimestamp] = useState('');
   const series = [
     {
       name: "Voltage",
@@ -69,17 +75,26 @@ const ReadData = () => {
     const currentTimestamp = moment();
     const newX = currentTimestamp.valueOf(); // Convert timestamp to milliseconds for x-axis
     const randomY = Math.random() * 3 - 1.5;
-    const roundedY=randomY.toFixed(2);
-    const newY=roundedY+dataPoint;
+    const roundedY = parseFloat(randomY.toFixed(2));
+    const valY = roundedY + parseFloat(dataPoint);
+    const newY=parseFloat(valY.toFixed(2));
+
+    if (newY > threshold) {
+      const timestampString = moment(currentTimestamp).format('HH:mm:ss');
+      setWarningTimestamp(timestampString);
+      setShowWarning(true);
+    } 
+    // else {
+    //   setShowWarning(false);
+    // }
+    console.log(showWarning,threshold,newY);
 
     setDataStream([...dataStream, { x: newX, y: newY }]);
     ApexChart.exec('realtime', 'updateSeries', [{ data: dataStream }]);
   };
 
   
-  const handleBack = () => {
-    navigate('/dashboard'); 
-  };
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -101,23 +116,72 @@ const ReadData = () => {
     return () => clearTimeout(); // Clear any remaining timeout on component unmount
   }, [dataStream, pauseData]);
 
+  const handleBack = () => {
+    navigate('/dashboard'); 
+  };
   const handlePauseResume = () => {
     setPauseData(!pauseData);
   };
+  const handleThresholdChange = (newThreshold) => {
+    setThreshold(newThreshold);
+  };
+
+  const handleCloseWarning = () => {
+    setShowWarning(false);
+  };
+
+  // return (
+  // <>
+  //  <NavBarProfile />
+  //   <div>
+  //     <Chart series={series} options={options} height={400} style ={{padding : "1.5rem"}}  />
+  //     <Threshold threshold={threshold} onThresholdChange={handleThresholdChange} />
+  //     {showWarning && (
+  //         <div className="warning-popup" style={{ position: 'absolute', top: '20px', right: '20px', padding: '10px', background: 'rgba(255, 0, 0, 0.7)', color: 'white', borderRadius: '5px', zIndex: '9999' }}>
+  //           <p>{`Warning! Threshold crossed at Time: ${warningTimestamp}`}</p>
+  //           <button onClick={handleCloseWarning} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}>
+  //             &#10006;
+  //           </button>
+  //         </div>
+  //       )}
+  //     <button style ={{display : "flex", alignItems: "center", justifyContent: "center", marginLeft : "2rem", marginBottom : "2rem"}}onClick={handlePauseResume}>Pause/Resume</button>
+  //     <button style ={{display : "flex", alignItems: "center", justifyContent: "center", marginLeft : "2rem", marginBottom : "2rem"}}onClick={handleBack}>Back</button>
+
+  //   </div>
+
+  //   </>
+
+
+  // );
 
   return (
-  <>
-   <NavBarProfile />
-    <div>
-      <Chart series={series} options={options} height={400} style ={{padding : "1.5rem"}}  />
-      <button style ={{display : "flex", alignItems: "center", justifyContent: "center", marginLeft : "2rem", marginBottom : "2rem"}}onClick={handlePauseResume}>Pause/Resume</button>
-      <button style ={{display : "flex", alignItems: "center", justifyContent: "center", marginLeft : "2rem", marginBottom : "2rem"}}onClick={handleBack}>Back</button>
-
-    </div>
-
+    <>
+      <NavBarProfile />
+      <div style={{ position: 'relative' }}>
+        <Chart series={series} options={options} height={400} style={{ padding: '1.5rem' }} />
+        <Threshold threshold={threshold} onThresholdChange={handleThresholdChange} />
+        {showWarning && (
+          <div className="warning-popup" style={{ position: 'absolute', top: '20px', left: '50%', transform: 'translateX(-50%)', padding: '10px', background: 'rgba(255, 0, 0, 0.7)', color: 'white', borderRadius: '5px', zIndex: '9999' }}>
+            <p>{`Warning! Threshold crossed at Time: ${warningTimestamp}`}</p>
+            <button onClick={handleCloseWarning} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}>
+              &#10006;
+            </button>
+          </div>
+        )}
+        <button
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: '2rem', marginBottom: '2rem' }}
+          onClick={handlePauseResume}
+        >
+          Pause/Resume
+        </button>
+        <button
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: '2rem', marginBottom: '2rem' }}
+          onClick={handleBack}
+        >
+          Back
+        </button>
+      </div>
     </>
-
-
   );
 };
 
