@@ -4,16 +4,16 @@ import moment from 'moment'; // Ensure moment.js is installed
 import ApexChart from "apexcharts";
 import Chart from "react-apexcharts";
 import NavBarProfile from './NavBarProfile';
-
+import { useNavigate } from 'react-router-dom';
 const API_URL = 'https://api.thingspeak.com/channels/2349053/feeds.json';
 const API_KEY = '0H5Z4Y2DMQCL7ULK'; // Replace with your API key
 const RESULTS = 2; // Number of data points to fetch
 
 const ReadData = () => {
-  // Use the spread operator to initialize dataStream with an object
+  const navigate = useNavigate();
+  
   const [pauseData, setPauseData] = useState(false);
-  const [dataStream, setDataStream] = useState([]); // Initialize with empty array
-
+  const [dataStream, setDataStream] = useState([]); 
   const series = [
     {
       name: "Voltage",
@@ -73,10 +73,13 @@ const ReadData = () => {
     const newY=roundedY+dataPoint;
 
     setDataStream([...dataStream, { x: newX, y: newY }]);
-    // series[0].data = dataStream.map((point) => ({ x: point.x, y: point.y })); // Update series data
     ApexChart.exec('realtime', 'updateSeries', [{ data: dataStream }]);
   };
 
+  
+  const handleBack = () => {
+    navigate('/dashboard'); 
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -108,6 +111,8 @@ const ReadData = () => {
     <div>
       <Chart series={series} options={options} height={400} style ={{padding : "1.5rem"}}  />
       <button style ={{display : "flex", alignItems: "center", justifyContent: "center", marginLeft : "2rem", marginBottom : "2rem"}}onClick={handlePauseResume}>Pause/Resume</button>
+      <button style ={{display : "flex", alignItems: "center", justifyContent: "center", marginLeft : "2rem", marginBottom : "2rem"}}onClick={handleBack}>Back</button>
+
     </div>
 
     </>
