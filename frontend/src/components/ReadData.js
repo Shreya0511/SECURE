@@ -15,14 +15,21 @@ const ReadData = () => {
   const navigate = useNavigate();
 
   const [pauseData, setPauseData] = useState(false);
-  const [dataStream, setDataStream] = useState([]);
+  const [dataStream, setDataStream] = useState([
+    {
+      x: moment().valueOf(),
+      y: 0,
+      originalY: 0,
+    },
+  ]);
   const [threshold, setThreshold] = useState(0);
   const [showWarning, setShowWarning] = useState(false);
   const [warningTimestamp, setWarningTimestamp] = useState('');
+  const [lastDate, setLastDate] = useState('');
   const series = [
     {
       name: 'Energy',
-      data: [],
+      data: dataStream,
     },
   ];
 
@@ -102,8 +109,9 @@ const ReadData = () => {
       setWarningTimestamp(timestampString);
       setShowWarning(true);
     }
-
     setDataStream([...dataStream, { x: newX, y: logScaledY, originalY: newY }]);
+    // console.log(dataStream,newY);
+
     ApexChart.exec('realtime', 'updateSeries', [{ data: dataStream }]);
   };
 
@@ -112,11 +120,28 @@ const ReadData = () => {
       try {
         const response = await axios.get(`${API_URL}?api_key=${API_KEY}&results=${RESULTS}`);
         const fetchedData = response.data.feeds[0];
-        console.log(fetchedData);
+        // console.log(fetchedData);
         const y = fetchedData.field1;
-        console.log(y);
+        const currentDate = fetchedData.created_at;
+        
 
-        appendData(y);
+        
+      // Check if the current date is different from the lastDate
+        if (currentDate !== lastDate) {
+          console.log(lastDate);
+          console.log(currentDate);
+          const y = fetchedData.field1;
+          console.log(y);
+          appendData(y);
+          
+          // Update lastDate
+          setLastDate(currentDate);
+        }
+        //Uncomment this for simulation
+        // appendData(y);
+
+
+        
       } catch (error) {
         console.error('Error fetching data:', error);
       }
