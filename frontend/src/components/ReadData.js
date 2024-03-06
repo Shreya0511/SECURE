@@ -21,7 +21,7 @@ const ReadData = () => {
   const [warningTimestamp, setWarningTimestamp] = useState('');
   const series = [
     {
-      name: 'Voltage',
+      name: 'Energy',
       data: [],
     },
   ];
@@ -50,7 +50,7 @@ const ReadData = () => {
       curve: 'smooth',
     },
     title: {
-      text: 'Voltage vs time',
+      text: 'Energy vs time',
       align: 'left',
     },
     xaxis: {
@@ -112,6 +112,7 @@ const ReadData = () => {
       try {
         const response = await axios.get(`${API_URL}?api_key=${API_KEY}&results=${RESULTS}`);
         const fetchedData = response.data.feeds[0];
+        console.log(fetchedData);
         const y = fetchedData.field1;
         console.log(y);
 
