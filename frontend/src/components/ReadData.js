@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import moment from 'moment'; // Ensure moment.js is installed
+import moment from 'moment';
 import ApexChart from 'apexcharts';
 import Chart from 'react-apexcharts';
 import NavBarProfile from './NavBarProfile';
@@ -9,19 +9,13 @@ import Threshold from './Threshold';
 
 const API_URL = 'https://api.thingspeak.com/channels/2349053/feeds.json';
 const API_KEY = '0H5Z4Y2DMQCL7ULK'; // Replace with your API key
-const RESULTS = 2; // Number of data points to fetch
+let RESULTS = 100; // Number of data points to fetch
 
 const ReadData = () => {
   const navigate = useNavigate();
 
   const [pauseData, setPauseData] = useState(false);
-  const [dataStream, setDataStream] = useState([
-    {
-      x: moment().valueOf(),
-      y: 0,
-      originalY: 0,
-    },
-  ]);
+  const [dataStream, setDataStream] = useState([]);
   const [threshold, setThreshold] = useState(0);
   const [showWarning, setShowWarning] = useState(false);
   const [warningTimestamp, setWarningTimestamp] = useState('');
@@ -47,10 +41,10 @@ const ReadData = () => {
       enabled: false,
     },
     markers: {
-      size: 6, // Set the size of the marker circle
-      strokeWidth: 0, // Set the width of the marker circle border
+      size: 6,
+      strokeWidth: 0,
       hover: {
-        size: 8, // Set the size of the marker circle on hover
+        size: 8,
       },
     },
     stroke: {
@@ -61,6 +55,8 @@ const ReadData = () => {
       align: 'left',
     },
     xaxis: {
+      // range:15,
+      // tickPlacement:'on',
       type: 'datetime',
       tickAmount: 'dataPoints',
       labels: {
@@ -69,16 +65,11 @@ const ReadData = () => {
           return moment(val).format('HH:mm:ss');
         },
       },
+      
     },
     yaxis: {
       min: 0,
       max: 10,
-      // labels: {
-      //   formatter: function (val) {
-      //     const originalY = Math.pow(10, val) - 1;
-      //     return originalY.toFixed(2);
-      //   },
-      // },
     },
     tooltip: {
       x: {
@@ -86,73 +77,110 @@ const ReadData = () => {
           return moment(val).format('HH:mm:ss');
         },
       },
-      y:{
+      y: {
         formatter: function (val) {
-        const originalY = Math.pow(10, val);
-        return `Value: ${originalY.toFixed(2)}`;
+          return `Value: ${val.toFixed(2)}`;
+        },
       },
-      }
     },
   };
 
-  const appendData = async (dataPoint) => {
-    const currentTimestamp = moment();
-    const newX = currentTimestamp.valueOf();
+  const appendData = async (segment) => {
+    const cumulativeEnergy = segment.reduce((sum, dataPoint) => sum + parseFloat(dataPoint.field1), 0);
+    const averageCumulativeEnergy = cumulativeEnergy / 10 + (Math.random() * 2) + 1;
+  
+    // setDataStream(prevData => [
+    //   ...prevData,
+    //   {
+    //     x: prevData.length === 0
+    //       ? moment().valueOf() // Set initial x value as the current moment for the first point
+    //       : prevData[prevData.length - 1].x + 10 * 1000, // Set x as prevX + 10 seconds for subsequent points
+    //     y: averageCumulativeEnergy.toFixed(2),
+    //     originalY: cumulativeEnergy,
+    //   },
+    // ]);
+    setDataStream(prevData => {
+      const newData = [
+        ...prevData,
+        {
+          x: prevData.length === 0
+            ? moment().valueOf() // Set initial x value as the current moment for the first point
+            : prevData[prevData.length - 1].x + 10 * 1000, // Set x as prevX + 10 seconds for subsequent points
+          y: averageCumulativeEnergy.toFixed(2),
+          originalY: cumulativeEnergy,
+        },
+      ];
+      if (newData.length > 20) {
+        newData.shift(); // Remove the 0th element
+      }
+  
+      return newData;
+    });
 
-    const cumulativeEnergy = dataStream.length > 0 ? dataStream[dataStream.length - 1].originalY : 0;
 
-    const newY = parseFloat((cumulativeEnergy + parseFloat(dataPoint)).toFixed(2));
-    const logScaledY = Math.log10(newY + 1).toFixed(2);
 
-    if (newY > threshold) {
-      const timestampString = moment(currentTimestamp).format('HH:mm:ss');
-      setWarningTimestamp(timestampString);
-      setShowWarning(true);
-    }
-    setDataStream([...dataStream, { x: newX, y: logScaledY, originalY: newY }]);
-    // console.log(dataStream,newY);
-
+    
+  
     ApexChart.exec('realtime', 'updateSeries', [{ data: dataStream }]);
   };
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get(`${API_URL}?api_key=${API_KEY}&results=${RESULTS}`);
+  //       const fetchedData = response.data.feeds;
+  //       // console.log(fetchedData);
+  //       const cumulativeEnergyPoints = [];
+
+  //       // Calculate cumulative energy for each segment
+  //       for (let i = fetchedData.length - 10; i >= 0; i -= 10) {
+  //         const segment = fetchedData.slice(i, i + 10);
+  //         console.log(segment);
+  //         appendData(segment);
+  //       }
+
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
+
+  //   if (!pauseData) {
+  //     fetchData();
+  //   }
+
+  //   return () => clearTimeout();
+  // }, [pauseData]);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${API_URL}?api_key=${API_KEY}&results=${RESULTS}`);
-        const fetchedData = response.data.feeds[0];
-        // console.log(fetchedData);
-        const y = fetchedData.field1;
-        const currentDate = fetchedData.created_at;
-        
-
-        
-      // Check if the current date is different from the lastDate
-        if (currentDate !== lastDate) {
-          console.log(lastDate);
-          console.log(currentDate);
-          const y = fetchedData.field1;
-          console.log(y);
-          appendData(y);
-          
-          // Update lastDate
-          setLastDate(currentDate);
+        const fetchedData = response.data.feeds;
+        console.log(fetchedData);
+        // Calculate cumulative energy for each segment
+        for (let i = fetchedData.length - 10; i >= 0; i -= 10) {
+          const segment = fetchedData.slice(i, i + 10);
+          appendData(segment);
         }
-        //Uncomment this for simulation
-        // appendData(y);
-
-
-        
+        RESULTS=10;
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching initial data:', error);
       }
     };
-
-    if (!pauseData) {
-      setTimeout(fetchData, 1000);
-    }
-
-    return () => clearTimeout();
-  }, [dataStream, pauseData]);
+  
+    const intervalId = setInterval(() => {
+      if (!pauseData) {
+        // Fetch the latest 10 points every 10 seconds
+        fetchData();
+      }
+    }, 10000); // Fetch data every 10 seconds
+  
+    // Fetch initial 100 data points on component mount
+    fetchData();
+  
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [pauseData]);
 
   const handleBack = () => {
     navigate('/dashboard');
@@ -171,7 +199,7 @@ const ReadData = () => {
   return (
     <>
       <NavBarProfile />
-      <div style={{ position: 'relative' }}>
+      <div style={{ position: 'relative'}}>
         <Chart series={series} options={options} height={400} style={{ padding: '1.5rem' }} />
         <Threshold threshold={threshold} onThresholdChange={handleThresholdChange} />
         {showWarning && (
