@@ -10,15 +10,15 @@ const AboutUs = () => {
       <div className="mainContainer">
         <div className="secureHeading">
           <div className="name" style ={{marginTop : "2.5rem"}}>
-            {/* <span className="firstLetter">S</span> */}
-            About Us.
+            <span className="firstLetter">A</span>
+            bout Us.
           </div>
         </div>
       </div>
     </div>
-    <div style ={{marginTop : "88vh", backgroundColor : "black", color : "white", display : "flex",justifyContent: "center", alignItems: "center", padding : "1.5rem", fontSize : "1.5rem", flexDirection: "column", width : "100vw", overflowX : "hidden"}}>
-        <div>Welcome to </div>
-        <div style ={{fontWeight: "bold"}}><span className = "firstLetter">S</span>ECURE : <span className='firstLetter'>S</span>mart Energy Consumption and Over-Usage Detection System with Real-Time Alerts</div>
+    <div style ={{marginTop : "55vh", backgroundColor : "black", color : "white", display : "flex",justifyContent: "center", alignItems: "center", padding : "1.5rem", fontSize : "2rem", flexDirection: "column", width : "100vw", overflowX : "hidden"}}>
+        <div style ={{fontSize : "3rem"}}>Welcome to </div>
+        <div style ={{fontWeight: "bold"}}><span className = "firstLetter">S</span>ECURE </div>
       </div>
     <div style ={{ backgroundColor : "black", color : "white", height : "20rem", display : "flex", padding : "1rem", width : "100vw",  overflowX : "hidden"}}>
       <div style ={{display : "flex", justifyContent: "center", alignItems: "center", flex : "1"}}>
