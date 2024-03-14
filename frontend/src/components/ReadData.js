@@ -21,6 +21,7 @@ const ReadData = () => {
   const [warningTimestamp, setWarningTimestamp] = useState("");
   const [lastDate, setLastDate] = useState("");
   const [notifications, setNotifications] = useState("");
+  const [notifyDetails, setNotifyDetails]= useState([]);
   const series = [
     {
       name: "Energy",
@@ -200,28 +201,25 @@ const ReadData = () => {
   };
 
   useEffect(() => {
-    dataStream ? (
-      dataStream.map((item) => {
-        return (
-          //          {console.log("item", item)}
-          <>
-            {" "}
-            {item.y > threshold
-              ? setShowWarning(true)
-              : setShowWarning(false)}
-          </>
-        );
-      })
-    ) : (
-      <></>
-    );
 
-    // (dataStream[3].y > threshold) ? setShowWarning(true) : setShowWarning(false);
-  }, [dataStream]);
+    if (dataStream) {
+      const updatedNotificationDetails = [];
+      dataStream.forEach(item => {
+        setShowWarning(false);
+        if (item.y > threshold) {
+          updatedNotificationDetails.push(item);
+          setShowWarning(true);
+        }
+      });
+      setNotifyDetails(updatedNotificationDetails);
+    }
+  }, [dataStream, threshold]);
+  
+
 
   return (
     <>
-      <NavBarProfile />
+      <NavBarProfile notifications={notifyDetails}/>
       <div style={{ position: "relative" }}>
         <Chart
           series={series}
@@ -233,6 +231,7 @@ const ReadData = () => {
           threshold={threshold}
           onThresholdChange={handleThresholdChange}
         />
+          {console.log("sw", showWarning)}
         {showWarning && (
           <div
             className="warning-popup"
