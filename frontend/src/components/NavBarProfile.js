@@ -41,10 +41,6 @@ const NavBarProfile = () => {
 
 
 
-  // useEffect(()=>{
-  //   renderTooltip();
-  // }, [notifyDetails])
-
 
 
   const handleNotificationStack = () => {};
