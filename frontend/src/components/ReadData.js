@@ -13,7 +13,6 @@ const API_KEY = '0H5Z4Y2DMQCL7ULK'; // Replace with your API key
 // let RESULTS = 100; // Number of data points to fetch
 
 const ReadData = () => {
-  const {results, setResults} = AuthData();
   const navigate = useNavigate();
   // const [results, setResults] = useState(100);
 
@@ -134,10 +133,6 @@ const ReadData = () => {
           // console.log(RESULTS);
           appendData(segment);
       }
-<<<<<<< HEAD
-        // RESULTS=10;
-=======
->>>>>>> 63837e41399561c5916f35159ce2a80e357571d2
         setResults(10);
       } catch (error) {
         console.error('Error fetching initial data:', error);
@@ -157,7 +152,7 @@ const ReadData = () => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [pauseData, results, window.location]);
+  }, [pauseData]);
 
   const handleBack = () => {
     navigate('/dashboard');
