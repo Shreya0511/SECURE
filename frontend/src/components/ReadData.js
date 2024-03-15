@@ -198,7 +198,7 @@ const ReadData = ({children}) => {
           threshold={threshold}
           onThresholdChange={handleThresholdChange}
         />
-          {console.log("sw", showWarning)}
+          {/* {console.log("sw", showWarning)} */}
  
         {showWarning && (
           <div
