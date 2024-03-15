@@ -126,6 +126,7 @@ const ReadData = () => {
         // Calculate cumulative energy for each segment
         for (let i = 0; i <= fetchedData.length - 10; i += 10) {
           const segment = fetchedData.slice(i, i + 10);
+          console.log(RESULTS);
           appendData(segment);
       }
         RESULTS=10;
