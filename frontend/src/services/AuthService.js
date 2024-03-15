@@ -23,6 +23,8 @@ export const AuthWrapper = () => {
   const [showWarning, setShowWarning] = useState(false);
   const [notifications, setNotifications] = useState("");
   const [notifyDetails, setNotifyDetails]= useState([]);
+  const [results, setResults] = useState(100);
+
 
   const series = [
     {
@@ -124,7 +126,7 @@ export const AuthWrapper = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${API_URL}?api_key=${API_KEY}&results=${RESULTS}`);
+        const response = await axios.get(`${API_URL}?api_key=${API_KEY}&results=${results}`);
         const fetchedData = response.data.feeds;
         console.log(fetchedData);
         // Calculate cumulative energy for each segment
@@ -132,7 +134,7 @@ export const AuthWrapper = () => {
           const segment = fetchedData.slice(i, i + 10);
           appendData(segment);
       }
-        RESULTS=10;
+        setResults(10);
       } catch (error) {
         console.error('Error fetching initial data:', error);
       }
@@ -164,6 +166,7 @@ export const AuthWrapper = () => {
       dataStream.forEach(item => {
         setShowWarning(false);
         if (item.y > threshold) {
+          console.log("useEffect", threshold);
           updatedNotificationDetails.push(item);
           setShowWarning(true);
         }
@@ -179,7 +182,11 @@ export const AuthWrapper = () => {
           setUser,
           notifications,
           notifyDetails,
-          setNotifyDetails
+          setNotifyDetails,
+          threshold,
+          setThreshold,
+          showWarning,
+          setShowWarning
         }}
       >
           <div className="right-container">

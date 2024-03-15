@@ -7,25 +7,23 @@ import NavBarProfile from './NavBarProfile';
 import { useNavigate } from 'react-router-dom';
 import { createContext } from 'react';
 import Threshold from './Threshold';
+import { AuthData } from '../services/AuthService';
 
 const API_URL = 'https://api.thingspeak.com/channels/2349053/feeds.json';
 const API_KEY = '0H5Z4Y2DMQCL7ULK'; // Replace with your API key
 let RESULTS = 100; // Number of data points to fetch
 
 const ReadData = ({children}) => {
+  const {threshold, setThreshold, showWarning, setShowWarning} = AuthData();
   const navigate = useNavigate();
   const NotificationContext = createContext();
 
   const [pauseData, setPauseData] = useState(false);
   const [dataStream, setDataStream] = useState([]);
-  const [threshold, setThreshold] = useState(0);
-  const [showWarning, setShowWarning] = useState(false);
+  // const [threshold, setThreshold] = useState(0);
+  // const [showWarning, setShowWarning] = useState(false);
   const [warningTimestamp, setWarningTimestamp] = useState("");
   const [lastDate, setLastDate] = useState("");
-  const [notifications, setNotifications] = useState("");
-  const [notifyDetails, setNotifyDetails]= useState([]);
-  const [warningTimestamp, setWarningTimestamp] = useState('');
-  const [lastDate, setLastDate] = useState('');
   const[results,setResults]=useState(100);
   const series = [
     {
@@ -171,26 +169,26 @@ const ReadData = ({children}) => {
     setShowWarning(false);
   };
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    if (dataStream) {
-      const updatedNotificationDetails = [];
-      dataStream.forEach(item => {
-        setShowWarning(false);
-        if (item.y > threshold) {
-          updatedNotificationDetails.push(item);
-          setShowWarning(true);
-        }
-      });
-      setNotifyDetails(updatedNotificationDetails);
-    }
-  }, [dataStream, threshold]);
+  //   if (dataStream) {
+  //     const updatedNotificationDetails = [];
+  //     dataStream.forEach(item => {
+  //       setShowWarning(false);
+  //       if (item.y > threshold) {
+  //         updatedNotificationDetails.push(item);
+  //         setShowWarning(true);
+  //       }
+  //     });
+  //     setNotifyDetails(updatedNotificationDetails);
+  //   }
+  // }, [dataStream, threshold]);
   
 
 
   return (
     <>
-      <NavBarProfile notifications={notifyDetails}/>
+      <NavBarProfile/>
       <div style={{ position: "relative" }}>
         <Chart
           series={series}

@@ -14,12 +14,12 @@ import { AuthData } from "../services/AuthService";
 
 
 const NavBarProfile = () => {
-  const {notifications, notifyDetails} = AuthData();
+  const {notifyDetails} = AuthData();
   
   // const formattedTime = moment(notifications[0].x).format("HH:mm:ss");
   let formattedTime;
   if(notifyDetails){
-     formattedTime = notifyDetails.length > 0 ? moment(notifyDetails[0].x).format("HH:mm:ss") : "";
+     formattedTime = notifyDetails.length > 0 ? moment(notifyDetails[notifyDetails.length - 1].x).format("HH:mm:ss") : "";
   }
 
 
@@ -95,7 +95,7 @@ const NavBarProfile = () => {
             <Link to ="/notifications" style ={{color : "white", textDecoration: "none"}}>
             <div>
               {/* {console.log("ntf", notifications.length)} */}
-              {notifyDetails ? (
+              {notifyDetails.length > 0 ? (
                 <div>
                   {" "}
                   <OverlayTrigger
