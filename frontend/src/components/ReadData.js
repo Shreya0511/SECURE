@@ -24,6 +24,9 @@ const ReadData = ({children}) => {
   const [lastDate, setLastDate] = useState("");
   const [notifications, setNotifications] = useState("");
   const [notifyDetails, setNotifyDetails]= useState([]);
+  const [warningTimestamp, setWarningTimestamp] = useState('');
+  const [lastDate, setLastDate] = useState('');
+  const[results,setResults]=useState(100);
   const series = [
     {
       name: 'Energy',
@@ -124,15 +127,16 @@ const ReadData = ({children}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${API_URL}?api_key=${API_KEY}&results=${RESULTS}`);
+        const response = await axios.get(`${API_URL}?api_key=${API_KEY}&results=${results}`);
         const fetchedData = response.data.feeds;
         console.log(fetchedData);
         // Calculate cumulative energy for each segment
         for (let i = 0; i <= fetchedData.length - 10; i += 10) {
           const segment = fetchedData.slice(i, i + 10);
+          console.log(RESULTS);
           appendData(segment);
       }
-        RESULTS=10;
+        setResults(10);
       } catch (error) {
         console.error('Error fetching initial data:', error);
       }
