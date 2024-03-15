@@ -152,7 +152,7 @@ const ReadData = () => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [pauseData]);
+  }, [pauseData,results]);
 
   const handleBack = () => {
     navigate('/dashboard');
