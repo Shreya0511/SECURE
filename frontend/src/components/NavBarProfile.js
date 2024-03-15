@@ -10,39 +10,27 @@ import { faBell } from "@fortawesome/free-solid-svg-icons";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import moment from "moment";
+import { AuthData } from "../services/AuthService";
 
 
-const NavBarProfile = ({ notifications }) => {
+const NavBarProfile = () => {
+  const {notifications, notifyDetails} = AuthData();
   
   // const formattedTime = moment(notifications[0].x).format("HH:mm:ss");
-  let formattedTime = notifications.length > 0 ? moment(notifications[0].x).format("HH:mm:ss") : "";
+  let formattedTime;
+  if(notifyDetails){
+     formattedTime = notifyDetails.length > 0 ? moment(notifyDetails[0].x).format("HH:mm:ss") : "";
+  }
 
 
 
 
   const renderTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props}>
-    {notifications ? 
-    // (
-    //   notifications.map((detail, index) => {
-    //     const formattedTime = moment(detail.x).format("HH:mm:ss"); // Format x using Moment.js
-
-    //     return (
-    //       <div key={index} style ={{backgroundColor : "gray", width : "12rem"}}>
-    //         <p>Sensor-I has crossed its threshold at : {formattedTime}</p>
-    //         {/* <p>Y: {detail.y}</p>
-    //         <p>Original Y: {detail.originalY}</p> */}
-    //         {/* Add additional properties as needed */}
-    //       </div>
-    //     );
-    //   })
-    // ) 
+    {notifyDetails ? 
     (         
               <div style ={{backgroundColor : "", borderRadius : "1rem", color : "white", fontWeight: "bold", fontSize : "1rem", margin: "1rem"}}>
                 <p><span style ={{color : "chocolate"}}>Sensor-I </span> has crossed its threshold at {formattedTime} hrs</p>
-                {/* <p>Y: {detail.y}</p>
-                <p>Original Y: {detail.originalY}</p> */}
-                {/* Add additional properties as needed */}
               </div>
             )
     : (
@@ -51,10 +39,11 @@ const NavBarProfile = ({ notifications }) => {
   </Tooltip>
   );
 
-  useEffect(()=>{
-    console.log("hello");
-    renderTooltip();
-  }, [notifications])
+
+
+  // useEffect(()=>{
+  //   renderTooltip();
+  // }, [notifyDetails])
 
 
 
@@ -103,9 +92,10 @@ const NavBarProfile = ({ notifications }) => {
             >
               Contact Us
             </Link>
+            <Link to ="/notifications" style ={{color : "white", textDecoration: "none"}}>
             <div>
               {/* {console.log("ntf", notifications.length)} */}
-              {notifications.length > 0 ? (
+              {notifyDetails ? (
                 <div>
                   {" "}
                   <OverlayTrigger
@@ -138,6 +128,7 @@ const NavBarProfile = ({ notifications }) => {
                 <FontAwesomeIcon style={{ fontSize: "1.5rem" }} icon={faBell} />
               )}
             </div>
+            </Link>
 
             <div className="Profile" style={{ display: "flex" }}>
               <div

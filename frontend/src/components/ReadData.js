@@ -5,14 +5,16 @@ import ApexChart from 'apexcharts';
 import Chart from 'react-apexcharts';
 import NavBarProfile from './NavBarProfile';
 import { useNavigate } from 'react-router-dom';
+import { createContext } from 'react';
 import Threshold from './Threshold';
 
 const API_URL = 'https://api.thingspeak.com/channels/2349053/feeds.json';
 const API_KEY = '0H5Z4Y2DMQCL7ULK'; // Replace with your API key
 let RESULTS = 100; // Number of data points to fetch
 
-const ReadData = () => {
+const ReadData = ({children}) => {
   const navigate = useNavigate();
+  const NotificationContext = createContext();
 
   const [pauseData, setPauseData] = useState(false);
   const [dataStream, setDataStream] = useState([]);
@@ -22,8 +24,6 @@ const ReadData = () => {
   const [lastDate, setLastDate] = useState("");
   const [notifications, setNotifications] = useState("");
   const [notifyDetails, setNotifyDetails]= useState([]);
-  const [warningTimestamp, setWarningTimestamp] = useState('');
-  const [lastDate, setLastDate] = useState('');
   const series = [
     {
       name: 'Energy',
@@ -199,12 +199,7 @@ const ReadData = () => {
           onThresholdChange={handleThresholdChange}
         />
           {console.log("sw", showWarning)}
-  return (
-    <>
-      <NavBarProfile />
-      <div style={{ position: 'relative'}}>
-        <Chart series={series} options={options} height={400} style={{ padding: '1.5rem' }} />
-        <Threshold threshold={threshold} onThresholdChange={handleThresholdChange} />
+ 
         {showWarning && (
           <div
             className="warning-popup"
@@ -218,15 +213,21 @@ const ReadData = () => {
               color: 'white',
               borderRadius: '5px',
               zIndex: '9999',
+              display : "flex",
+              flexDirection: "row"
             }}
           >
+            <div>
             <p>{`Warning! Threshold crossed at Time: ${warningTimestamp}`}</p>
+            </div>
+            <div style ={{position: "relative", bottom: "0.7rem", left : "0.9rem", marginLeft : "1rem"}}>
             <button
               onClick={handleCloseWarning}
               style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}
             >
               &#10006;
             </button>
+            </div>
           </div>
         )}
         <button
@@ -254,7 +255,10 @@ const ReadData = () => {
           Back
         </button>
       </div>
-    </>
+  </>
   );
+        }
+
+
 
 export default ReadData;

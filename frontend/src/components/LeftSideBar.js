@@ -12,7 +12,7 @@ import {
   faClipboard,
   faChartSimple,
   faBell,
-  faRightFromBracket
+  faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 
 const LeftSideBar = () => {
@@ -68,13 +68,7 @@ const LeftSideBar = () => {
               <span className="navitem">Notifications</span>
             </Link>
           </li>
-          <li
-            className={
-              window.location.pathname === "/notifications"
-                ? "activeEle"
-                : "inactiveEle"
-            }
-          >
+          <li className="inactiveEle">
             <Link to="/notifications" className="navigationLink">
               <FontAwesomeIcon icon={faRightFromBracket} />
               <span className="navitem">Logout</span>
