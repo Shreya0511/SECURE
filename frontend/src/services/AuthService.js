@@ -7,6 +7,7 @@ export const AuthData = () => useContext(AuthContext);
 export const AuthWrapper = () => {
 
   const [user, setUser] = useState({user : "",isAuthenticated: false});
+  const [results, setResults] = useState(100);
 
 
 
@@ -17,7 +18,9 @@ export const AuthWrapper = () => {
       <AuthContext.Provider
         value={{
           user,
-          setUser
+          setUser,
+          results,
+          setResults
         }}
       >
           <div className="right-container">

@@ -6,13 +6,17 @@ import Chart from 'react-apexcharts';
 import NavBarProfile from './NavBarProfile';
 import { useNavigate } from 'react-router-dom';
 import Threshold from './Threshold';
+import { AuthData } from '../services/AuthService';
 
 const API_URL = 'https://api.thingspeak.com/channels/2349053/feeds.json';
 const API_KEY = '0H5Z4Y2DMQCL7ULK'; // Replace with your API key
-let RESULTS = 100; // Number of data points to fetch
+// let RESULTS = 100; // Number of data points to fetch
 
 const ReadData = () => {
+  const {results, setResults} = AuthData();
   const navigate = useNavigate();
+  // const [results, setResults] = useState(100);
+
 
   const [pauseData, setPauseData] = useState(false);
   const [dataStream, setDataStream] = useState([]);
@@ -120,16 +124,17 @@ const ReadData = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${API_URL}?api_key=${API_KEY}&results=${RESULTS}`);
+        const response = await axios.get(`${API_URL}?api_key=${API_KEY}&results=${results}`);
         const fetchedData = response.data.feeds;
         console.log(fetchedData);
         // Calculate cumulative energy for each segment
         for (let i = 0; i <= fetchedData.length - 10; i += 10) {
           const segment = fetchedData.slice(i, i + 10);
-          console.log(RESULTS);
+          // console.log(RESULTS);
           appendData(segment);
       }
-        RESULTS=10;
+        // RESULTS=10;
+        setResults(10);
       } catch (error) {
         console.error('Error fetching initial data:', error);
       }
@@ -148,7 +153,7 @@ const ReadData = () => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [pauseData]);
+  }, [pauseData, results, window.location]);
 
   const handleBack = () => {
     navigate('/dashboard');
