@@ -11,19 +11,19 @@ const NotificationsPage = () => {
   const { notifications, notifyDetails, setNotifyDetails } = AuthData();
 
   const handleRemoveNotification = (detailToRemove) => {
-    // const indexToRemove = notifyDetails.findIndex(notification => 
-    //   notification.x === detailToRemove.x &&
-    //   notification.y === detailToRemove.y &&
-    //   notification.originalY === detailToRemove.originalY
-    // );
+    const indexToRemove = notifyDetails.findIndex(notification => 
+      notification.x === detailToRemove.x &&
+      notification.y === detailToRemove.y &&
+      notification.originalY === detailToRemove.originalY
+    );
   
-    // if (indexToRemove !== -1) {
-    //   const updatedNotifyDetails = [...notifyDetails.slice(0, indexToRemove), ...notifyDetails.slice(indexToRemove + 1)];
+    if (indexToRemove !== -1) {
+      const updatedNotifyDetails = [...notifyDetails.slice(0, indexToRemove), ...notifyDetails.slice(indexToRemove + 1)];
   
-    //   setNotifyDetails(updatedNotifyDetails);
-    // } else {
-    //   console.error("Notification not found in the array.");
-    // }
+      setNotifyDetails(updatedNotifyDetails);
+    } else {
+      console.error("Notification not found in the array.");
+    }
   };
   
   
@@ -75,7 +75,7 @@ const NotificationsPage = () => {
                     <span style ={{color : "chocolate",fontWeight: "bold", marginRight: "0.5rem"}}>Sensor-I  </span> has crossed its threshold at {formattedTime}
                     </div>
                     <div style={{flex : "1", display : "flex", alignItems: "center", justifyContent: "center"}}><Link style ={{textDecoration: "none", color : "red", fontSize : "1rem", fontWeight: "bold"}}to = "/readData">  View Analysis</Link></div>
-                    <div style ={{display :  "flex", position: "relative", top: "-1rem", left : "0.5rem", color : "gray", fontWeight: "bold", cursor : "pointer"}} onClick={handleRemoveNotification(detail)}>X</div>
+                    <div style ={{display :  "flex", position: "relative", top: "-1rem", left : "0.5rem", color : "gray", fontWeight: "bold", cursor : "pointer"}} onClick={() => handleRemoveNotification(detail)}>X</div>
                   </div>
                 );
               })
