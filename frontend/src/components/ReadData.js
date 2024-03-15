@@ -24,6 +24,7 @@ const ReadData = () => {
   const [showWarning, setShowWarning] = useState(false);
   const [warningTimestamp, setWarningTimestamp] = useState('');
   const [lastDate, setLastDate] = useState('');
+  const[results,setResults]=useState(100);
   const series = [
     {
       name: 'Energy',
@@ -133,7 +134,10 @@ const ReadData = () => {
           // console.log(RESULTS);
           appendData(segment);
       }
+<<<<<<< HEAD
         // RESULTS=10;
+=======
+>>>>>>> 63837e41399561c5916f35159ce2a80e357571d2
         setResults(10);
       } catch (error) {
         console.error('Error fetching initial data:', error);
