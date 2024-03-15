@@ -166,7 +166,7 @@ export const AuthWrapper = () => {
       dataStream.forEach(item => {
         setShowWarning(false);
         if (item.y > threshold) {
-          console.log("useEffect", threshold);
+          console.log("useEffect", threshold, " ",item);
           updatedNotificationDetails.push(item);
           setShowWarning(true);
         }
