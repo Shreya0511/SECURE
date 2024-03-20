@@ -18,7 +18,7 @@ export const AuthWrapper = () => {
 
   const [user, setUser] = useState({user : "",isAuthenticated: false});
   const [pauseData, setPauseData] = useState(false);
-  const [dataStream, setDataStream] = useState([]);
+  // const [dataStream, setDataStream] = useState([]);
   const [threshold, setThreshold] = useState(0);
   const [showWarning, setShowWarning] = useState(false);
   const [notifyDetails, setNotifyDetails]= useState([]);
@@ -28,22 +28,22 @@ export const AuthWrapper = () => {
 
 
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    if (dataStream) {
-      const updatedNotificationDetails = [];
-      dataStream.forEach(item => {
-        setShowWarning(false);
-        console.log("useEffect", threshold, " ",item.y);
-        if (item.y > threshold) {
-          updatedNotificationDetails.push(item);
-          setShowWarning(true);
-          setWarningTimestamp(moment(item.x).format("HH:mm:ss"))
-        }
-      });
-      setNotifyDetails(updatedNotificationDetails);
-    }
-  }, [dataStream, threshold]);
+  //   if (dataStream) {
+  //     const updatedNotificationDetails = [];
+  //     dataStream.forEach(item => {
+  //       setShowWarning(false);
+  //       console.log("useEffect", threshold, " ",item.y);
+  //       if (item.y > threshold) {
+  //         updatedNotificationDetails.push(item);
+  //         setShowWarning(true);
+  //         setWarningTimestamp(moment(item.x).format("HH:mm:ss"))
+  //       }
+  //     });
+  //     setNotifyDetails(updatedNotificationDetails);
+  //   }
+  // }, [dataStream, threshold]);
 
 
 
@@ -58,8 +58,8 @@ export const AuthWrapper = () => {
           setThreshold,
           showWarning,
           setShowWarning,
-          dataStream,
-          setDataStream,
+          // dataStream,
+          // setDataStream,
           warningTimestamp,
           setWarningTimestamp
         }}
