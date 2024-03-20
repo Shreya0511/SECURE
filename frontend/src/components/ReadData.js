@@ -1,40 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import moment from 'moment';
-import ApexChart from 'apexcharts';
-import Chart from 'react-apexcharts';
-import NavBarProfile from './NavBarProfile';
-import { useNavigate } from 'react-router-dom';
-import Threshold from './Threshold';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import moment from "moment";
+import ApexChart from "apexcharts";
+import Chart from "react-apexcharts";
+import NavBarProfile from "./NavBarProfile";
+import { useNavigate } from "react-router-dom";
+import Threshold from "./Threshold";
+import { AuthData } from "../services/AuthService";
 
-const API_URL = 'https://api.thingspeak.com/channels/2349053/feeds.json';
-const API_KEY = '0H5Z4Y2DMQCL7ULK'; // Replace with your API key
-let RESULTS = 100; // Number of data points to fetch
+const API_URL = "https://api.thingspeak.com/channels/2349053/feeds.json";
+const API_KEY = "0H5Z4Y2DMQCL7ULK"; // Replace with your API key
 
-const ReadData = () => {
-  const navigate = useNavigate();
-
-  const [pauseData, setPauseData] = useState(false);
+const ReadData = ({ children }) => {
+  const {
+    threshold,
+    setThreshold,
+    showWarning,
+    setShowWarning,
+    warningTimestamp,
+    setWarningTimestamp,
+    notifyDetails,
+    setNotifyDetails,
+  } = AuthData();
   const [dataStream, setDataStream] = useState([]);
-  const [threshold, setThreshold] = useState(0);
-  const [showWarning, setShowWarning] = useState(false);
-  const [warningTimestamp, setWarningTimestamp] = useState('');
-  const [lastDate, setLastDate] = useState('');
-  const[results,setResults]=useState(100);
+
+  // const [user, setUser] = useState({user : "",isAuthenticated: false});
+  // const [pauseData, setPauseData] = useState(false);
+  // const [dataStream, setDataStream] = useState([]);
+  // const [threshold, setThreshold] = useState(0);
+  // const [showWarning, setShowWarning] = useState(false);
+  // const [notifyDetails, setNotifyDetails]= useState([]);
+  // const [results, setResults] = useState(100);
+  // const [warningTimestamp, setWarningTimestamp] = useState("");
+
+  const navigate = useNavigate();
+  const [pauseData, setPauseData] = useState(false);
+  const [lastDate, setLastDate] = useState("");
+  const [results, setResults] = useState(100);
+
+  console.log("ds", dataStream);
   const series = [
     {
-      name: 'Energy',
+      name: "Energy",
       data: dataStream,
     },
   ];
 
   const options = {
     chart: {
-      id: 'realtime',
-      type: 'line',
+      id: "realtime",
+      type: "line",
       zoom: {
         enabled: true,
-        type: 'x',
+        type: "x",
         autoScaleYaxis: true,
       },
     },
@@ -49,24 +67,21 @@ const ReadData = () => {
       },
     },
     stroke: {
-      curve: 'smooth',
+      curve: "smooth",
     },
     title: {
-      text: 'Energy vs time',
-      align: 'left',
+      text: "Energy vs time",
+      align: "left",
     },
     xaxis: {
-      // range:15,
-      // tickPlacement:'on',
-      type: 'datetime',
-      tickAmount: 'dataPoints',
+      type: "datetime",
+      tickAmount: "dataPoints",
       labels: {
         show: false,
         formatter: function (val) {
-          return moment(val).format('HH:mm:ss');
+          return moment(val).format("HH:mm:ss");
         },
       },
-      
     },
     yaxis: {
       min: 0,
@@ -75,7 +90,7 @@ const ReadData = () => {
     tooltip: {
       x: {
         formatter: function (val) {
-          return moment(val).format('HH:mm:ss');
+          return moment(val).format("HH:mm:ss");
         },
       },
       y: {
@@ -87,18 +102,23 @@ const ReadData = () => {
   };
 
   const appendData = async (segment) => {
-    const cumulativeEnergy = segment.reduce((sum, dataPoint) => sum + parseFloat(dataPoint.field1), 0);
-    const averageCumulativeEnergy = cumulativeEnergy / 10 + (Math.random() * 2) + 1;
-  
-    console.log(segment);
+    const cumulativeEnergy = segment.reduce(
+      (sum, dataPoint) => sum + parseFloat(dataPoint.field1),
+      0
+    );
+    const averageCumulativeEnergy =
+      cumulativeEnergy / 10 + Math.random() * 2 + 1;
+
+    // console.log(segment);
     console.log(averageCumulativeEnergy);
-    setDataStream(prevData => {
+    setDataStream((prevData) => {
       const newData = [
         ...prevData,
         {
-          x: prevData.length === 0
-            ? moment().valueOf()-100*1000 // Set initial x value as the current moment for the first point
-            : prevData[prevData.length - 1].x + 10 * 1000, // Set x as prevX + 10 seconds for subsequent points
+          x:
+            prevData.length === 0
+              ? moment().valueOf() - 100 * 1000 // Set initial x value as the current moment for the first point
+              : prevData[prevData.length - 1].x + 10 * 1000, // Set x as prevX + 10 seconds for subsequent points
           y: averageCumulativeEnergy.toFixed(2),
           originalY: cumulativeEnergy,
         },
@@ -106,53 +126,70 @@ const ReadData = () => {
       if (newData.length > 20) {
         newData.shift(); // Remove the 0th element
       }
-  
+
       return newData;
     });
 
-
-
-    
-  
-    ApexChart.exec('realtime', 'updateSeries', [{ data: dataStream }]);
+    ApexChart.exec("realtime", "updateSeries", [{ data: dataStream }]);
   };
 
-  
+
+
+  useEffect(() => {
+
+    if (dataStream) {
+      const updatedNotificationDetails = [];
+      dataStream.forEach(item => {
+        setShowWarning(false);
+        console.log("useEffect", threshold, " ",item.y);
+        if (item.y > threshold) {
+          updatedNotificationDetails.push(item);
+          setShowWarning(true);
+          setWarningTimestamp(moment(item.x).format("HH:mm:ss"))
+        }
+      });
+      setNotifyDetails(updatedNotificationDetails);
+    }
+  }, [dataStream, threshold]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${API_URL}?api_key=${API_KEY}&results=${results}`);
+        const response = await axios.get(
+          `${API_URL}?api_key=${API_KEY}&results=${results}`
+        );
         const fetchedData = response.data.feeds;
         console.log(fetchedData);
         // Calculate cumulative energy for each segment
         for (let i = 0; i <= fetchedData.length - 10; i += 10) {
           const segment = fetchedData.slice(i, i + 10);
-          console.log(RESULTS);
+          // console.log(RESULTS);
           appendData(segment);
-      }
+        }
         setResults(10);
       } catch (error) {
-        console.error('Error fetching initial data:', error);
+        console.error("Error fetching initial data:", error);
       }
     };
-  
+
     const intervalId = setInterval(() => {
       if (!pauseData) {
         // Fetch the latest 10 points every 10 seconds
         fetchData();
       }
     }, 10000); // Fetch data every 10 seconds
-  
+
     // Fetch initial 100 data points on component mount
     fetchData();
-  
+
     return () => {
       clearInterval(intervalId);
     };
-  }, [pauseData,results]);
 
+  }, [pauseData,results]);
+  
   const handleBack = () => {
-    navigate('/dashboard');
+    navigate("/dashboard");
   };
   const handlePauseResume = () => {
     setPauseData(!pauseData);
@@ -164,44 +201,71 @@ const ReadData = () => {
   const handleCloseWarning = () => {
     setShowWarning(false);
   };
+  
 
   return (
     <>
       <NavBarProfile />
-      <div style={{ position: 'relative'}}>
-        <Chart series={series} options={options} height={400} style={{ padding: '1.5rem' }} />
-        <Threshold threshold={threshold} onThresholdChange={handleThresholdChange} />
+      <div style={{ position: "relative" }}>
+        <Chart
+          series={series}
+          options={options}
+          height={400}
+          style={{ padding: "1.5rem" }}
+        />
+        <Threshold
+          threshold={threshold}
+          onThresholdChange={handleThresholdChange}
+        />
         {showWarning && (
           <div
             className="warning-popup"
             style={{
-              position: 'absolute',
-              top: '20px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              padding: '10px',
-              background: 'rgba(255, 0, 0, 0.7)',
-              color: 'white',
-              borderRadius: '5px',
-              zIndex: '9999',
+              position: "absolute",
+              top: "20px",
+              left: "50%",
+              transform: "translateX(-50%)",
+              padding: "10px",
+              background: "rgba(255, 0, 0, 0.7)",
+              color: "white",
+              borderRadius: "5px",
+              zIndex: "9999",
+              display: "flex",
+              flexDirection: "row",
             }}
           >
-            <p>{`Warning! Threshold crossed at Time: ${warningTimestamp}`}</p>
-            <button
-              onClick={handleCloseWarning}
-              style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}
+            <div>
+              <p>{`Warning! Threshold crossed at Time: ${warningTimestamp}`}</p>
+            </div>
+            <div
+              style={{
+                position: "relative",
+                bottom: "0.7rem",
+                left: "0.9rem",
+                marginLeft: "1rem",
+              }}
             >
-              &#10006;
-            </button>
+              <button
+                onClick={handleCloseWarning}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "white",
+                  cursor: "pointer",
+                }}
+              >
+                &#10006;
+              </button>
+            </div>
           </div>
         )}
         <button
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginLeft: '2rem',
-            marginBottom: '2rem',
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginLeft: "2rem",
+            marginBottom: "2rem",
           }}
           onClick={handlePauseResume}
         >
@@ -209,11 +273,11 @@ const ReadData = () => {
         </button>
         <button
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginLeft: '2rem',
-            marginBottom: '2rem',
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginLeft: "2rem",
+            marginBottom: "2rem",
           }}
           onClick={handleBack}
         >

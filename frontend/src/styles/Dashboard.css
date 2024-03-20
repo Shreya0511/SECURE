@@ -12,6 +12,7 @@
   overflow-x: hidden;
   overflow-y: hidden;
   margin-top: -73px;
+  flex-wrap: wrap;
 
   
 }
@@ -21,6 +22,10 @@
     align-items: center; /* Vertically align elements */
     padding: 3rem; /* Add some padding for aesthetics */
     align-items: center;
+  }
+
+  .dashboardWrapper::-webkit-scrollbar{
+    display : none;
   }
 
   .leftSection{

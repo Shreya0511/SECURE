@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -7,8 +7,43 @@ import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
+import moment from "moment";
+import { AuthData } from "../services/AuthService";
+
 
 const NavBarProfile = () => {
+  const {notifyDetails} = AuthData();
+  
+  // const formattedTime = moment(notifications[0].x).format("HH:mm:ss");
+  let formattedTime;
+  if(notifyDetails){
+     formattedTime = notifyDetails.length > 0 ? moment(notifyDetails[notifyDetails.length - 1].x).format("HH:mm:ss") : "";
+  }
+
+
+
+
+  const renderTooltip = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+    {notifyDetails ? 
+    (         
+              <div style ={{backgroundColor : "", borderRadius : "1rem", color : "white", fontWeight: "bold", fontSize : "1rem", margin: "1rem"}}>
+                <p><span style ={{color : "chocolate"}}>Sensor-I </span> has crossed its threshold at {formattedTime} hrs</p>
+              </div>
+            )
+    : (
+      <p>Nothing to show</p>
+    )}
+  </Tooltip>
+  );
+
+
+
+
+
+  const handleNotificationStack = () => {};
   return (
     <div>
       <Navbar bg="dark" data-bs-theme="dark" className="navbar_main_container">
@@ -53,8 +88,43 @@ const NavBarProfile = () => {
             >
               Contact Us
             </Link>
+            <Link to ="/notifications" style ={{color : "white", textDecoration: "none"}}>
+            <div>
+              {/* {console.log("ntf", notifications.length)} */}
+              {notifyDetails.length > 0 ? (
+                <div>
+                  {" "}
+                  <OverlayTrigger
+                    placement="bottom"
+                    delay={{ show: 300, hide: 400 }}
+                    overlay={renderTooltip}
+                  >
+                    <div>
+                      <div
+                        style={{
+                          height: "0.5rem",
+                          width: "0.5rem",
+                          borderRadius: "50%",
+                          backgroundColor: "red",
+                          position: "relative",
+                          top: "0.3rem",
+                          left: "0.7rem",
+                        }}
+                      ></div>
+                      <FontAwesomeIcon
+                        style={{ fontSize: "1.5rem" }}
+                        icon={faBell}
+                        onClick={handleNotificationStack}
+                      />
 
-            <FontAwesomeIcon style ={{fontSize: "1.5rem"}}icon={faBell} />
+                    </div>
+                  </OverlayTrigger>{" "}
+                </div>
+              ) : (
+                <FontAwesomeIcon style={{ fontSize: "1.5rem" }} icon={faBell} />
+              )}
+            </div>
+            </Link>
 
             <div className="Profile" style={{ display: "flex" }}>
               <div
