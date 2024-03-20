@@ -185,13 +185,9 @@ const ReadData = ({ children }) => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [pauseData, results]);
 
-
-
-
-
-
+  }, [pauseData,results]);
+  
   const handleBack = () => {
     navigate("/dashboard");
   };
