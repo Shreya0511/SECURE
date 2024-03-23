@@ -6,6 +6,7 @@ import SignUp from "../pages/SignUp";
 import Dashboard from "../pages/Dashboard";
 import ActiveSensors from "../pages/ActiveSensors.js";
 import ReadData from "../components/ReadData.js";
+import NotificationsPage from "../pages/NotificationsPage.js";
 
 const routes = [
 	{
@@ -56,6 +57,12 @@ const routes = [
 		name: "readData",
 		isPrivate: false,
 	},
+	{
+		path : "/notifications",
+		component: <NotificationsPage />,
+		name: "notifications",
+		isPrivate : false,
+	}
 	
 ];
 
