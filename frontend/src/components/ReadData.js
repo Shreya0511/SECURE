@@ -1,25 +1,3 @@
-<<<<<<< HEAD
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import moment from 'moment';
-import ApexChart from 'apexcharts';
-import Chart from 'react-apexcharts';
-import NavBarProfile from './NavBarProfile';
-import { useNavigate } from 'react-router-dom';
-import Threshold from './Threshold';
-import { AuthData } from '../services/AuthService';
-
-const API_URL = 'https://api.thingspeak.com/channels/2349053/feeds.json';
-const API_KEY = '0H5Z4Y2DMQCL7ULK'; // Replace with your API key
-// let RESULTS = 100; // Number of data points to fetch
-
-const ReadData = () => {
-  const navigate = useNavigate();
-  // const [results, setResults] = useState(100);
-
-
-  const [pauseData, setPauseData] = useState(false);
-=======
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import moment from "moment";
@@ -44,7 +22,6 @@ const ReadData = ({ children }) => {
     notifyDetails,
     setNotifyDetails,
   } = AuthData();
->>>>>>> 60ed24a2524083fd5ac2a6b261324060c2102314
   const [dataStream, setDataStream] = useState([]);
 
   // const [user, setUser] = useState({user : "",isAuthenticated: false});

@@ -2,12 +2,18 @@ import React from 'react';
 import { useState, useRef } from 'react';
 import Overlay from 'react-bootstrap/Overlay';
 import Tooltip from 'react-bootstrap/Tooltip';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faBars} from "@fortawesome/free-solid-svg-icons";
 import Button from 'react-bootstrap/Button';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPenToSquare,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
+
+
 import "../styles/MenuIcon.css";
 
 
@@ -27,8 +33,8 @@ const MenuIcon = () => {
             <Popover className = "popover" id='popover-positioned-bottom'>
               <Popover.Body>
                 <div className = "sensorMenu" style ={{display : "flex", flexDirection : "column", color : "white"}}>
-                 <Link className = "sensorMenu" style ={{textDecoration: "none"}}to = "/change_status"><div className = "sensorMenu" style ={{fontSize : "1rem", fontWeight: "bold", color : "black", textDecoration: "none", marginBottom : "0.5rem"}}>Change Status</div></Link>
-                 <Link style ={{textDecoration : "none"}} to = "/remove">  <div style ={{fontSize : "1rem", fontWeight : "bold", color : "black", textDecoration: "none"}}>Remove</div></Link> 
+                 <Link className = "sensorMenu" style ={{textDecoration: "none"}}to = "/change_status"><div className = "sensorMenu" style ={{fontSize : "1rem", fontWeight: "bold", color : "black", textDecoration: "none", marginBottom : "0.5rem"}}> <FontAwesomeIcon icon={faPenToSquare} style ={{marginRight : "0.5rem"}}/> Edit</div></Link>
+                 <Link style ={{textDecoration : "none"}} to = "/remove">  <div style ={{fontSize : "1rem", fontWeight : "bold", color : "black", textDecoration: "none"}}> <FontAwesomeIcon icon={faTrash} style ={{marginRight : "0.5rem"}}/> Remove</div></Link> 
                 </div>
               </Popover.Body>
             </Popover>
