@@ -5,20 +5,15 @@ import Form from "react-bootstrap/Form";
 import { useState } from "react";
 
 const VerticallyCenteredModal = (props) => {
-  const [name, setName] = useState("");
+  const [id, setId] = useState("");
   const [manufacturer, setManufacturer] = useState("");
   const [parameter, setParameter] = useState("");
   const [model, setModel] = useState("");
   const [thresholdValue, setThresholdValue] = useState("");
 
-//   const handleInputChange = (event) => {
-//     setSensorData({
-//       ...sensorData,
-//       [event.target.name]: event.target.value,
-//     });
-//   };
-  const handleName = (event) => {
-    setName(event.target.value);
+
+  const handleId = (event) => {
+    setId(event.target.value);
   };
 
   const handleManufacturer = (event) => {
@@ -35,15 +30,52 @@ const VerticallyCenteredModal = (props) => {
     setThresholdValue(event.target.value);
   };
 
-  const handleAddClick = () => {
+  const handleAddClick = async () => {
     // Add validation here
+    if(id === "" || manufacturer === "" || model === "" || parameter === "" || thresholdValue === ""){
+      alert("Please fill all the fields before procedding!!");
+      return;
+    }
     const sensorData = {
-      name: name,
+      sensorId: id,
       manufacturer: manufacturer,
       model: model,
       parameter: parameter,
-      thresholdValue: thresholdValue,
+      threshold: thresholdValue,
     };
+
+    try{
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/v1/sensor/addSensor`,
+        {
+          method : "POST",
+          headers: {
+            "Content-Type": "application/json",
+            // authorization: `Bearer ${getCookies("jwt")}`,
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers":
+              "Origin, X-Requested-With, Content-Type, Accept, Z-Key",
+            "Access-Control-Allow-Methods":
+              "GET, HEAD, POST, PUT, DELETE,PATCH, OPTIONS",
+          },
+          body: JSON.stringify(sensorData),        }
+        )
+        .then((response) => response.json())
+        .then((data) => {
+           if(data.status === 'success'){
+            alert("Successfully added the sensor!!");
+            props.onHide();
+           }
+           else{
+            alert("Please make sure to fill all the required fields!!");
+           }
+        });
+
+    } catch(err){
+      console.log(err);
+      alert("Error adding the sensor. Please try again later!!");
+    }
+
 
     props.onAddSensor(sensorData); // Pass new sensor data to parent
     props.onHide();
@@ -58,18 +90,19 @@ const VerticallyCenteredModal = (props) => {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Add Sensors
+            Add Sensor
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3">
-              <Form.Label>Sensor Name</Form.Label>
+              <Form.Label>Sensor Id</Form.Label>
               <Form.Control
                 type="email"
                 placeholder=""
                 autoFocus
-                onChange={handleName}
+                onChange={handleId}
+                required
               />
             </Form.Group>
             <Form.Group className="mb-3">

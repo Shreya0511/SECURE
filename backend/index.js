@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
 import authRoutes from "./routes/authRoutes.js";
-import sensorRoutes from "./routes/sensorIRoutes.js";
+import sensorRoutes from "./routes/sensorRoutes.js";
 dotenv.config();
 
 const app = express();
@@ -23,8 +23,8 @@ app.set("view engine", "ejs");
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/api/v1/users", authRoutes);
-app.use("/api/v1/sensorI", sensorIRoutes);
+app.use("/api/v1/user", authRoutes);
+app.use("/api/v1/sensor", sensorRoutes);
 
 
 const CONNECTION_URL = "mongodb+srv://singhshreya0511:secure@cluster0.urasnuy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";

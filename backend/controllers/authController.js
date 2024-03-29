@@ -4,6 +4,7 @@ const { sign, decode, verify } = jsonwebtoken;
 import { promisify } from "util";
 import { User } from "../models/userModel.js";
 import catchAsync from "../Utils/catchAsync.js";
+import AppError from "../Utils/AppError.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -55,6 +56,7 @@ export const signup = catchAsync(async (req, res, next) => {
 
 export const login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
+  console.log(req.body);
 
   // 1) Check if email and password exist
   if (!email || !password) {
@@ -136,4 +138,54 @@ export const protect = catchAsync(async (req, res, next) => {
   // });
   next();
 });
+
+
+export const isLoggedIn = async (req, res, next) => {
+  let token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  } else if (req.body.jwt) {
+    token = req.body.jwt;
+  }
+
+  if (!token) {
+    res.status(401).json({
+      status: "fail",
+      message: "You are not logged in! Please log in to get access",
+    });
+  }
+
+  // 2) Verification token
+  const decoded = verify(token, process.env.JWT_SECRET);
+
+  // 3) Check if user still exists
+  let currentUser = await User.findById(decoded.id);
+
+  if (!currentUser) {
+    res.status(401).json({
+      status: "fail",
+      message: "We are unable to find the user!! Please login again.",
+    });
+  }
+
+  // 4) Check if user changed password after the token was issued
+  if (currentUser.changedPasswordAfterToken(decoded.iat)) {
+    res.status(401).json({
+      status: "fail",
+      message: "User recently changed password! Please login again",
+    });
+  }
+
+  // GRANT ACCESS TO PROTECTED ROUTE
+  req.user = currentUser;
+  res.locals.user = currentUser;
+  res.status(200).json({
+    status: 'success',
+    data : currentUser,
+  });
+  
+};
 

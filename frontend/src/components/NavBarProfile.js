@@ -14,7 +14,8 @@ import { AuthData } from "../services/AuthService";
 
 
 const NavBarProfile = () => {
-  const {notifyDetails} = AuthData();
+  const {notifyDetails, user, setUser} = AuthData();
+  console.log("user in navbar", user);
   
   // const formattedTime = moment(notifications[0].x).format("HH:mm:ss");
   let formattedTime;
@@ -157,7 +158,7 @@ const NavBarProfile = () => {
                   color: "rgb(222, 143, 83)",
                 }}
               >
-                User
+                {user.user? JSON.parse(user.user).name : <></>}
               </div>
             </div>
           </div>

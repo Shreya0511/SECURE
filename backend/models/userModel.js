@@ -32,7 +32,6 @@ const userSchema = new mongoose.Schema(
         message: "Passwords are not the same!!",
       },
     },
-
     image: {
       type: String,
       default:
@@ -40,13 +39,19 @@ const userSchema = new mongoose.Schema(
     },
     passwordChangedAt: Date,
     passwordResetToken: String,
-    PasswordResetTokenExpires: Date,
+    passwordResetTokenExpires: Date,
     active: {
       type: Boolean,
       default: true,
       select: false,
-    }
-},
+    },
+    sensors: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Sensor'
+      }
+    ]
+  },
   {
     timestamps: true,
   }
@@ -76,7 +81,7 @@ userSchema.methods.createPasswordResetToken = function () {
     .update(resetToken)
     .digest("hex");
 
-  this.PasswordResetTokenExpires = Date.now() + 10 * 60 * 1000;
+  this.passwordResetTokenExpires = Date.now() + 10 * 60 * 1000;
 
   return resetToken;
 };

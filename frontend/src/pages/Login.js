@@ -2,13 +2,27 @@ import React from "react";
 import NavBar from "../components/NavBar";
 import { Link ,useNavigate} from "react-router-dom";
 import "./../styles/Login.css";
+import { AuthData } from "../services/AuthService";
+import { useState } from "react";
 const Login = () => {
+  const {login, user} = AuthData();
   const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleEmail = (event) => {
+    setEmail(event.target.value);
+  } 
+
+  const handlePassword = (event) => {
+    setPassword(event.target.value);
+  }
+
   const handleLogin = () => {
-    // Perform login logic here (e.g., send a request to an authentication server)
-    // Assuming successful login:
-    navigate("/dashboard"); // Redirect to the dashboard route
+    login(email, password);
   };
+
   return (
     <div>
       <NavBar />
@@ -19,7 +33,7 @@ const Login = () => {
               <span className="firstletter">L</span>ogin
             </div>
           </div>
-          <div className=" field nameField">
+          {/* <div className=" field nameField">
           <div className="label labelName"><label for="name">
               Name :
             </label>
@@ -34,7 +48,7 @@ const Login = () => {
               required
             />
             </div>
-          </div>
+          </div> */}
           <div className=" field emailField">
           <div className="label labelEmail">
             <label  for="email">
@@ -48,6 +62,7 @@ const Login = () => {
               id="email"
               placeholder="xyz@gmail.com"
               autocomplete="on"
+              onChange = {handleEmail}
               required
             />
             </div>
@@ -67,6 +82,7 @@ const Login = () => {
               placeholder="*******"
               id="password"
               required
+              onChange = {handlePassword}
             />
             </div>
           </div>

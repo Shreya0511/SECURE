@@ -4,6 +4,10 @@ import axios from 'axios';
 import moment from 'moment';
 import ApexChart from 'apexcharts';
 import Chart from 'react-apexcharts';
+import getCookies from "../hooks/getCookies.js";
+import setCookies from "../hooks/setCookies.js";
+import removeCookies from "../hooks/removeCookies.js";
+import { useNavigate } from "react-router-dom";
 
 
 const API_URL = 'https://api.thingspeak.com/channels/2349053/feeds.json';
@@ -15,8 +19,9 @@ const AuthContext = createContext();
 export const AuthData = () => useContext(AuthContext);
 
 export const AuthWrapper = () => {
+  const navigate = useNavigate();
 
-  const [user, setUser] = useState({user : "",isAuthenticated: false});
+  const [user, setUser] = useState({user : "", isAuthenticated: false});
   const [pauseData, setPauseData] = useState(false);
   // const [dataStream, setDataStream] = useState([]);
   const [threshold, setThreshold] = useState(0);
@@ -27,31 +32,91 @@ export const AuthWrapper = () => {
 
 
 
+  const login = async (email, password) => {
+    let userData = {
+      email: email,
+      password: password,
+    };
+    setUser({
+      user : "shreya",
+      isAuthenticated: "true",
+    });
 
-  // useEffect(() => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/user/login`,
+       {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.status === "success") {
+              const token = data.token;
+              removeCookies("jwt");
+              setUser({
+                user : JSON.stringify(data.data.user),
+                isAuthenticated : true,
+              });
 
-  //   if (dataStream) {
-  //     const updatedNotificationDetails = [];
-  //     dataStream.forEach(item => {
-  //       setShowWarning(false);
-  //       console.log("useEffect", threshold, " ",item.y);
-  //       if (item.y > threshold) {
-  //         updatedNotificationDetails.push(item);
-  //         setShowWarning(true);
-  //         setWarningTimestamp(moment(item.x).format("HH:mm:ss"))
-  //       }
-  //     });
-  //     setNotifyDetails(updatedNotificationDetails);
-  //   }
-  // }, [dataStream, threshold]);
+             setCookies("jwt", token);
+              navigate("/dashboard");
+            } 
+          }
+          );
+        } catch (err) {
+      console.log(err);
+      alert("Invalid Credentials!!");
+    }
+  };
+
+
+  const checkProtected = async() => {
+    if(getCookies("jwt") === undefined){
+      setUser({user : "", isAuthenticated: false});
+      return;
+    }
+    let userData = {
+      jwt: getCookies("jwt"),
+    }
+
+    try{
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/user/isLoggedIn`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if(data.status === 'success'){
+        setUser({user : JSON.stringify(data.data), isAuthenticated: true});
+        }
+      });
+    }catch(err){
+      alert("Oops Session expired. Please Login again to continue!!");
+    }
+  }
+  
+  useEffect(()=>{
+    checkProtected();
+  }, [user])
+
+  useEffect(() => {
+  }, [login]);
+
 
 
 
     return (
       <AuthContext.Provider
         value={{
+          login,
           user,
-
+          setUser,
           notifyDetails,
           setNotifyDetails,
           threshold,

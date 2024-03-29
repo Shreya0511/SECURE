@@ -1,3 +1,6 @@
+import mongoose from "mongoose";
+
+
 const sensorSchema = new mongoose.Schema(
   {
     sensorId: {
@@ -8,10 +11,12 @@ const sensorSchema = new mongoose.Schema(
     manufacturer: {
       type: String,
       required: true,
+      lowercase : true,
     },
     model: {
       type: String,
       required: true,
+      lowercase : true,
     },
     parameter: {
       type: String,
@@ -30,24 +35,25 @@ const sensorSchema = new mongoose.Schema(
     currentSupply: {
       type: Number,
       required: true,
+      default : 0,
     },
     voltageSupply: {
       type: Number,
       required: true,
+      default : 0,
     },
     powerConsumption: {
       type: Number,
       required: true,
+      default : 0,
     },
     data: [
       {
         timestamp: {
           type: Number,
-          required: true,
         },
         energyConsumed: {
           type: Number,
-          required: true,
         },
       },
     ],

@@ -8,7 +8,7 @@ const SensorContainer = ({sensor, index}) => {
     <div key={index} className="sensor" >
             <div className="sensorTopDetails">
               <div className="sensorName" style={{ color: "rgb(222, 143, 83)" }}>
-                {sensor.name}
+                {sensor.sensorId}
               </div>
               <div className="menuIcon">
                 <MenuIcon /> {/* Assuming MenuIcon is already imported */}
@@ -18,8 +18,8 @@ const SensorContainer = ({sensor, index}) => {
               <p>Manufacturer: {sensor.manufacturer}</p>
               <p>Model: {sensor.model}</p>
               <p>Parameter: {sensor.parameter}</p>
-              <p>Threshold Value: {sensor.thresholdValue}</p>
-              <p>Status: <span className={sensor.status === "active" ? "active" : ""}>{sensor.status}</span></p>
+              <p>Threshold Value: {sensor.threshold}</p>
+              <p>Status: <span className={sensor.status === "active" ? "active" : ""}>{sensor.status === true ? "active" : "inactive"}</span></p>
             </div>
           </div>
   )

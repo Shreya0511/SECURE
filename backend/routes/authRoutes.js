@@ -6,7 +6,8 @@ import multer from "multer";
 import {
 	login,
 	signup,
-	logout
+	logout,
+	isLoggedIn
 } from "../controllers/authController.js";
 
 
@@ -15,5 +16,6 @@ const router = express.Router();
 router.post("/signup", signup);
 router.post("/login", login);
 router.post("/logout", logout);
+router.post("/isLoggedIn",isLoggedIn);
 
 export default router;
