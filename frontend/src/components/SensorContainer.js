@@ -19,7 +19,7 @@ const SensorContainer = ({sensor, index}) => {
               <p>Model: {sensor.model}</p>
               <p>Parameter: {sensor.parameter}</p>
               <p>Threshold Value: {sensor.threshold}</p>
-              <p>Status: <span className={sensor.status === "active" ? "active" : ""}>{sensor.status === true ? "active" : "inactive"}</span></p>
+              <p>Status: <span className={sensor.status === true ? "active" : ""}>{sensor.status === true ? "active" : "inactive"}</span></p>
             </div>
           </div>
   )

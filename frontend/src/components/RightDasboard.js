@@ -6,58 +6,20 @@ import SensorPopup from './SensorPopup';
 import { useState } from 'react';
 import SensorContainer from './SensorContainer';
 import VerticallyCenteredModal from './VerticallyCenteredModal';
+import { AuthData } from '../services/AuthService';
 
 const RightDashboard = () => {
   const [modalShow, setModalShow] = useState(false);  
   const [loading, setLoading] = useState(false);
-  // const [sensors, setSensors] = useState([
-  //   {
-  //     name: "Sensor I",
-  //     manufacturer: "Acme Sensors",
-  //     model: "X200",
-  //     parameter: "Temperature",
-  //     thresholdValue: 12,
-  //     status: "active",
-  //   },
-  //   {
-  //     name: "Sensor II",
-  //     manufacturer: "Acme Sensors",
-  //     model: "X200",
-  //     parameter: "Temperature",
-  //     thresholdValue: 12,
-  //     status: "active",
-  //   },
-  // ]);
   const [sensors, setSensors] = useState([]);
+  const {user, setUser} = AuthData();
 
 
   const getSensor = async() => {
+
     setLoading(true);
-    try{
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/v1/sensor/getSensors`,
-        {
-          method : "GET",
-          headers: {
-            "Content-Type": "application/json",
-            // authorization: `Bearer ${getCookies("jwt")}`,
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers":
-              "Origin, X-Requested-With, Content-Type, Accept, Z-Key",
-            "Access-Control-Allow-Methods":
-              "GET, HEAD, POST, PUT, DELETE,PATCH, OPTIONS",
-          },
-             }
-        )
-        .then((response) => response.json())
-        .then((data) => {
-           if(data.status === 'success'){
-            setSensors(data.sensors);
-           }
-        });
-    } catch(err){
-      console.log(err);
-    }
+    user.user !== "" ? setSensors(JSON.parse(user.user).sensors) : setSensors([]);
+
   };
 
   useEffect(()=> {
@@ -94,14 +56,6 @@ const RightDashboard = () => {
             setSensors([...sensors, newSensorData]);
          }}
         />}
-    {/* // <SensorPopup */}
-    {/* //   onClose={() => setIsPopupVisible(false)}
-    //   onAddSensor={(newSensorData) => { */}
-    {/* //     // Update sensors array here (e.g., using concat or spread operator)
-    //     setSensors([...sensors, newSensorData]);
-    //   }} */}
-    {/* /> */}
-  {/* )} */}
     </div>
   );
 };

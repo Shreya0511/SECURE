@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import { useState } from "react";
+import { AuthData } from "../services/AuthService";
 
 const VerticallyCenteredModal = (props) => {
   const [id, setId] = useState("");
@@ -10,6 +11,8 @@ const VerticallyCenteredModal = (props) => {
   const [parameter, setParameter] = useState("");
   const [model, setModel] = useState("");
   const [thresholdValue, setThresholdValue] = useState("");
+
+  const {user} = AuthData();
 
 
   const handleId = (event) => {
@@ -42,7 +45,9 @@ const VerticallyCenteredModal = (props) => {
       model: model,
       parameter: parameter,
       threshold: thresholdValue,
+      userId : JSON.parse(user.user)._id
     };
+
 
     try{
       const response = await fetch(
@@ -67,7 +72,7 @@ const VerticallyCenteredModal = (props) => {
             props.onHide();
            }
            else{
-            alert("Please make sure to fill all the required fields!!");
+            alert(data.message);
            }
         });
 

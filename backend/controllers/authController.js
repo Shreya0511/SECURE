@@ -5,6 +5,7 @@ import { promisify } from "util";
 import { User } from "../models/userModel.js";
 import catchAsync from "../Utils/catchAsync.js";
 import AppError from "../Utils/AppError.js";
+import { Sensor } from "../models/sensorModel.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -75,6 +76,11 @@ export const login = catchAsync(async (req, res, next) => {
 
 
   // 3) If everything ok, send token to client
+const populatedSensors = await Sensor.find({ _id: { $in: user.sensors } });
+
+  // Replace sensor IDs with sensor details in the currentUser object
+  user.sensors = populatedSensors;
+
   createSendToken(user, 200, res);
 });
 
@@ -179,9 +185,15 @@ export const isLoggedIn = async (req, res, next) => {
     });
   }
 
+  const populatedSensors = await Sensor.find({ _id: { $in: currentUser.sensors } });
+
+  currentUser.sensors = populatedSensors;
+
   // GRANT ACCESS TO PROTECTED ROUTE
   req.user = currentUser;
   res.locals.user = currentUser;
+
+  
   res.status(200).json({
     status: 'success',
     data : currentUser,

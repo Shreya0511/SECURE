@@ -15,7 +15,7 @@ import { AuthData } from "../services/AuthService";
 
 const NavBarProfile = () => {
   const {notifyDetails, user, setUser} = AuthData();
-  console.log("user in navbar", user);
+  // console.log("user in navbar", JSON.parse(user.user).sensors);
   
   // const formattedTime = moment(notifications[0].x).format("HH:mm:ss");
   let formattedTime;
