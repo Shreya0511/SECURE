@@ -5,10 +5,12 @@ import Navbar from 'react-bootstrap/Navbar';
 import '../styles/Navbar.css';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
+import { AuthData } from '../services/AuthService';
 
 
 
 const NavBar = () => {
+  const {user} = AuthData();
   return (
     <div>
       <Navbar bg="dark" data-bs-theme="dark" className = "navbar_main_container">
@@ -19,7 +21,7 @@ const NavBar = () => {
          </Link>
          </div>
          <div className = "navbarMenu">
-            <Link to="/home" className = {window.location.pathname === "/" ? "activet" : "inactivet"} href = "/" style ={{textDecoration:"none"}}>
+            <Link to="/home" className = {window.location.pathname === "/home" ? "activet" : "inactivet"} href = "/" style ={{textDecoration:"none"}}>
             Home
             </Link>
             <Link  to="/aboutUs" className = {window.location.pathname === "/aboutUs" ? "activet" : "inactivet"} href = "/aboutUs" style = {{textDecoration: "none"}}>

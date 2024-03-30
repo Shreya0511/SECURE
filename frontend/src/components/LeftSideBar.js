@@ -14,8 +14,16 @@ import {
   faBell,
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
+import { AuthData } from "../services/AuthService";
+
+
 
 const LeftSideBar = () => {
+  const {logout, user, setUser} = AuthData();
+  
+const handleLogout = () => {
+  logout();
+}
   return (
     <div className="SideBarContainer">
       <div className="linkContainer">
@@ -69,9 +77,9 @@ const LeftSideBar = () => {
             </Link>
           </li>
           <li className="inactiveEle">
-            <Link to="/notifications" className="navigationLink">
+            <Link to="" className="navigationLink">
               <FontAwesomeIcon icon={faRightFromBracket} />
-              <span className="navitem">Logout</span>
+              <span className="navitem" onClick = {handleLogout}>Logout</span>
             </Link>
           </li>
         </ul>

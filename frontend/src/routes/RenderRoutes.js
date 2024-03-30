@@ -4,6 +4,7 @@ import { AuthData } from "../services/AuthService";
 import routes from "./Routes";
 import Home from "../pages/Home";
 import Dashboard from "../pages/Dashboard";
+import Login from "../pages/Login";
 
 const RenderRoutes = () => {
 	const { user } = AuthData();
@@ -20,11 +21,8 @@ const RenderRoutes = () => {
 					return (
 						<Route key={i} path={r.path} element={r.component} />
 					);
-				} else if (!r.isPrivate) {
-					return (
-						<Route key={i} path={r.path} element={r.component} />
-					);
-				} else if (r.isUtility) {
+				}
+				 else if (!r.isPrivate) {
 					return (
 						<Route key={i} path={r.path} element={r.component} />
 					);

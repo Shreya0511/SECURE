@@ -7,6 +7,7 @@ import Dashboard from "../pages/Dashboard";
 import ActiveSensors from "../pages/ActiveSensors.js";
 import ReadData from "../components/ReadData.js";
 import NotificationsPage from "../pages/NotificationsPage.js";
+import NotFound from "../pages/NotFound.js";
 
 const routes = [
 	{
@@ -43,26 +44,35 @@ const routes = [
 		path: "/dashboard",
 		component: <Dashboard />,
 		name: "Dashboard",
-		isPrivate: false,
+		isPrivate: true,
 	},
 	{
 		path: "/activeSensors",
 		component: <ActiveSensors />,
 		name: "ActiveSensors",
-		isPrivate: false,
+		isPrivate: true,
 	},
 	{
 		path: "/readData",
 		component: <ReadData />,
 		name: "readData",
-		isPrivate: false,
+		isPrivate: true,
 	},
 	{
 		path : "/notifications",
 		component: <NotificationsPage />,
 		name: "notifications",
-		isPrivate : false,
-	}
+		isPrivate : true,
+	},
+	{
+		path: "*",
+		component: <NotFound />,
+		name: "Not Found",
+		isPrivate: false,
+		isMenuUser: false,
+		isMenuLawyer: false,
+		isUtility: true,
+	},
 	
 ];
 

@@ -100,6 +100,14 @@ export const AuthWrapper = () => {
       alert("Oops Session expired. Please Login again to continue!!");
     }
   }
+
+  const logout = async() => {
+    removeCookies("jwt");
+    setUser({
+      user : "",
+      isAuthenticated : false,
+    })
+  }
   
   useEffect(()=>{
     checkProtected();
@@ -115,6 +123,7 @@ export const AuthWrapper = () => {
       <AuthContext.Provider
         value={{
           login,
+          logout,
           user,
           setUser,
           notifyDetails,

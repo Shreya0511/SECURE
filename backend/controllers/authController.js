@@ -75,10 +75,8 @@ export const login = catchAsync(async (req, res, next) => {
   }
 
 
-  // 3) If everything ok, send token to client
 const populatedSensors = await Sensor.find({ _id: { $in: user.sensors } });
 
-  // Replace sensor IDs with sensor details in the currentUser object
   user.sensors = populatedSensors;
 
   createSendToken(user, 200, res);
