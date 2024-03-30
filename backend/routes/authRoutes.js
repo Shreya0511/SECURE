@@ -7,7 +7,8 @@ import {
 	login,
 	signup,
 	logout,
-	isLoggedIn
+	isLoggedIn,
+	removeSensor
 } from "../controllers/authController.js";
 
 
@@ -17,5 +18,7 @@ router.post("/signup", signup);
 router.post("/login", login);
 router.post("/logout", logout);
 router.post("/isLoggedIn",isLoggedIn);
+router.post("/removeSensor", removeSensor);
+
 
 export default router;

@@ -3,6 +3,7 @@ import crypto from "crypto";
 import multer from "multer";
 
 import { addSensor, addUserSensor, getSensor } from "../controllers/sensorController.js";
+import { removeSensor } from "../controllers/authController.js";
 
 const router = express.Router();
 

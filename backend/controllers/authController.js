@@ -7,6 +7,8 @@ import catchAsync from "../Utils/catchAsync.js";
 import AppError from "../Utils/AppError.js";
 import { Sensor } from "../models/sensorModel.js";
 import dotenv from "dotenv";
+import mongoose from 'mongoose'; // Import mongoose
+const isValidObjectId = mongoose.Types.ObjectId.isValid;
 dotenv.config();
 
 const signToken = (id) => {
@@ -51,8 +53,6 @@ export const signup = catchAsync(async (req, res, next) => {
     status: "success"
   });
 });
-
-
 
 
 export const login = catchAsync(async (req, res, next) => {
@@ -199,3 +199,42 @@ export const isLoggedIn = async (req, res, next) => {
   
 };
 
+export const removeSensor = catchAsync(async (req, res, next) => {
+  const userId = req.body.userId;
+  const sensorId = req.body.sensorId;
+
+  // Find the current user
+  const currUser = await User.findOne({ _id: userId });
+
+  // Check if the user exists
+  if (!currUser) {
+      return res.status(401).json({
+          status: "fail",
+          message: "We are unable to find the user!! Please login again.",
+      });
+  }
+
+  if(!sensorId){
+    return res.status(401).json({
+      status: "fail",
+      message: "We are unable to find sensor with this id!!",
+  });
+
+  }
+
+  // Remove the sensor from the user's sensors array
+  console.log("first", currUser);
+  console.log("second", sensorId);
+  
+  currUser.sensors = await currUser.sensors.filter(sensor => sensor.toString() !== sensorId);
+
+  // Save the updated user document back to the database
+  await currUser.save();
+  await Sensor.findByIdAndDelete(sensorId.toString());
+
+  res.status(200).json({
+      status: 'success',
+      message: 'Sensor removed successfully',
+      data : currUser
+  });
+});

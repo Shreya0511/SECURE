@@ -4,6 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import { useState } from "react";
 import { AuthData } from "../services/AuthService";
+import { useEffect } from "react";
 
 const VerticallyCenteredModal = (props) => {
   const [id, setId] = useState("");
@@ -12,7 +13,7 @@ const VerticallyCenteredModal = (props) => {
   const [model, setModel] = useState("");
   const [thresholdValue, setThresholdValue] = useState("");
 
-  const {user} = AuthData();
+  const {user, setUser} = AuthData();
 
 
   const handleId = (event) => {
@@ -68,6 +69,7 @@ const VerticallyCenteredModal = (props) => {
         .then((response) => response.json())
         .then((data) => {
            if(data.status === 'success'){
+            setUser({user : JSON.stringify(data.data), isAutheticated : true});
             alert("Successfully added the sensor!!");
             props.onHide();
            }
@@ -82,9 +84,11 @@ const VerticallyCenteredModal = (props) => {
     }
 
 
-    props.onAddSensor(sensorData); // Pass new sensor data to parent
+    // props.onAddSensor(sensorData); // Pass new sensor data to parent
     props.onHide();
   };
+
+  // useEffect(() => {}, [handleAddClick]);
   return (
     <div>
       <Modal

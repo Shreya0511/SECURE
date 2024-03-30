@@ -11,7 +11,7 @@ const SensorContainer = ({sensor, index}) => {
                 {sensor.sensorId}
               </div>
               <div className="menuIcon">
-                <MenuIcon /> {/* Assuming MenuIcon is already imported */}
+                <MenuIcon sensorId = {sensor._id}/> {/* Assuming MenuIcon is already imported */}
               </div>
             </div>
             <div className="sensorDetails">

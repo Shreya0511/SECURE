@@ -46,7 +46,8 @@ export const addUserSensor = catchAsync(async (req, res, next) => {
   await currUser.save();
 
   res.status(200).json({
-    status : "success"
+    status : "success",
+    data : currUser
   });
   
 } catch(err){

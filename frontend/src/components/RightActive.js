@@ -7,23 +7,6 @@ import { AuthData } from '../services/AuthService';
 
 const RightActive = () => {
   const {user, setUser} = AuthData();
-  // Define sensor data as an array of objects
-  //This hardcoded array will be replaced with a useState varaible which will get data via an axios request to the backend
-  // const sensors = [
-  //   {
-  //     name: "Sensor I",
-  //     power:9000,
-  //     current:100,
-  //     voltage:90
-
-  //   },
-  //   {
-  //     name: "Sensor II",
-  //     power:9000,
-  //     current:100,
-  //     voltage:90
-  //   },
-  // ];
   let count = 0;
 
   
@@ -55,7 +38,7 @@ const RightActive = () => {
           </div>
           </div>))
             
-            : <div>🤷‍♀️ Oops..No active sensors!!</div> : <div>Login again</div>}
+            : <div style ={{color : "white", fontSize : "1.7rem", fontWeight: "bold"}}>🤷‍♀️ Oops..No active sensors!!</div> : <div>Login again</div>}
             </div>
           </div>
 

@@ -26,7 +26,7 @@ const RightDashboard = () => {
     setLoading(true);
     getSensor();
     setLoading(false);
-  }, []);
+  }, [user, sensors,modalShow]);
 
 
 
@@ -52,9 +52,6 @@ const RightDashboard = () => {
       {modalShow &&   <VerticallyCenteredModal 
         show={modalShow}
         onHide={() => setModalShow(false)}
-         onAddSensor={(newSensorData) => {
-            setSensors([...sensors, newSensorData]);
-         }}
         />}
     </div>
   );
