@@ -29,6 +29,7 @@ export const AuthWrapper = () => {
   const [notifyDetails, setNotifyDetails]= useState([]);
   const [results, setResults] = useState(100);
   const [warningTimestamp, setWarningTimestamp] = useState("");
+  const [selectedSensor, setSelectedSensor] = useState("");
 
 
 
@@ -106,7 +107,7 @@ export const AuthWrapper = () => {
     setUser({
       user : "",
       isAuthenticated : false,
-    })
+    });
   }
   
   useEffect(()=>{
@@ -124,6 +125,8 @@ export const AuthWrapper = () => {
         value={{
           login,
           logout,
+          selectedSensor,
+          setSelectedSensor,
           user,
           setUser,
           notifyDetails,

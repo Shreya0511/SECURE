@@ -8,6 +8,7 @@ import ActiveSensors from "../pages/ActiveSensors.js";
 import ReadData from "../components/ReadData.js";
 import NotificationsPage from "../pages/NotificationsPage.js";
 import NotFound from "../pages/NotFound.js";
+import EditSensor from "../pages/EditSensor.js";
 
 const routes = [
 	{
@@ -69,10 +70,13 @@ const routes = [
 		component: <NotFound />,
 		name: "Not Found",
 		isPrivate: false,
-		isMenuUser: false,
-		isMenuLawyer: false,
-		isUtility: true,
 	},
+	{
+		path: "/dashboard/editSensor",
+		component : <EditSensor />,
+		name : "Edit Sensor",
+		isPrivate : true,
+	}
 	
 ];
 

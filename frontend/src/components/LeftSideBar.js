@@ -5,6 +5,8 @@ import Row from "react-bootstrap/Row";
 import Tab from "react-bootstrap/Tab";
 import { Link } from "react-router-dom";
 import "../styles/LeftSideBar.css";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTableColumns,
@@ -19,11 +21,17 @@ import { AuthData } from "../services/AuthService";
 
 
 const LeftSideBar = () => {
+  const navigate = useNavigate();
   const {logout, user, setUser} = AuthData();
   
 const handleLogout = () => {
+  navigate("/home");
   logout();
+
 }
+
+useEffect(() => {
+}, [handleLogout])
   return (
     <div className="SideBarContainer">
       <div className="linkContainer">

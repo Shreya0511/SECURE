@@ -10,13 +10,16 @@ import Popover from "react-bootstrap/Popover";
 import { Link } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 import { AuthData } from "../services/AuthService";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
+import EditSensor from "../pages/EditSensor";
 
 import "../styles/MenuIcon.css";
 
 const MenuIcon = ({ sensorId }) => {
-  const { user, setUser} = AuthData();
+  const navigate = useNavigate();
+  const { user, setUser, selectedSensor, setSelectedSensor} = AuthData();
   const [show, setShow] = useState(false);
   const target = useRef(null);
   const handleClose = () => setShow(false);
@@ -58,6 +61,12 @@ const MenuIcon = ({ sensorId }) => {
      }
   }
 
+  const handleEdit = () => {
+    setSelectedSensor(sensorId);
+    console.log(selectedSensor);
+    // return <EditSensor sensorId = {sensorId}/>
+  }
+
   useEffect(() => {}, [handleRemove]);
 
   return (
@@ -79,6 +88,7 @@ const MenuIcon = ({ sensorId }) => {
                   color: "white",
                 }}
               >
+                <Link to = "/dashboard/editSensor" style ={{textDecoration: "none"}}>
                 <div
                   className="sensorMenu"
                   style={{
@@ -87,7 +97,9 @@ const MenuIcon = ({ sensorId }) => {
                     color: "black",
                     textDecoration: "none",
                     marginBottom: "0.5rem",
+                    cursor : "pointer"
                   }}
+                  onClick = {handleEdit}
                 >
                   {" "}
                   <FontAwesomeIcon
@@ -96,6 +108,7 @@ const MenuIcon = ({ sensorId }) => {
                   />{" "}
                   Edit
                 </div>
+                </Link>
 
                 <div
                   style={{
