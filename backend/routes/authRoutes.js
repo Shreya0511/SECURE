@@ -8,7 +8,10 @@ import {
 	signup,
 	logout,
 	isLoggedIn,
-	removeSensor
+	removeSensor,
+	updatePassword,
+	protect,
+	updateMe
 } from "../controllers/authController.js";
 
 
@@ -18,5 +21,7 @@ router.post("/signup", signup);
 router.post("/login", login);
 router.post("/logout", logout);
 router.post("/isLoggedIn",isLoggedIn);
+router.patch("/updatePassword", protect, updatePassword);
+router.patch("/updateMe", protect, updateMe);
 
 export default router;

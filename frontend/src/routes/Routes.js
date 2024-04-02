@@ -9,6 +9,9 @@ import ReadData from "../components/ReadData.js";
 import NotificationsPage from "../pages/NotificationsPage.js";
 import NotFound from "../pages/NotFound.js";
 import EditSensor from "../pages/EditSensor.js";
+import Profile from "../pages/Profile.js";
+import EditProfileDetails from "../pages/EditProfileDetails.js";
+import ChangePw from "../pages/ChangePw.js";
 
 const routes = [
 	{
@@ -75,6 +78,24 @@ const routes = [
 		path: "/dashboard/editSensor",
 		component : <EditSensor />,
 		name : "Edit Sensor",
+		isPrivate : true,
+	},
+	{
+		path : "/dashboard/me",
+		component : <Profile />,
+		name : "Profile",
+		isPrivate : true,
+	},
+	{
+		path : "/dashboard/editDetails",
+		component : <EditProfileDetails />,
+		name : "Edit Profile Details",
+		isPrivate : true,
+	},
+	{
+		path : "/dashboard/changePw",
+		component : <ChangePw />,
+		name : "Change Password",
 		isPrivate : true,
 	}
 	

@@ -126,7 +126,8 @@ const NavBarProfile = () => {
               )}
             </div>
             </Link>
-
+          
+          <Link to = "/dashboard/me" style ={{textDecoration : "none"}}>
             <div className="Profile" style={{ display: "flex" }}>
               <div
                 className="profImage"
@@ -161,6 +162,7 @@ const NavBarProfile = () => {
                 {user.user? JSON.parse(user.user).name : <></>}
               </div>
             </div>
+            </Link> 
           </div>
         </Container>
       </Navbar>

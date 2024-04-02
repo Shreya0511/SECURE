@@ -102,6 +102,75 @@ export const AuthWrapper = () => {
     }
   }
 
+  const updateMe = async (userDetails) => {
+    const userData = userDetails;
+  
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/user/updateMe`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${getCookies("jwt")}`,
+          // Ensure CORS headers are set properly if needed
+        },
+        body: JSON.stringify(userData),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to update user details");
+      }
+  
+      const data = await response.json(); // Parse response as JSON
+  
+      // Update user context or handle data accordingly
+      setUser({
+        user: JSON.stringify(data.data.User),
+        isAuthenticated: true,
+      });
+  
+      alert("Congratulations...Your details have been changed successfully!!");
+    } catch (error) {
+      console.error('Error updating user details:', error);
+      setUser({ user: "", isAuthenticated: false });
+      alert("Unable to Update the Information, Please try again later!!");
+    }
+  };
+  
+
+  const updatePassword = async (userDetails) => {
+    let userData = userDetails;
+
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/v1/user/updatePassword`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${getCookies("jwt")}`,
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers":
+              "Origin, X-Requested-With, Content-Type, Accept, Z-Key",
+            "Access-Control-Allow-Methods":
+              "GET, HEAD, POST, PUT, DELETE,PATCH, OPTIONS",
+          },
+          body: JSON.stringify(userData),
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          setUser({user: JSON.stringify(data.data.user), isAuthenticated: true})
+          alert(
+            "Succesfully changed the password!!"
+          );
+        });
+    } catch (err) {
+      console.log(err);
+      setUser({ user: "", isAuthenticated: false });
+      alert("Unable to Change the Password, Please try again later!!");
+    }
+  };
+
   const logout = async() => {
     removeCookies("jwt");
     setUser({
@@ -138,7 +207,9 @@ export const AuthWrapper = () => {
           // dataStream,
           // setDataStream,
           warningTimestamp,
-          setWarningTimestamp
+          setWarningTimestamp,
+          updatePassword,
+          updateMe,
         }}
       >
           <div className="right-container">

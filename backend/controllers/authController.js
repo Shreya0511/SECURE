@@ -18,6 +18,17 @@ const signToken = (id) => {
     });
   };
 
+
+  const filterObj = (obj, ...allowedFields) => {
+    const newObj = {};
+    Object.keys(obj).forEach((el) => {
+      if (allowedFields.includes(el)) {
+        newObj[el] = obj[el];
+      }
+    });
+    return newObj;
+  };
+
   const createSendToken = (user, statusCode, res) => {
     const token = signToken(user._id);
     const cookieOptions = {
@@ -238,3 +249,48 @@ export const removeSensor = catchAsync(async (req, res, next) => {
       data : currUser
   });
 });
+
+export const updatePassword = catchAsync(async (req, res, next) => {
+  // 1) Get user from collection
+  let user = await User.findById(req.user.id).select("+password");
+
+
+  // 2) Check if POSTed current password is correct
+  if (req.body.passwordCurrent != user.password) {
+    return next(new AppError("Your current password is wrong.", 401));
+  }
+
+  // 3) If so, update password
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  await user.save();
+  // User.findByIdAndUpdate will NOT work as intended!
+
+  // 4) Log user in, send JWT
+  createSendToken(user, 200, res);
+});
+
+export const updateMe = async (req, res, next) => {
+  if (req.body.password || req.body.passwordConfirm) {
+    res.send("You are not allowed to change the password without validation!!");
+  }
+
+  const filteredBody = filterObj(
+    req.body,
+    "name",
+    "email",
+  );
+
+  const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
+    new: true,
+    runValidators: true,
+  });
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      User: updatedUser,
+    },
+  });
+};
+
