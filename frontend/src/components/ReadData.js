@@ -13,6 +13,7 @@ const API_KEY = "0H5Z4Y2DMQCL7ULK"; // Replace with your API key
 
 const ReadData = ({ children }) => {
   const {
+    user,
     threshold,
     setThreshold,
     showWarning,
@@ -222,6 +223,19 @@ const ReadData = ({ children }) => {
     // Send dataStream to backend whenever it updates or selectedActiveSensor changes
     sendDataToBackend();
   }, [dataStream, selectedActiveSensor]);
+
+  
+  useEffect(() => {
+    const sensors = JSON.parse(user.user).sensors;
+    console.log("sensors", sensors);
+    console.log("selectedActiveSensor", selectedActiveSensor);
+    sensors.forEach((sensor) => {
+      if (sensor._id === selectedActiveSensor) {
+        console.log("sensor", sensor)
+        setThreshold(sensor.threshold);
+      }
+    });
+  }, []);
   
   
 
@@ -236,7 +250,6 @@ const ReadData = ({ children }) => {
           style={{ padding: "1.5rem" }}
         />
         <Threshold
-          threshold={threshold}
           onThresholdChange={handleThresholdChange}
         />
         {showWarning && (
@@ -292,18 +305,6 @@ const ReadData = ({ children }) => {
           onClick={handlePauseResume}
         >
           Pause/Resume
-        </button>
-        <button
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            marginLeft: "2rem",
-            marginBottom: "2rem",
-          }}
-          onClick={handleBack}
-        >
-          Back
         </button>
       </div>
     </>

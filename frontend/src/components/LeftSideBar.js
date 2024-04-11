@@ -15,23 +15,20 @@ import {
   faChartSimple,
   faBell,
   faRightFromBracket,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { AuthData } from "../services/AuthService";
 
-
-
 const LeftSideBar = () => {
   const navigate = useNavigate();
-  const {logout, user, setUser} = AuthData();
-  
-const handleLogout = () => {
-  navigate("/home");
-  logout();
+  const { logout, user, setUser } = AuthData();
 
-}
+  const handleLogout = () => {
+    navigate("/home");
+    logout();
+  };
 
-useEffect(() => {
-}, [handleLogout])
+  useEffect(() => {}, [handleLogout]);
   return (
     <div className="SideBarContainer">
       <div className="linkContainer">
@@ -48,6 +45,19 @@ useEffect(() => {
               <span className="navitem">Dashboard</span>
             </Link>
           </li>
+
+          <li
+            className={
+              window.location.pathname === "/dashboard/me"
+                ? "activeEle"
+                : "inactiveEle"
+            }
+          >
+            <Link to="/dashboard/me" className="navigationLink">
+              <FontAwesomeIcon icon={faUser} />
+              <span className="navitem">Profile</span>
+            </Link>
+          </li>
           <li
             className={
               window.location.pathname === "/activeSensors"
@@ -55,6 +65,7 @@ useEffect(() => {
                 : "inactiveEle"
             }
           >
+
             <Link to="/activeSensors" className="navigationLink">
               <FontAwesomeIcon icon={faClipboard} />
               <span className="navitem">Active Sensors</span>
@@ -87,7 +98,9 @@ useEffect(() => {
           <li className="inactiveEle">
             <Link to="" className="navigationLink">
               <FontAwesomeIcon icon={faRightFromBracket} />
-              <span className="navitem" onClick = {handleLogout}>Logout</span>
+              <span className="navitem" onClick={handleLogout}>
+                Logout
+              </span>
             </Link>
           </li>
         </ul>

@@ -64,6 +64,8 @@ export const AuthWrapper = () => {
               });
 
              setCookies("jwt", token);
+             localStorage.setItem("jwt", token);
+             localStorage.setItem("jwtExpiresIn", "2d");
               navigate("/dashboard");
             } 
           }
@@ -80,6 +82,11 @@ export const AuthWrapper = () => {
       setUser({user : "", isAuthenticated: false});
       return;
     }
+    // console.log(localStorage.getItem("jwt"));
+
+  
+
+
     let userData = {
       jwt: getCookies("jwt"),
     }
@@ -182,10 +189,17 @@ export const AuthWrapper = () => {
   
   useEffect(()=>{
     checkProtected();
-  }, [user])
+    // console.log("jwt", localStorage.getItem("jwt"));
+    // console.log("user", user);
 
-  useEffect(() => {
-  }, [login]);
+    // if(!localStorage.getItem("jwt") === true){
+    //   setUser({user: "", isAuthenticated: false});
+    // }
+    // console.log("user", user);
+  }, [localStorage.getItem("jwt")])
+
+  // useEffect(() => {
+  // }, [login]);
 
 
 
