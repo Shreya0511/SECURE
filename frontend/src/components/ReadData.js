@@ -21,6 +21,8 @@ const ReadData = ({ children }) => {
     setWarningTimestamp,
     notifyDetails,
     setNotifyDetails,
+    selectedActiveSensor,
+    setSelectedActiveSensor,
   } = AuthData();
   const [dataStream, setDataStream] = useState([]);
 
@@ -141,7 +143,6 @@ const ReadData = ({ children }) => {
       const updatedNotificationDetails = [];
       dataStream.forEach(item => {
         setShowWarning(false);
-        console.log("useEffect", threshold, " ",item.y);
         if (item.y > threshold) {
           updatedNotificationDetails.push(item);
           setShowWarning(true);
@@ -201,6 +202,27 @@ const ReadData = ({ children }) => {
   const handleCloseWarning = () => {
     setShowWarning(false);
   };
+
+
+  useEffect(() => {
+    const sendDataToBackend = async () => {
+      try {
+        if (selectedActiveSensor && dataStream.length > 0) {
+          const response = await axios.patch(`${process.env.REACT_APP_API_URL}/api/v1/sensor/addSensorData`, {
+            sensorId: selectedActiveSensor,
+            data: dataStream,
+          });
+          console.log("Data sent to backend:", response.data);
+        }
+      } catch (error) {
+        console.error("Error sending data to backend:", error);
+      }
+    };
+  
+    // Send dataStream to backend whenever it updates or selectedActiveSensor changes
+    sendDataToBackend();
+  }, [dataStream, selectedActiveSensor]);
+  
   
 
   return (

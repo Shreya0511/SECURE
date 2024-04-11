@@ -107,4 +107,35 @@ export const editSensor = catchAsync(async(req, res, next) => {
   });
 
   
+});
+
+
+
+export const addSensorData = catchAsync(async(req, res, next) => {
+  const sensorId = req.body.sensorId;
+  const dataStream = req.body.data;
+  // console.log(dataStream);
+  const filteredBody = filterObj(
+    req.body,
+    "data",
+  );
+
+  // console.log(filteredBody);
+  // console.log(sensorId);
+
+  const updatedSensor = await Sensor.findByIdAndUpdate(sensorId, filteredBody, {
+    new: true,
+    runValidators: true,
+  });
+
+  console.log(updatedSensor);
+  
+
+
+  res.status(200).json({
+    status: "success",
+  });
+
+  
 })
+

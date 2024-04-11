@@ -17,8 +17,10 @@ const RightActive = () => {
         {JSON.parse(user.user) ? (
           JSON.parse(user.user).sensors.length > 0 ? (
             JSON.parse(user.user).sensors.map((sensor, index) =>
-              sensor.status === false ? (
-                <div></div>
+            sensor.status === false ? (
+              <div>
+
+                </div>
               ) : (
                 <div className="sensorList">
                   {/* {count = count+1  } */}
@@ -27,11 +29,11 @@ const RightActive = () => {
                       <div
                         className="sensorName"
                         style={{ color: "rgb(222, 143, 83)" }}
-                      >
+                        >
                         {sensor.sensorId}
                       </div>
                       <div className="menuIcon">
-                        <MenuIconAnalysis />
+                        <MenuIconAnalysis sensor = {sensor}/>
                       </div>
                     </div>
                     <div className="sensorDetails">

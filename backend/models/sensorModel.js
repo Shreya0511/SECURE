@@ -49,12 +49,15 @@ const sensorSchema = new mongoose.Schema(
     },
     data: [
       {
-        timestamp: {
+        x: {
           type: Number,
         },
-        energyConsumed: {
+        y: {
           type: Number,
         },
+        originalY : {
+          type : Number,
+        }
       },
     ],
   },

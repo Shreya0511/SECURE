@@ -30,6 +30,7 @@ export const AuthWrapper = () => {
   const [results, setResults] = useState(100);
   const [warningTimestamp, setWarningTimestamp] = useState("");
   const [selectedSensor, setSelectedSensor] = useState("");
+  const [selectedActiveSensor, setSelectedActiveSensor] = useState("");
 
 
 
@@ -210,6 +211,8 @@ export const AuthWrapper = () => {
           setWarningTimestamp,
           updatePassword,
           updateMe,
+          selectedActiveSensor,
+          setSelectedActiveSensor
         }}
       >
           <div className="right-container">
