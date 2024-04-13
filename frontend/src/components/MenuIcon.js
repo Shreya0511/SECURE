@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import EditSensor from "../pages/EditSensor";
-
+// import { useNavigate } from "react-router-dom";
 import "../styles/MenuIcon.css";
 
 const MenuIcon = ({ sensorId }) => {
@@ -51,6 +51,8 @@ const MenuIcon = ({ sensorId }) => {
           if(data.status === 'success'){
           setUser({user : JSON.stringify(data.data), isAuthenticated: true});
           alert("Sensor Removed Succesfully!!");
+          navigate('/dashboard', { replace: true });
+          window.location.reload();
 
           }
           setShow(false);

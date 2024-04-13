@@ -70,10 +70,11 @@ const VerticallyCenteredModal = (props) => {
         .then((response) => response.json())
         .then((data) => {
            if(data.status === 'success'){
-            setUser({user : JSON.stringify(data.data), isAutheticated : true});
+           
             alert("Successfully added the sensor!!");
             navigate('/dashboard', { replace: true });
             window.location.reload();
+            // setUser({user : JSON.stringify(data.data), isAutheticated : true});
             // alert("Successfully added the sensor!!", function() {
             //   window.location.reload(); // Reload the page after the user closes the alert
             // });
