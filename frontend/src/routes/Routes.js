@@ -57,7 +57,7 @@ const routes = [
 		isPrivate: true,
 	},
 	{
-		path: "/readData",
+		path: "/readData/:sensorId",
 		component: <ReadData />,
 		name: "readData",
 		isPrivate: true,

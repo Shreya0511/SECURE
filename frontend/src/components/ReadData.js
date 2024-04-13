@@ -7,6 +7,7 @@ import NavBarProfile from "./NavBarProfile";
 import { useNavigate } from "react-router-dom";
 import Threshold from "./Threshold";
 import { AuthData } from "../services/AuthService";
+import { useParams } from 'react-router-dom';
 
 const API_URL = "https://api.thingspeak.com/channels/2349053/feeds.json";
 const API_KEY = "0H5Z4Y2DMQCL7ULK"; // Replace with your API key
@@ -41,7 +42,8 @@ const ReadData = ({ children }) => {
   const [lastDate, setLastDate] = useState("");
   const [results, setResults] = useState(100);
 
-  console.log("ds", dataStream);
+  const parameter= useParams();
+
   const series = [
     {
       name: "Energy",
@@ -210,7 +212,7 @@ const ReadData = ({ children }) => {
       try {
         if (selectedActiveSensor && dataStream.length > 0) {
           const response = await axios.patch(`${process.env.REACT_APP_API_URL}/api/v1/sensor/addSensorData`, {
-            sensorId: selectedActiveSensor,
+            sensorId: parameter.sensorId,
             data: dataStream,
           });
           console.log("Data sent to backend:", response.data);
@@ -227,10 +229,8 @@ const ReadData = ({ children }) => {
   
   useEffect(() => {
     const sensors = JSON.parse(user.user).sensors;
-    console.log("sensors", sensors);
-    console.log("selectedActiveSensor", selectedActiveSensor);
     sensors.forEach((sensor) => {
-      if (sensor._id === selectedActiveSensor) {
+      if (sensor._id === parameter.sensorId) {
         console.log("sensor", sensor)
         setThreshold(sensor.threshold);
       }

@@ -21,7 +21,7 @@ const MenuIconAnalysis = ({sensor}) => {
 
     const handleMonitoring = () => {
       setSelectedActiveSensor(sensor._id);
-      navigate("/readData");
+      navigate(`/readData/${sensor._id}`);
     };
 
     
