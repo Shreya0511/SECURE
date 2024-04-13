@@ -22,9 +22,9 @@ function NotFound() {
 	useEffect(() => {
 		console.log("authenticated", user.isAuthenticated);
 		if(privateRoutes.includes(window.location.pathname) && user.isAuthenticated === null){
-			setErrorMsg("loading");
+			setErrorMsg("Loading");
 		}
-		if (
+		else if (
 			privateRoutes.includes(window.location.pathname) &&
 			!user.isAuthenticated
 		) {
