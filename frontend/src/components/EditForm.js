@@ -52,6 +52,8 @@ const EditForm = () => {
       const data = await response.json();
       if (data.status === "success") {
         alert("Sensor data updated successfully");
+        navigate('/dashboard', { replace: true });
+        window.location.reload();
       } else {
         alert("Failed to update sensor data");
       }
