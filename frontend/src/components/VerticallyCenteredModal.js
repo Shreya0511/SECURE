@@ -52,7 +52,7 @@ const VerticallyCenteredModal = (props) => {
     
 
     try{
-      setUser({user:"", isAutheticated: null});
+      // setUser({user:"", isAutheticated: null});
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/api/v1/sensor/addSensor`,
         {
@@ -71,10 +71,11 @@ const VerticallyCenteredModal = (props) => {
         .then((response) => response.json())
         .then((data) => {
            if(data.status === 'success'){
-            setUser({user : JSON.stringify(data.data), isAutheticated : true});
+           
             alert("Successfully added the sensor!!");
             navigate('/dashboard', { replace: true });
             window.location.reload();
+            // setUser({user : JSON.stringify(data.data), isAutheticated : true});
             // alert("Successfully added the sensor!!", function() {
             //   window.location.reload(); // Reload the page after the user closes the alert
             // });
