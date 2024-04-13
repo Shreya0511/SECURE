@@ -6,7 +6,6 @@ const sensorSchema = new mongoose.Schema(
     sensorId: {
       type: String,
       required: true,
-      unique: true,
     },
     manufacturer: {
       type: String,

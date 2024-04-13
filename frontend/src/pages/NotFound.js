@@ -20,6 +20,10 @@ function NotFound() {
 	const { user } = AuthData();
 	const navigate = useNavigate();
 	useEffect(() => {
+		console.log("authenticated", user.isAuthenticated);
+		if(privateRoutes.includes(window.location.pathname) && user.isAuthenticated === null){
+			setErrorMsg("loading");
+		}
 		if (
 			privateRoutes.includes(window.location.pathname) &&
 			!user.isAuthenticated

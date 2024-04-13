@@ -48,9 +48,10 @@ const VerticallyCenteredModal = (props) => {
       threshold: thresholdValue,
       userId : JSON.parse(user.user)._id
     };
-
+    
 
     try{
+      setUser({user:"", isAutheticated: null});
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/api/v1/sensor/addSensor`,
         {
@@ -105,7 +106,7 @@ const VerticallyCenteredModal = (props) => {
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3">
-              <Form.Label>Sensor Id</Form.Label>
+              <Form.Label>Sensor Name</Form.Label>
               <Form.Control
                 type="email"
                 placeholder=""

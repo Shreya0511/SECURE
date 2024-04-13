@@ -50,6 +50,7 @@ const MenuIcon = ({ sensorId }) => {
           console.log(data, "data in menuicon");
           if(data.status === 'success'){
           setUser({user : JSON.stringify(data.data), isAuthenticated: true});
+          alert("Sensor Removed Succesfully!!");
 
           }
           setShow(false);

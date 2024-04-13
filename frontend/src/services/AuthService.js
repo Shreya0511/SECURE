@@ -21,7 +21,7 @@ export const AuthData = () => useContext(AuthContext);
 export const AuthWrapper = () => {
   const navigate = useNavigate();
 
-  const [user, setUser] = useState({user : "", isAuthenticated: false});
+  const [user, setUser] = useState({user : "", isAuthenticated: null});
   const [pauseData, setPauseData] = useState(false);
   // const [dataStream, setDataStream] = useState([]);
   const [threshold, setThreshold] = useState(0);
@@ -31,6 +31,7 @@ export const AuthWrapper = () => {
   const [warningTimestamp, setWarningTimestamp] = useState("");
   const [selectedSensor, setSelectedSensor] = useState("");
   const [selectedActiveSensor, setSelectedActiveSensor] = useState("");
+  const [loading, setLoading] = useState(false);
 
 
 

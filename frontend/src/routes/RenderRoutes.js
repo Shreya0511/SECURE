@@ -14,7 +14,7 @@ const RenderRoutes = () => {
 			<Route
 				index={true}
 				path="/"
-				element={user.isAuthenticated ? <Dashboard /> : <Home />}
+				element={user.isAuthenticated === true ? <Dashboard /> : <Home />}
 			/>
             {routes.map((r, i) => {
 				if (r.isPrivate && user.isAuthenticated) {
