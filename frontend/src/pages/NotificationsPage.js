@@ -2,13 +2,20 @@ import React from "react";
 import NavBarProfile from "../components/NavBarProfile";
 import LeftSideBar from "../components/LeftSideBar";
 import moment from "moment";
+import  { useEffect, useState } from "react";
 import { AuthData } from "../services/AuthService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
 const NotificationsPage = () => {
+  const parameter= useParams();
+
   const { notifications, notifyDetails, setNotifyDetails } = AuthData();
+  const [sensorId, setSensorId] = useState('');
+  const {user} = AuthData();
+
 
   const handleRemoveNotification = (detailToRemove) => {
     const indexToRemove = notifyDetails.findIndex(notification => 
@@ -25,12 +32,19 @@ const NotificationsPage = () => {
       console.error("Notification not found in the array.");
     }
   };
+
+
+  useEffect(() => {
+    if (JSON.parse(user.user) && JSON.parse(user.user).sensors.length > 0) {
+      const sensor = JSON.parse(user.user).sensors.find(sensor => sensor._id === parameter.sensorId);
+      if (sensor) {
+        setSensorId(sensor.sensorId);
+      }
+    }
+  }, [user.user, sensorId]);
   
   
   
-
-
-
 
   return (
     <div>
@@ -73,9 +87,9 @@ const NotificationsPage = () => {
                       }}
                       icon={faTriangleExclamation}
                     />
-                    <span style ={{color : "chocolate",fontWeight: "bold", marginRight: "0.5rem"}}>Sensor-I  </span> has crossed its threshold on {formattedDate} at {formattedTime}
+                    <span style ={{color : "chocolate",fontWeight: "bold", marginRight: "0.5rem"}}>{sensorId}</span> has crossed its threshold on {formattedDate} at {formattedTime}
                     </div>
-                    <div style={{flex : "1", display : "flex", alignItems: "center", justifyContent: "center"}}><Link style ={{textDecoration: "none", color : "red", fontSize : "1rem", fontWeight: "bold"}}to = "/readData">  View Analysis</Link></div>
+                    <div style={{flex : "1", display : "flex", alignItems: "center", justifyContent: "center"}}><Link style ={{textDecoration: "none", color : "red", fontSize : "1rem", fontWeight: "bold"}}to = {`/readData/${parameter.sensorId}`}> Monitor</Link></div>
                     <div style ={{display :  "flex", position: "relative", top: "-1rem", left : "0.5rem", color : "gray", fontWeight: "bold", cursor : "pointer"}} onClick={() => handleRemoveNotification(detail)}>X</div>
                   </div>
                 );

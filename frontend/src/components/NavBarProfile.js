@@ -13,7 +13,7 @@ import moment from "moment";
 import { AuthData } from "../services/AuthService";
 
 
-const NavBarProfile = () => {
+const NavBarProfile = ({id}) => {
   const {notifyDetails, user, setUser} = AuthData();
   const [sensorId, setSensorId] = useState('');
 
@@ -33,6 +33,8 @@ const NavBarProfile = () => {
   if(notifyDetails){
      formattedTime = notifyDetails.length > 0 ? moment(notifyDetails[notifyDetails.length - 1].x).format("HH:mm:ss") : "";
   }
+
+
 
 
 
@@ -102,7 +104,7 @@ const NavBarProfile = () => {
             </Link>
 
             {sensorId && (
-        <Link to="/notifications" style={{ color: "white", textDecoration: "none" }}>
+        <Link to={`/notifications/${id}`} style={{ color: "white", textDecoration: "none" }}>
           <div>
             {notifyDetails.length > 0 ? (
               <div>

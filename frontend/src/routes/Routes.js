@@ -64,7 +64,7 @@ const routes = [
 		isPrivate: true,
 	},
 	{
-		path : "/notifications",
+		path : "/notifications/:sensorId",
 		component: <NotificationsPage />,
 		name: "notifications",
 		isPrivate : true,

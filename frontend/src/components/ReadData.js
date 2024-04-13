@@ -247,7 +247,7 @@ const ReadData = ({ children }) => {
 
   return (
     <>
-      <NavBarProfile />
+      <NavBarProfile id ={parameter.sensorId}/>
       <div style={{ position: "relative" }}>
         <Chart
           series={series}
