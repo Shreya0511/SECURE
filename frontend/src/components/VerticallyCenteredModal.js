@@ -5,8 +5,9 @@ import Form from "react-bootstrap/Form";
 import { useState } from "react";
 import { AuthData } from "../services/AuthService";
 import { useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
 const VerticallyCenteredModal = (props) => {
+  const navigate = useNavigate();
   const [id, setId] = useState("");
   const [manufacturer, setManufacturer] = useState("");
   const [parameter, setParameter] = useState("");
@@ -71,6 +72,11 @@ const VerticallyCenteredModal = (props) => {
            if(data.status === 'success'){
             setUser({user : JSON.stringify(data.data), isAutheticated : true});
             alert("Successfully added the sensor!!");
+            navigate('/dashboard', { replace: true });
+            window.location.reload();
+            // alert("Successfully added the sensor!!", function() {
+            //   window.location.reload(); // Reload the page after the user closes the alert
+            // });
             props.onHide();
            }
            else{
