@@ -28,7 +28,9 @@ export const AuthWrapper = () => {
   const [showWarning, setShowWarning] = useState(false);
   const [notifyDetails, setNotifyDetails]= useState([]);
   const [results, setResults] = useState(100);
+  const [warningDatestamp, setWarningDatestamp] = useState("");
   const [warningTimestamp, setWarningTimestamp] = useState("");
+
   const [selectedSensor, setSelectedSensor] = useState("");
   const [selectedActiveSensor, setSelectedActiveSensor] = useState("");
   const [loading, setLoading] = useState(false);
@@ -224,6 +226,8 @@ export const AuthWrapper = () => {
           // setDataStream,
           warningTimestamp,
           setWarningTimestamp,
+          warningDatestamp,
+          setWarningDatestamp,
           updatePassword,
           updateMe,
           selectedActiveSensor,

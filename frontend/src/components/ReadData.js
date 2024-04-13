@@ -21,6 +21,8 @@ const ReadData = ({ children }) => {
     setShowWarning,
     warningTimestamp,
     setWarningTimestamp,
+    warningDatestamp,
+    setWarningDatestamp,
     notifyDetails,
     setNotifyDetails,
     selectedActiveSensor,
@@ -84,7 +86,8 @@ const ReadData = ({ children }) => {
       labels: {
         show: false,
         formatter: function (val) {
-          return moment(val).format("HH:mm:ss");
+          // return moment(val).format("HH:mm:ss");
+          return moment(val).format("DD-MM-YYYY HH:mm:ss");
         },
       },
     },
@@ -95,7 +98,8 @@ const ReadData = ({ children }) => {
     tooltip: {
       x: {
         formatter: function (val) {
-          return moment(val).format("HH:mm:ss");
+          // return moment(val).format("HH:mm:ss");
+          return moment(val).format("DD-MM-YYYY HH:mm:ss");
         },
       },
       y: {
@@ -150,6 +154,8 @@ const ReadData = ({ children }) => {
           updatedNotificationDetails.push(item);
           setShowWarning(true);
           setWarningTimestamp(moment(item.x).format("HH:mm:ss"))
+          setWarningDatestamp(moment(item.x).format("DD-MM-YYYY"))
+
         }
       });
       setNotifyDetails(updatedNotificationDetails);
@@ -270,7 +276,7 @@ const ReadData = ({ children }) => {
             }}
           >
             <div>
-              <p>{`Warning! Threshold crossed at Time: ${warningTimestamp}`}</p>
+              <p>{`Warning! Threshold crossed on: ${warningDatestamp} at time : ${warningTimestamp}`} </p>
             </div>
             <div
               style={{
