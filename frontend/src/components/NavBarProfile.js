@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -15,6 +15,17 @@ import { AuthData } from "../services/AuthService";
 
 const NavBarProfile = () => {
   const {notifyDetails, user, setUser} = AuthData();
+  const [sensorId, setSensorId] = useState('');
+
+  useEffect(() => {
+    // Extract sensorId from the pathname
+    const pathParts = window.location.pathname.split('/');
+    if (pathParts.length >= 3 && pathParts[1] === 'readData') {
+      setSensorId(pathParts[2]);
+    } else {
+      setSensorId('');
+    }
+  }, []);
   // console.log("user in navbar", JSON.parse(user.user).sensors);
   
   // const formattedTime = moment(notifications[0].x).format("HH:mm:ss");
@@ -89,43 +100,43 @@ const NavBarProfile = () => {
             >
               Contact Us
             </Link>
-            <Link to ="/notifications" style ={{color : "white", textDecoration: "none"}}>
-            <div>
-              {/* {console.log("ntf", notifications.length)} */}
-              {notifyDetails.length > 0 ? (
-                <div>
-                  {" "}
-                  <OverlayTrigger
-                    placement="bottom"
-                    delay={{ show: 300, hide: 400 }}
-                    overlay={renderTooltip}
-                  >
-                    <div>
-                      <div
-                        style={{
-                          height: "0.5rem",
-                          width: "0.5rem",
-                          borderRadius: "50%",
-                          backgroundColor: "red",
-                          position: "relative",
-                          top: "0.3rem",
-                          left: "0.7rem",
-                        }}
-                      ></div>
-                      <FontAwesomeIcon
-                        style={{ fontSize: "1.5rem" }}
-                        icon={faBell}
-                        onClick={handleNotificationStack}
-                      />
 
-                    </div>
-                  </OverlayTrigger>{" "}
-                </div>
-              ) : (
-                <FontAwesomeIcon style={{ fontSize: "1.5rem" }} icon={faBell} />
-              )}
-            </div>
-            </Link>
+            {sensorId && (
+        <Link to="/notifications" style={{ color: "white", textDecoration: "none" }}>
+          <div>
+            {notifyDetails.length > 0 ? (
+              <div>
+                <OverlayTrigger
+                  placement="bottom"
+                  delay={{ show: 300, hide: 400 }}
+                  overlay={renderTooltip}
+                >
+                  <div>
+                    <div
+                      style={{
+                        height: "0.5rem",
+                        width: "0.5rem",
+                        borderRadius: "50%",
+                        backgroundColor: "red",
+                        position: "relative",
+                        top: "0.3rem",
+                        left: "0.7rem",
+                      }}
+                    ></div>
+                    <FontAwesomeIcon
+                      style={{ fontSize: "1.5rem" }}
+                      icon={faBell}
+                      onClick={handleNotificationStack}
+                    />
+                  </div>
+                </OverlayTrigger>
+              </div>
+            ) : (
+              <FontAwesomeIcon style={{ fontSize: "1.5rem" }} icon={faBell} />
+            )}
+          </div>
+        </Link>
+      )}
           
           <Link to = "/dashboard/me" style ={{textDecoration : "none"}}>
             <div className="Profile" style={{ display: "flex" }}>

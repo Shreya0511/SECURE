@@ -12,6 +12,7 @@ import EditSensor from "../pages/EditSensor.js";
 import Profile from "../pages/Profile.js";
 import EditProfileDetails from "../pages/EditProfileDetails.js";
 import ChangePw from "../pages/ChangePw.js";
+import History from "../pages/History";
 
 const routes = [
 	{
@@ -96,6 +97,12 @@ const routes = [
 		path : "/dashboard/changePw",
 		component : <ChangePw />,
 		name : "Change Password",
+		isPrivate : true,
+	},
+	{
+		path : "/history",
+		component : <History />,
+		name : "History",
 		isPrivate : true,
 	}
 	

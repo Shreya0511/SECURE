@@ -24,7 +24,6 @@ const LeftSideBar = () => {
   const { logout, user, setUser } = AuthData();
 
   const handleLogout = () => {
-    navigate("/home");
     logout();
   };
 
@@ -73,32 +72,21 @@ const LeftSideBar = () => {
           </li>
           <li
             className={
-              window.location.pathname === "/analysis"
+              window.location.pathname === "/history"
                 ? "activeEle"
                 : "inactiveEle"
             }
           >
-            <Link to="/analysis" className="navigationLink">
+            <Link to="/history" className="navigationLink">
               <FontAwesomeIcon icon={faChartSimple} />
-              <span className="navitem">Analysis</span>
+              <span className="navitem">History</span>
             </Link>
           </li>
-          <li
-            className={
-              window.location.pathname === "/notifications"
-                ? "activeEle"
-                : "inactiveEle"
-            }
-          >
-            <Link to="/notifications" className="navigationLink">
-              <FontAwesomeIcon icon={faBell} />
-              <span className="navitem">Notifications</span>
-            </Link>
-          </li>
-          <li className="inactiveEle">
-            <Link to="" className="navigationLink">
+    
+          <li className="inactiveEle" onClick={handleLogout}>
+            <Link to="/home" className="navigationLink">
               <FontAwesomeIcon icon={faRightFromBracket} />
-              <span className="navitem" onClick={handleLogout}>
+              <span className="navitem">
                 Logout
               </span>
             </Link>
