@@ -52,7 +52,6 @@ const VerticallyCenteredModal = (props) => {
     
 
     try{
-      setUser({user:"", isAutheticated: null});
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/api/v1/sensor/addSensor`,
         {
