@@ -113,29 +113,35 @@ export const editSensor = catchAsync(async(req, res, next) => {
 
 export const addSensorData = catchAsync(async(req, res, next) => {
   const sensorId = req.body.sensorId;
-  const dataStream = req.body.data;
-  // console.log(dataStream);
+  const newData = req.body.data; // Incoming data points
   const filteredBody = filterObj(
     req.body,
     "data",
   );
 
-  // console.log(filteredBody);
-  // console.log(sensorId);
+  // Fetch the existing sensor document
+  const existingSensor = await Sensor.findById(sensorId);
 
+  // Check if the existing sensor document has a valid "data" field that is an array
+  if (existingSensor && Array.isArray(existingSensor.data)) {
+    // Append the incoming data points to the existing array
+    filteredBody.data = [...existingSensor.data, ...newData];
+
+    // Keep the array size at most 50
+    if (filteredBody.data.length > 50) {
+      // Drop the oldest elements from the beginning of the array
+      filteredBody.data = filteredBody.data.slice(filteredBody.data.length - 50);
+    }
+  }
+
+  // Update the sensor document with the modified data field
   const updatedSensor = await Sensor.findByIdAndUpdate(sensorId, filteredBody, {
     new: true,
     runValidators: true,
   });
 
-  console.log(updatedSensor);
-  
-
-
   res.status(200).json({
     status: "success",
   });
-
-  
-})
+});
 
