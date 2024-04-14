@@ -75,7 +75,7 @@ const NotificationsPage = () => {
                     />
                     <span style ={{color : "chocolate",fontWeight: "bold", marginRight: "0.5rem"}}>Sensor-I  </span> has crossed its threshold on {formattedDate} at {formattedTime}
                     </div>
-                    <div style={{flex : "1", display : "flex", alignItems: "center", justifyContent: "center"}}><Link style ={{textDecoration: "none", color : "red", fontSize : "1rem", fontWeight: "bold"}}to = "/readData">  View Analysis</Link></div>
+                    <div style={{flex : "1", display : "flex", alignItems: "center", justifyContent: "center"}}><Link style ={{textDecoration: "none", color : "red", fontSize : "1rem", fontWeight: "bold"}}to = "/readData/:sensorId">  Monitor</Link></div>
                     <div style ={{display :  "flex", position: "relative", top: "-1rem", left : "0.5rem", color : "gray", fontWeight: "bold", cursor : "pointer"}} onClick={() => handleRemoveNotification(detail)}>X</div>
                   </div>
                 );
