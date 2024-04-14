@@ -30,14 +30,6 @@ const ReadData = ({ children }) => {
   } = AuthData();
   const [dataStream, setDataStream] = useState([]);
 
-  // const [user, setUser] = useState({user : "",isAuthenticated: false});
-  // const [pauseData, setPauseData] = useState(false);
-  // const [dataStream, setDataStream] = useState([]);
-  // const [threshold, setThreshold] = useState(0);
-  // const [showWarning, setShowWarning] = useState(false);
-  // const [notifyDetails, setNotifyDetails]= useState([]);
-  // const [results, setResults] = useState(100);
-  // const [warningTimestamp, setWarningTimestamp] = useState("");
 
   const navigate = useNavigate();
   const [pauseData, setPauseData] = useState(false);

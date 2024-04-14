@@ -13,6 +13,7 @@ import Profile from "../pages/Profile.js";
 import EditProfileDetails from "../pages/EditProfileDetails.js";
 import ChangePw from "../pages/ChangePw.js";
 import History from "../pages/History";
+import HistoryGraphPage from "../pages/HistoryGraphPage";
 
 const routes = [
 	{
@@ -103,6 +104,12 @@ const routes = [
 		path : "/history",
 		component : <History />,
 		name : "History",
+		isPrivate : true,
+	},
+	{
+		path : "/history/:sensorId",
+		component: <HistoryGraphPage />,
+		name : "HistoryGraph",
 		isPrivate : true,
 	}
 	

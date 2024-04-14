@@ -63,7 +63,7 @@ const NavBarProfile = ({id}) => {
       <Navbar bg="dark" data-bs-theme="dark" className="navbar_main_container">
         <Container className="navbar_container">
           <div className="navbarSecure">
-            <Link to="/home" style={{ textDecoration: "none", color: "white" }}>
+            <Link to={user.isAuthenticated ? "/dashboard" : "/home"} style={{ textDecoration: "none", color: "white" }}>
               <span className="firstLetter">S</span>ECURE
             </Link>
           </div>

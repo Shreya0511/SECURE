@@ -24,6 +24,10 @@ const MenuIconAnalysis = ({sensor}) => {
       navigate(`/readData/${sensor._id}`);
     };
 
+    const handleHistory = () => {
+      navigate(`/history/${sensor._id}`);
+    }
+
     
   
     return (
@@ -41,7 +45,9 @@ const MenuIconAnalysis = ({sensor}) => {
                  {/* <Link className = "sensorMenu" style ={{textDecoration: "none"}} to = "/readData"> */}
                   <div className = "sensorMenu" style ={{fontSize : "1rem", fontWeight: "bold", color : "black", textDecoration: "none", marginBottom : "0.5rem", cursor : "pointer"}} onClick = {handleMonitoring}>Monitoring</div>
                   {/* </Link> */}
-                 <Link style ={{textDecoration : "none"}} to = "/readData">  <div style ={{fontSize : "1rem", fontWeight : "bold", color : "black", textDecoration: "none",  marginBottom : "0.5rem"}}>History</div></Link> 
+                 {/* <Link style ={{textDecoration : "none"}} to = "/readData"> */}
+                    <div style ={{fontSize : "1rem", fontWeight : "bold", color : "black", textDecoration: "none",  marginBottom : "0.5rem", cursor : "pointer"}} onClick = {handleHistory}>History</div>
+                    {/* </Link>  */}
                  <Link style ={{textDecoration : "none"}} to = "/readData">  <div style ={{fontSize : "1rem", fontWeight : "bold", color : "black", textDecoration: "none"}}>Predictions</div></Link> 
 
                 </div>
