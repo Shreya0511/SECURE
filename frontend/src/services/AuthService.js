@@ -188,7 +188,10 @@ export const AuthWrapper = () => {
       user : "",
       isAuthenticated : false,
     });
-  }
+  
+    // Redirect to the home page
+  };
+  
   
   useEffect(()=>{
     checkProtected();
