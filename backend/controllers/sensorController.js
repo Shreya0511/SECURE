@@ -2,8 +2,6 @@ import { Sensor } from "../models/sensorModel.js";
 import catchAsync from "../Utils/catchAsync.js";
 import { User } from "../models/userModel.js";
 
-
-
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
   Object.keys(obj).forEach((el) => {
@@ -38,7 +36,6 @@ export const getSensor = catchAsync(async (req, res, next) => {
   });
 });
 
-
 export const addUserSensor = catchAsync(async (req, res, next) => {
   try {
     const userId = req.body.userId;
@@ -65,7 +62,7 @@ export const addUserSensor = catchAsync(async (req, res, next) => {
   }
 });
 
-export const editSensor = catchAsync(async(req, res, next) => {
+export const editSensor = catchAsync(async (req, res, next) => {
   const filteredBody = filterObj(
     req.body,
     "sensorId",
@@ -78,12 +75,16 @@ export const editSensor = catchAsync(async(req, res, next) => {
   console.log(req.body);
 
   //3. Update User document.
-  const updatedSensor = await Sensor.findByIdAndUpdate(req.body._id, filteredBody, {
-    new: true,
-    runValidators: true,
-  });
-  
-  let currentUser = await User.findOne({_id : req.body.userId.toString()});
+  const updatedSensor = await Sensor.findByIdAndUpdate(
+    req.body._id,
+    filteredBody,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  let currentUser = await User.findOne({ _id: req.body.userId.toString() });
 
   if (!currentUser) {
     res.status(401).json({
@@ -94,30 +95,24 @@ export const editSensor = catchAsync(async(req, res, next) => {
 
   // 4) Check if user changed password after the token was issued
 
-  const populatedSensors = await Sensor.find({ _id: { $in: currentUser.sensors } });
+  const populatedSensors = await Sensor.find({
+    _id: { $in: currentUser.sensors },
+  });
 
   currentUser.sensors = populatedSensors;
-
 
   res.status(200).json({
     status: "success",
     data: {
-      data : currentUser
+      data: currentUser,
     },
   });
-
-  
 });
 
-
-
-export const addSensorData = catchAsync(async(req, res, next) => {
+export const addSensorData = catchAsync(async (req, res, next) => {
   const sensorId = req.body.sensorId;
   const newData = req.body.data; // Incoming data points
-  const filteredBody = filterObj(
-    req.body,
-    "data",
-  );
+  const filteredBody = filterObj(req.body, "data");
 
   // Fetch the existing sensor document
   const existingSensor = await Sensor.findById(sensorId);
@@ -128,22 +123,35 @@ export const addSensorData = catchAsync(async(req, res, next) => {
       // If the data field is empty, insert all incoming data points
       filteredBody.data = newData;
     } else {
-      // Otherwise, add only the last element of the incoming data array
-      if (existingSensor.data.length < 50) {
-        // If the array size is less than 50, append the last element of newData
-        filteredBody.data = [...existingSensor.data, newData[newData.length - 1]];
-      } else {
-        // If the array size is 50, keep the array size at most 50
-        filteredBody.data = [...existingSensor.data.slice(1), newData[newData.length - 1]];
+      // Otherwise, add only the data points whose 'x' value is not already present
+      const newDataFiltered = newData.filter(
+        (newPoint) =>
+          !existingSensor.data.some(
+            (existingPoint) => existingPoint.x === newPoint.x
+          )
+      );
+
+      filteredBody.data = [...existingSensor.data, ...newDataFiltered];
+
+      // Keep the array size at most 50
+      if (filteredBody.data.length > 50) {
+        // Calculate the number of elements to shed from the beginning of the array
+        const diff = filteredBody.data.length - 50;
+        // Remove the oldest points from the beginning of the array
+        filteredBody.data = filteredBody.data.slice(diff);
       }
     }
   }
 
   // Update the sensor document with the modified data field
-  const updatedSensor = await Sensor.findByIdAndUpdate(sensorId, filteredBody, {
-    new: true,
-    runValidators: true,
-  });
+  const updatedSensor = await Sensor.findByIdAndUpdate(
+    sensorId,
+    filteredBody,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
 
   res.status(200).json({
     status: "success",

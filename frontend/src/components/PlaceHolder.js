@@ -4,10 +4,10 @@ import Placeholder from 'react-bootstrap/Placeholder';
 
 function PlaceHolder() {
   return (
-    <div className="d-flex justify-content-around" style ={{display : "flex", flexDirection : "column", justifyContent : 'center', alignItems : "center"}}>
+    <div className="d-flex justify-content-around" style ={{display : "flex", flexDirection : "column", justifyContent : 'center', alignItems : "center", backgroundColor : "black", height : "100vh", width:"100vw"}}>
      
 
-      <Card style={{ width: '60vw',marginTop : "4rem", marginBottom : "2rem"}}>
+      <Card style={{ width: '70vw',height : "13rem", marginTop : "4rem", backgroundColor : "rgb(84, 83, 83, 0.7)", borderRadius : "1.5rem"}}>
         <Card.Body>
           <Placeholder as={Card.Title} animation="glow">
             <Placeholder xs={20} />
@@ -19,7 +19,7 @@ function PlaceHolder() {
         </Card.Body>
       </Card>
 
-      <Card style={{ width: '60vw',marginTop : "4rem" }}>
+      <Card style={{ width: '70vw',height : "13rem", marginTop : "1rem", backgroundColor : "rgb(84, 83, 83, 0.7)", borderRadius : "1.5rem"}}>
         <Card.Body>
           <Placeholder as={Card.Title} animation="glow">
             <Placeholder xs={20} />
