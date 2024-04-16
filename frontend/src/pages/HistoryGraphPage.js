@@ -85,9 +85,13 @@ const HistoryGraphPage = ({ children }) => {
     },
     tooltip: {
       x: {
-        formatter: function (val) {
-          // return moment(val).format("HH:mm:ss");
-          return moment(val).format("DD-MM-YYYY HH:mm:ss");
+        // formatter: function (val) {
+        //   // return moment(val).format("HH:mm:ss");
+        //   return moment(val).format("DD-MM-YYYY HH:mm:ss");
+        // },
+        formatter: function (index) {
+          const point = dataStream[index];
+          return moment(point.timestamp).format("DD-MM-YYYY HH:mm:ss");
         },
       },
       y: {
@@ -206,8 +210,18 @@ const HistoryGraphPage = ({ children }) => {
       (sensor) => sensor._id === parameter.sensorId
     );
     if (selectedSensor) {
-      setDataStream(selectedSensor.data);
+      // setDataStream(selectedSensor.data.slice(0,7));
+      // console.log(selectedSensor.data.slice(0,7));
+      console.log(selectedSensor.data);
+      const points = selectedSensor.data.map((point, index) => ({
+        x: index, // Use index as x-coordinate
+        y: point.y,
+        timestamp: point.x // Store Unix timestamp for tooltip
+      }));
+      setDataStream(points);
+      
     }
+
     ApexChart.exec("realtime", "updateSeries", [{ data: dataStream }]);
   }, [user.user, parameter.sensorId]);
 
