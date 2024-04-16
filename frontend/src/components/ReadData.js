@@ -29,7 +29,6 @@ const ReadData = ({ children }) => {
     setSelectedActiveSensor,
   } = AuthData();
   const [dataStream, setDataStream] = useState([]);
-  const [initialDataSent, setInitialDataSent] = useState(false); // Track if initial data has been sent
 
 
   const navigate = useNavigate();
@@ -133,15 +132,6 @@ const ReadData = ({ children }) => {
     });
 
     ApexChart.exec("realtime", "updateSeries", [{ data: dataStream }]);
-
-        if (initialDataSent) {
-      // Send only the new data point if initial data has been sent
-      sendDataToBackend([dataStream[dataStream.length - 1]]);
-    } else {
-      // If initial data has not been sent, send the entire dataStream
-      sendDataToBackend(dataStream);
-      setInitialDataSent(true);
-    }
   };
 
 
@@ -214,37 +204,25 @@ const ReadData = ({ children }) => {
     setShowWarning(false);
   };
 
-  const sendDataToBackend = async () => {
-    try {
-      if (selectedActiveSensor && dataStream.length > 0) {
-        const response = await axios.patch(`${process.env.REACT_APP_API_URL}/api/v1/sensor/addSensorData`, {
-          sensorId: parameter.sensorId,
-          data: dataStream,
-        });
-        console.log("Data sent to backend:", response.data);
+
+  useEffect(() => {
+    const sendDataToBackend = async () => {
+      try {
+        if (selectedActiveSensor && dataStream.length > 0) {
+          const response = await axios.patch(`${process.env.REACT_APP_API_URL}/api/v1/sensor/addSensorData`, {
+            sensorId: parameter.sensorId,
+            data: dataStream,
+          });
+          console.log("Data sent to backend:", response.data);
+        }
+      } catch (error) {
+        console.error("Error sending data to backend:", error);
       }
-    } catch (error) {
-      console.error("Error sending data to backend:", error);
-    }
-  };
-  // useEffect(() => {
-  //   const sendDataToBackend = async () => {
-  //     try {
-  //       if (selectedActiveSensor && dataStream.length > 0) {
-  //         const response = await axios.patch(`${process.env.REACT_APP_API_URL}/api/v1/sensor/addSensorData`, {
-  //           sensorId: parameter.sensorId,
-  //           data: dataStream,
-  //         });
-  //         console.log("Data sent to backend:", response.data);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error sending data to backend:", error);
-  //     }
-  //   };
+    };
   
-  //   // Send dataStream to backend whenever it updates or selectedActiveSensor changes
-  //   sendDataToBackend();
-  // }, [dataStream, selectedActiveSensor]);
+    // Send dataStream to backend whenever it updates or selectedActiveSensor changes
+    sendDataToBackend();
+  }, [dataStream, selectedActiveSensor]);
 
   
   useEffect(() => {
