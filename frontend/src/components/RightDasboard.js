@@ -26,7 +26,11 @@ const RightDashboard = () => {
     setLoading(true);
     getSensor();
     setLoading(false);
-  }, [user, sensors,modalShow]);
+  }, [user,modalShow]);  //removed sensors as a dependency here, as it was causing infite render of page.
+
+  
+
+  
 
 
 
