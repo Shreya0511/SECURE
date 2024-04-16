@@ -156,6 +156,32 @@ const ReadData = ({ children }) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      /*
+        check user object if this sensor has data or not 
+        if(sensordata.size()>0)
+        {
+          plot these points
+          setResults(10);
+        }
+        try {
+        const response = await axios.get(
+          `${API_URL}?api_key=${API_KEY}&results=${results}`
+        );
+        const fetchedData = response.data.feeds;
+        console.log(fetchedData);
+        // Calculate cumulative energy for each segment
+        for (let i = 0; i <= fetchedData.length - 10; i += 10) {
+          const segment = fetchedData.slice(i, i + 10);
+          // console.log(RESULTS);
+          appendData(segment);
+        }
+        setResults(10);
+      } catch (error) {
+        console.error("Error fetching initial data:", error);
+      }
+    };
+      */
+      
       try {
         const response = await axios.get(
           `${API_URL}?api_key=${API_KEY}&results=${results}`
