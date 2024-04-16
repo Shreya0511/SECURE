@@ -124,13 +124,18 @@ export const addSensorData = catchAsync(async(req, res, next) => {
 
   // Check if the existing sensor document has a valid "data" field that is an array
   if (existingSensor && Array.isArray(existingSensor.data)) {
-    // Append the incoming data points to the existing array
-    filteredBody.data = [...existingSensor.data, ...newData];
-
-    // Keep the array size at most 50
-    if (filteredBody.data.length > 50) {
-      // Drop the oldest elements from the beginning of the array
-      filteredBody.data = filteredBody.data.slice(filteredBody.data.length - 50);
+    if (existingSensor.data.length === 0) {
+      // If the data field is empty, insert all incoming data points
+      filteredBody.data = newData;
+    } else {
+      // Otherwise, add only the last element of the incoming data array
+      if (existingSensor.data.length < 50) {
+        // If the array size is less than 50, append the last element of newData
+        filteredBody.data = [...existingSensor.data, newData[newData.length - 1]];
+      } else {
+        // If the array size is 50, keep the array size at most 50
+        filteredBody.data = [...existingSensor.data.slice(1), newData[newData.length - 1]];
+      }
     }
   }
 
@@ -144,4 +149,3 @@ export const addSensorData = catchAsync(async(req, res, next) => {
     status: "success",
   });
 });
-
