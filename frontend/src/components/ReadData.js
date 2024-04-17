@@ -7,7 +7,7 @@ import NavBarProfile from "./NavBarProfile";
 import { useNavigate } from "react-router-dom";
 import Threshold from "./Threshold";
 import { AuthData } from "../services/AuthService";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 
 const API_URL = "https://api.thingspeak.com/channels/2349053/feeds.json";
 const API_KEY = "0H5Z4Y2DMQCL7ULK"; // Replace with your API key
@@ -30,13 +30,12 @@ const ReadData = ({ children }) => {
   } = AuthData();
   const [dataStream, setDataStream] = useState([]);
 
-
   const navigate = useNavigate();
   const [pauseData, setPauseData] = useState(false);
   const [lastDate, setLastDate] = useState("");
   const [results, setResults] = useState(100);
 
-  const parameter= useParams();
+  const parameter = useParams();
 
   const series = [
     {
@@ -134,20 +133,16 @@ const ReadData = ({ children }) => {
     ApexChart.exec("realtime", "updateSeries", [{ data: dataStream }]);
   };
 
-
-
   useEffect(() => {
-
     if (dataStream) {
       const updatedNotificationDetails = [];
-      dataStream.forEach(item => {
+      dataStream.forEach((item) => {
         setShowWarning(false);
         if (item.y > threshold) {
           updatedNotificationDetails.push(item);
           setShowWarning(true);
-          setWarningTimestamp(moment(item.x).format("HH:mm:ss"))
-          setWarningDatestamp(moment(item.x).format("DD-MM-YYYY"))
-
+          setWarningTimestamp(moment(item.x).format("HH:mm:ss"));
+          setWarningDatestamp(moment(item.x).format("DD-MM-YYYY"));
         }
       });
       setNotifyDetails(updatedNotificationDetails);
@@ -155,33 +150,26 @@ const ReadData = ({ children }) => {
   }, [dataStream, threshold]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      /*
-        check user object if this sensor has data or not 
-        if(sensordata.size()>0)
-        {
-          plot these points
-          setResults(10);
-        }
-        try {
-        const response = await axios.get(
-          `${API_URL}?api_key=${API_KEY}&results=${results}`
-        );
-        const fetchedData = response.data.feeds;
-        console.log(fetchedData);
-        // Calculate cumulative energy for each segment
-        for (let i = 0; i <= fetchedData.length - 10; i += 10) {
-          const segment = fetchedData.slice(i, i + 10);
-          // console.log(RESULTS);
-          appendData(segment);
-        }
-        setResults(10);
-      } catch (error) {
-        console.error("Error fetching initial data:", error);
+    const sensors = JSON.parse(user.user).sensors;
+    sensors.forEach((sensor) => {
+      if (sensor._id === parameter.sensorId) {
+        setThreshold(sensor.threshold);
       }
-    };
-      */
-      
+    });
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const sensors = JSON.parse(user.user).sensors;
+      sensors.forEach((sensor) => {
+        if (sensor._id === parameter.sensorId) {
+          if (sensor.data.length >= 9) {
+            setDataStream(sensor.data.slice(-9));
+            setResults(10);
+          }
+        }
+      });
+
       try {
         const response = await axios.get(
           `${API_URL}?api_key=${API_KEY}&results=${results}`
@@ -213,9 +201,8 @@ const ReadData = ({ children }) => {
     return () => {
       clearInterval(intervalId);
     };
+  }, [pauseData, results]);
 
-  }, [pauseData,results]);
-  
   const handleBack = () => {
     navigate("/dashboard");
   };
@@ -230,42 +217,31 @@ const ReadData = ({ children }) => {
     setShowWarning(false);
   };
 
-
   useEffect(() => {
     const sendDataToBackend = async () => {
       try {
         if (selectedActiveSensor && dataStream.length > 0) {
-          const response = await axios.patch(`${process.env.REACT_APP_API_URL}/api/v1/sensor/addSensorData`, {
-            sensorId: parameter.sensorId,
-            data: dataStream,
-          });
+          const response = await axios.patch(
+            `${process.env.REACT_APP_API_URL}/api/v1/sensor/addSensorData`,
+            {
+              sensorId: parameter.sensorId,
+              data: dataStream,
+            }
+          );
           console.log("Data sent to backend:", response.data);
         }
       } catch (error) {
         console.error("Error sending data to backend:", error);
       }
     };
-  
+
     // Send dataStream to backend whenever it updates or selectedActiveSensor changes
     sendDataToBackend();
   }, [dataStream, selectedActiveSensor]);
 
-  
-  useEffect(() => {
-    const sensors = JSON.parse(user.user).sensors;
-    sensors.forEach((sensor) => {
-      if (sensor._id === parameter.sensorId) {
-        console.log("sensor", sensor)
-        setThreshold(sensor.threshold);
-      }
-    });
-  }, []);
-  
-  
-
   return (
     <>
-      <NavBarProfile id ={parameter.sensorId}/>
+      <NavBarProfile id={parameter.sensorId} />
       <div style={{ position: "relative" }}>
         <Chart
           series={series}
@@ -273,9 +249,7 @@ const ReadData = ({ children }) => {
           height={400}
           style={{ padding: "1.5rem" }}
         />
-        <Threshold
-          onThresholdChange={handleThresholdChange}
-        />
+        <Threshold onThresholdChange={handleThresholdChange} />
         {showWarning && (
           <div
             className="warning-popup"
@@ -294,7 +268,9 @@ const ReadData = ({ children }) => {
             }}
           >
             <div>
-              <p>{`Warning! Threshold crossed on: ${warningDatestamp} at time : ${warningTimestamp}`} </p>
+              <p>
+                {`Warning! Threshold crossed on: ${warningDatestamp} at time : ${warningTimestamp}`}{" "}
+              </p>
             </div>
             <div
               style={{
