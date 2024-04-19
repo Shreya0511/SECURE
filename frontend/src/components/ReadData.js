@@ -156,21 +156,27 @@ const ReadData = ({ children }) => {
         setThreshold(sensor.threshold);
       }
     });
+
+    const getInitials = async () => {
+      const initialValues = await JSON.parse(user.user).sensors;
+      initialValues.forEach((sensor) => {
+        if (sensor._id === parameter.sensorId) {
+          if (sensor.data.length >= 10) {
+            console.log("YES");
+            setResults(10);
+            setDataStream(sensor.data.slice(-10));
+          }
+        }
+      });
+    };
+
+    getInitials();
   }, []);
 
   useEffect(() => {
     const fetchData = async () => {
-      const sensors = JSON.parse(user.user).sensors;
-      sensors.forEach((sensor) => {
-        if (sensor._id === parameter.sensorId) {
-          if (sensor.data.length >= 9) {
-            setDataStream(sensor.data.slice(-9));
-            setResults(10);
-          }
-        }
-      });
-
       try {
+        console.log(results);
         const response = await axios.get(
           `${API_URL}?api_key=${API_KEY}&results=${results}`
         );
@@ -196,7 +202,7 @@ const ReadData = ({ children }) => {
     }, 10000); // Fetch data every 10 seconds
 
     // Fetch initial 100 data points on component mount
-    fetchData();
+    // fetchData();
 
     return () => {
       clearInterval(intervalId);
