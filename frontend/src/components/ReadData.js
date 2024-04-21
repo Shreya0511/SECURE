@@ -123,7 +123,7 @@ const ReadData = ({ children }) => {
           originalY: cumulativeEnergy,
         },
       ];
-      if (newData.length > 20) {
+      if (newData.length > 30) {
         newData.shift(); // Remove the 0th element
       }
 
