@@ -111,24 +111,46 @@ const ReadData = ({ children }) => {
 
     // console.log(segment);
     console.log(averageCumulativeEnergy);
-    setDataStream((prevData) => {
-      const newData = [
-        ...prevData,
-        {
-          x:
-            prevData.length === 0
-              ? moment().valueOf() - 100 * 1000 // Set initial x value as the current moment for the first point
-              : prevData[prevData.length - 1].x + 10 * 1000, // Set x as prevX + 10 seconds for subsequent points
-          y: averageCumulativeEnergy.toFixed(2),
-          originalY: cumulativeEnergy,
-        },
-      ];
-      if (newData.length > 30) {
-        newData.shift(); // Remove the 0th element
-      }
-
-      return newData;
-    });
+    if(results==100)
+    {
+      setDataStream((prevData) => {
+        const newData = [
+          ...prevData,
+          {
+            x:
+              prevData.length === 0
+                ? moment().valueOf() - 100 * 1000 // Set initial x value as the current moment for the first point
+                : prevData[prevData.length - 1].x + 10 * 1000, // Set x as prevX + 10 seconds for subsequent points
+            y: averageCumulativeEnergy.toFixed(2),
+            originalY: cumulativeEnergy,
+          },
+        ];
+        if (newData.length > 30) {
+          newData.shift(); // Remove the 0th element
+        }
+  
+        return newData;
+      });
+    }
+    else
+    {
+      setDataStream((prevData) => {
+        const newData = [
+          ...prevData,
+          {
+            x:moment().valueOf(),
+            y: averageCumulativeEnergy.toFixed(2),
+            originalY: cumulativeEnergy,
+          },
+        ];
+        if (newData.length > 30) {
+          newData.shift(); // Remove the 0th element
+        }
+  
+        return newData;
+      });
+    }
+    
 
     ApexChart.exec("realtime", "updateSeries", [{ data: dataStream }]);
   };
