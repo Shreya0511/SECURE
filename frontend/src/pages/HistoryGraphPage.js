@@ -8,8 +8,17 @@ import Threshold from "../components/Threshold";
 import { useNavigate } from "react-router-dom";
 import { AuthData } from "../services/AuthService";
 import { useParams } from "react-router-dom";
-
+import Popup from "../components/Popup";
 const HistoryGraphPage = ({ children }) => {
+  const [showPopup, setShowPopup] = useState(false);
+
+  const handleShowPopup = () => {
+    setShowPopup(true);
+  };
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
   const {
     user,
     threshold,
@@ -35,9 +44,17 @@ const HistoryGraphPage = ({ children }) => {
   const parameter = useParams();
 
   const series = [
+    // {
+    //   name: "Energy",
+    //   data: dataStream,
+    // },
     {
       name: "Energy",
-      data: dataStream,
+      data: dataStream.map(point => ({
+        x: point.x,
+        y: point.y,
+        fillColor: point.y > threshold ? "red" : undefined, // Set color to red if y is above threshold
+      })),
     },
   ];
 
@@ -216,7 +233,8 @@ const HistoryGraphPage = ({ children }) => {
       const points = selectedSensor.data.map((point, index) => ({
         x: index, // Use index as x-coordinate
         y: point.y,
-        timestamp: point.x // Store Unix timestamp for tooltip
+        timestamp: point.x, // Store Unix timestamp for tooltip
+        // color: point.y > threshold ? "red" : undefined,
       }));
       setDataStream(points);
       
@@ -245,9 +263,12 @@ const HistoryGraphPage = ({ children }) => {
             marginLeft: "2rem",
             marginBottom: "2rem",
           }}
+          onClick={handleShowPopup}
+
         >
             Show Details
         </button>
+        {showPopup && <Popup handleClose={handleClosePopup} />}
       </div>
     </>
   );
