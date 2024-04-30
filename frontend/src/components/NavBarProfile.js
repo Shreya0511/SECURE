@@ -71,7 +71,7 @@ const NavBarProfile = ({id}) => {
             <Link
               to="/home"
               className={
-                window.location.pathname === "/" ? "activet" : "inactivet"
+                window.location.pathname === "/home" || window.location.pathname === "/" ? "activet" : "inactivet"
               }
               href="/"
               style={{ textDecoration: "none" }}

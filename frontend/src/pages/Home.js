@@ -2,10 +2,13 @@ import React from "react";
 import NavBar from "../components/NavBar";
 import { Link } from "react-router-dom";
 import "./../styles/Home.css";
+import {AuthData} from "./../services/AuthService";
+import NavBarProfile from "../components/NavBarProfile";
 const Home = () => {
+  const {user} = AuthData();
   return (
     <div>
-      <NavBar />
+      {user.isAuthenticated ? <NavBarProfile /> : <NavBar />}
       <div className="mainContainer">
         <div className="secureHeading">
           <div className="name">
@@ -16,6 +19,8 @@ const Home = () => {
             Real-Time Alerts
           </div>
         </div>
+
+        {user.isAutheticated ? 
         <div className="buttonGroup">
           {/* <a href="/login" style={{ textDecoration: "none" }}>
             <div className="loginBtn">Login</div>
@@ -30,7 +35,7 @@ const Home = () => {
           <Link to="/signup" style={{ textDecoration: "none" }}>
           <div className="signupBtn" >SignUp</div>
           </Link>
-        </div>
+        </div> : <></>}
       </div>
     </div>
   );

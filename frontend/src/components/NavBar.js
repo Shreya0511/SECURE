@@ -31,9 +31,10 @@ const NavBar = () => {
             Contact Us
             </Link>
             <div className = "button">
+            {user.isAuthenticated ? 
             <Link to="/signup" className = {window.location.pathname === "/signUp" ? "activeSignUp" : "inactiveSignUp"} href = "/signup" style = {{textDecoration: "none"}}>
                 Sign Up
-            </Link>
+            </Link> : <></>}
             </div>
 
 
