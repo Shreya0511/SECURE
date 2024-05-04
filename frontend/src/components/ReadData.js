@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Threshold from "./Threshold";
 import { AuthData } from "../services/AuthService";
 import { useParams } from "react-router-dom";
+import Time from "./Time";
 
 const API_URL = "https://api.thingspeak.com/channels/2349053/feeds.json";
 const API_KEY = "0H5Z4Y2DMQCL7ULK"; // Replace with your API key
@@ -29,7 +30,7 @@ const ReadData = ({ children }) => {
     setSelectedActiveSensor,
   } = AuthData();
   const [dataStream, setDataStream] = useState([]);
-
+  const [time, setTime] = useState(5);
   const navigate = useNavigate();
   const [pauseData, setPauseData] = useState(false);
   const [lastDate, setLastDate] = useState("");
@@ -84,7 +85,7 @@ const ReadData = ({ children }) => {
     },
     yaxis: {
       min: 0,
-      max: 10,
+      max: 75,
     },
     tooltip: {
       x: {
@@ -139,7 +140,7 @@ const ReadData = ({ children }) => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       fetchData(); // Fetch latest point every 10 seconds
-    }, 10000);
+    }, 20000);
 
     fetchData(); // Fetch initial data
 
@@ -215,6 +216,16 @@ const ReadData = ({ children }) => {
   const handleCloseWarning = () => {
     setShowWarning(false);
   };
+  const handleTimeChange = (newTime) => {
+    axios.post(`${process.env.REACT_APP_API_URL}/api/updateGlobal`, {
+      value: newTime,
+    }).then((response) => {
+      console.log(response.data);
+    });
+    window.alert(`Time changed to ${newTime} seconds`);
+    setTime(newTime);
+  };
+  // console.log(time.toString())
 
   return (
     <>
@@ -227,6 +238,14 @@ const ReadData = ({ children }) => {
           style={{ padding: "1.5rem" }}
         />
         <Threshold onThresholdChange={handleThresholdChange} />
+        
+        <Time setTime={time.toString()}  />
+        <div style={{ marginBottom: '1rem', marginLeft: '2rem' }}>
+        <p>Change Time</p>
+          <button onClick={() => handleTimeChange(5)}>5</button>
+          <button onClick={() => handleTimeChange(10)}>10</button>
+          <button onClick={() => handleTimeChange(15)}>15</button>
+        </div>
         {showWarning && (
           <div
             className="warning-popup"
@@ -271,18 +290,7 @@ const ReadData = ({ children }) => {
             </div>
           </div>
         )}
-        <button
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            marginLeft: "2rem",
-            marginBottom: "2rem",
-          }}
-          onClick={handlePauseResume}
-        >
-          Pause/Resume
-        </button>
+        
       </div>
     </>
   );
