@@ -43,16 +43,16 @@ const fetchDataFromAPI = async (sensorId,time) => {
     // }
 
     // console.log(fetchedData);
-    // const sensor = await Sensor.findById(sensorId);
-    // if (sensor) {
+    const sensor = await Sensor.findById(sensorId);
+    if (sensor) {
       
-    //   console.log("Sensor found with ID:", sensorId);
-    //   sensor.data.push(...processedData);
-    //   await sensor.save(); 
-    //   console.log("Data stored in the database:", processedData);
-    // } else {
-    //   console.error("Sensor not found with ID:", sensorId);
-    // }
+      console.log("Sensor found with ID:", sensorId);
+      sensor.data.push(...processedData);
+      await sensor.save(); 
+      console.log("Data stored in the database:", processedData);
+    } else {
+      console.error("Sensor not found with ID:", sensorId);
+    }
   } catch (error) {
     console.error("Error fetching or storing data:", error);
   }
