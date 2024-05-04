@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Threshold from "./Threshold";
 import { AuthData } from "../services/AuthService";
 import { useParams } from "react-router-dom";
+import Time from "./Time";
 
 const API_URL = "https://api.thingspeak.com/channels/2349053/feeds.json";
 const API_KEY = "0H5Z4Y2DMQCL7ULK"; // Replace with your API key
@@ -29,7 +30,7 @@ const ReadData = ({ children }) => {
     setSelectedActiveSensor,
   } = AuthData();
   const [dataStream, setDataStream] = useState([]);
-
+  const [time, setTime] = useState(5);
   const navigate = useNavigate();
   const [pauseData, setPauseData] = useState(false);
   const [lastDate, setLastDate] = useState("");
@@ -84,7 +85,7 @@ const ReadData = ({ children }) => {
     },
     yaxis: {
       min: 0,
-      max: 10,
+      max: 75,
     },
     tooltip: {
       x: {
@@ -99,60 +100,6 @@ const ReadData = ({ children }) => {
         },
       },
     },
-  };
-
-  const appendData = async (segment) => {
-    const cumulativeEnergy = segment.reduce(
-      (sum, dataPoint) => sum + parseFloat(dataPoint.field1),
-      0
-    );
-    const averageCumulativeEnergy =
-      cumulativeEnergy / 10 + Math.random() * 2 + 1;
-
-    // console.log(segment);
-    console.log(averageCumulativeEnergy);
-    if(results==100)
-    {
-      setDataStream((prevData) => {
-        const newData = [
-          ...prevData,
-          {
-            x:
-              prevData.length === 0
-                ? moment().valueOf() - 100 * 1000 // Set initial x value as the current moment for the first point
-                : prevData[prevData.length - 1].x + 10 * 1000, // Set x as prevX + 10 seconds for subsequent points
-            y: averageCumulativeEnergy.toFixed(2),
-            originalY: cumulativeEnergy,
-          },
-        ];
-        if (newData.length > 30) {
-          newData.shift(); // Remove the 0th element
-        }
-  
-        return newData;
-      });
-    }
-    else
-    {
-      setDataStream((prevData) => {
-        const newData = [
-          ...prevData,
-          {
-            x:moment().valueOf(),
-            y: averageCumulativeEnergy.toFixed(2),
-            originalY: cumulativeEnergy,
-          },
-        ];
-        if (newData.length > 30) {
-          newData.shift(); // Remove the 0th element
-        }
-  
-        return newData;
-      });
-    }
-    
-
-    ApexChart.exec("realtime", "updateSeries", [{ data: dataStream }]);
   };
 
   useEffect(() => {
@@ -178,58 +125,83 @@ const ReadData = ({ children }) => {
         setThreshold(sensor.threshold);
       }
     });
-
-    const getInitials = async () => {
-      const initialValues = await JSON.parse(user.user).sensors;
-      initialValues.forEach((sensor) => {
-        if (sensor._id === parameter.sensorId) {
-          if (sensor.data.length >= 10) {
-            console.log("YES");
-            setResults(10);
-            setDataStream(sensor.data.slice(-10));
-          }
-        }
-      });
-    };
-
-    getInitials();
   }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        console.log(results);
-        const response = await axios.get(
-          `${API_URL}?api_key=${API_KEY}&results=${results}`
-        );
-        const fetchedData = response.data.feeds;
-        console.log(fetchedData);
-        // Calculate cumulative energy for each segment
-        for (let i = 0; i <= fetchedData.length - 10; i += 10) {
-          const segment = fetchedData.slice(i, i + 10);
-          // console.log(RESULTS);
-          appendData(segment);
-        }
-        setResults(10);
-      } catch (error) {
-        console.error("Error fetching initial data:", error);
-      }
-    };
+    const sensorData = JSON.parse(user.user).sensors.find(
+      (sensor) => sensor._id === parameter.sensorId
+    );
+    if (sensorData) {
+      setDataStream(sensorData.data.slice(-10)); // Get the last 10 points
+      setThreshold(sensorData.threshold);
+    }
+  }, []);
 
+  useEffect(() => {
     const intervalId = setInterval(() => {
-      if (!pauseData) {
-        // Fetch the latest 10 points every 10 seconds
-        fetchData();
-      }
-    }, 10000); // Fetch data every 10 seconds
+      fetchData(); // Fetch latest point every 10 seconds
+    }, 20000);
 
-    // Fetch initial 100 data points on component mount
-    // fetchData();
+    fetchData(); // Fetch initial data
 
     return () => {
       clearInterval(intervalId);
     };
-  }, [pauseData, results]);
+  }, []);
+
+  const login = async (email, password) => {
+    let sensorData = {
+      id:parameter.sensorI,
+    };
+   
+
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/v1/sensor/fetchLast`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(sensorData),
+        }
+      )
+        .then((response) => response.json())
+    } catch (err) {
+      console.log(err);
+      alert("Invalid Credentials!!");
+    }
+  };
+
+  const fetchData = async () => {
+    // console.log("Fetching data...");
+    // const sensorData = JSON.parse(user.user).sensors.find(
+    //   (sensor) => sensor._id === parameter.sensorId
+    // );
+    let Data = {
+      id:parameter.sensorId,
+    };
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/v1/sensor/fetchLast`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(Data),
+      }
+    ).then((response) => response.json())
+    const sensorData=response.data;
+    console.log(sensorData);
+    if (sensorData) {
+      
+      setDataStream((prevDataStream) => [
+        ...prevDataStream,
+        sensorData,
+      ]); // Add the last point from sensor data to the existing dataStream
+      // setThreshold(sensorData.threshold);
+    }
+  };
 
   const handleBack = () => {
     navigate("/dashboard");
@@ -244,28 +216,16 @@ const ReadData = ({ children }) => {
   const handleCloseWarning = () => {
     setShowWarning(false);
   };
-
-  useEffect(() => {
-    const sendDataToBackend = async () => {
-      try {
-        if (selectedActiveSensor && dataStream.length > 0) {
-          const response = await axios.patch(
-            `${process.env.REACT_APP_API_URL}/api/v1/sensor/addSensorData`,
-            {
-              sensorId: parameter.sensorId,
-              data: dataStream,
-            }
-          );
-          console.log("Data sent to backend:", response.data);
-        }
-      } catch (error) {
-        console.error("Error sending data to backend:", error);
-      }
-    };
-
-    // Send dataStream to backend whenever it updates or selectedActiveSensor changes
-    sendDataToBackend();
-  }, [dataStream, selectedActiveSensor]);
+  const handleTimeChange = (newTime) => {
+    axios.post(`${process.env.REACT_APP_API_URL}/api/updateGlobal`, {
+      value: newTime,
+    }).then((response) => {
+      console.log(response.data);
+    });
+    window.alert(`Time changed to ${newTime} seconds`);
+    setTime(newTime);
+  };
+  // console.log(time.toString())
 
   return (
     <>
@@ -278,6 +238,14 @@ const ReadData = ({ children }) => {
           style={{ padding: "1.5rem" }}
         />
         <Threshold onThresholdChange={handleThresholdChange} />
+        
+        <Time setTime={time.toString()}  />
+        <div style={{ marginBottom: '1rem', marginLeft: '2rem' }}>
+        <p>Change Time</p>
+          <button onClick={() => handleTimeChange(5)}>5</button>
+          <button onClick={() => handleTimeChange(10)}>10</button>
+          <button onClick={() => handleTimeChange(15)}>15</button>
+        </div>
         {showWarning && (
           <div
             className="warning-popup"
@@ -322,18 +290,7 @@ const ReadData = ({ children }) => {
             </div>
           </div>
         )}
-        <button
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            marginLeft: "2rem",
-            marginBottom: "2rem",
-          }}
-          onClick={handlePauseResume}
-        >
-          Pause/Resume
-        </button>
+        
       </div>
     </>
   );
