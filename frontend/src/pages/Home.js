@@ -20,22 +20,16 @@ const Home = () => {
           </div>
         </div>
 
-        {!user.isAutheticated ? 
+        {!user.isAuthenticated ? 
         <div className="buttonGroup">
-          {/* <a href="/login" style={{ textDecoration: "none" }}>
-            <div className="loginBtn">Login</div>
-          </a> */}
           <Link to="/login" style={{ textDecoration: "none" }}>
             <div className="loginBtn" >Login</div>
 
           </Link>
-          {/* <a href="/signup" style={{ textDecoration: "none" }}>
-            <div className="signupBtn">SignUp</div>
-          </a> */}
           <Link to="/signup" style={{ textDecoration: "none" }}>
           <div className="signupBtn" >SignUp</div>
           </Link>
-        </div> : <></>}
+        </div> : <><div> hello </div></>}
       </div>
     </div>
   );
