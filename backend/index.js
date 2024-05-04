@@ -6,6 +6,8 @@ import cors from "cors";
 import path from "path";
 import authRoutes from "./routes/authRoutes.js";
 import sensorRoutes from "./routes/sensorRoutes.js";
+import fetchDataFromAPI from "./fetchData.js";
+
 dotenv.config();
 
 const app = express();
@@ -40,4 +42,9 @@ mongoose
 const server = app.listen(PORT, () => {
 	console.log(`Server is Running on Port : ${PORT}`);
 });
+
+const fetchInterval = setInterval(() => {
+	// Call the function with the sensor ID (you may replace 'sensorId' with your actual sensor ID)
+	fetchDataFromAPI('6630e615c19278f19471895b');
+  }, 10000); // Fetch data every 10 seconds
 

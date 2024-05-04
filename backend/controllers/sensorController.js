@@ -147,3 +147,20 @@ export const addSensorData = catchAsync(async(req, res, next) => {
     status: "success",
   });
 });
+
+export const fetchLatest = catchAsync(async(req, res, next) => {
+  const sensorId = req.body.id;
+  const sensor = await Sensor.findById(sensorId);
+  // console.log(sensor);
+  // console.log(sensorId);
+  // console.log(req.body);
+
+
+  const data=sensor.data
+  res.status(200).json({
+    status: "success",
+    data: data[data.length-1],
+  });
+
+});
+
