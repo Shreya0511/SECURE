@@ -20,7 +20,7 @@ const Home = () => {
           </div>
         </div>
 
-        {user.isAutheticated ? 
+        {!user.isAutheticated ? 
         <div className="buttonGroup">
           {/* <a href="/login" style={{ textDecoration: "none" }}>
             <div className="loginBtn">Login</div>
