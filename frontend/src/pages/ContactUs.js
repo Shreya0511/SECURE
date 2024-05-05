@@ -1,12 +1,15 @@
 import React from 'react';
 import NavBar from '../components/NavBar';
 import { Link } from 'react-router-dom';
+import {AuthData} from '../services/AuthService';
+import NavBarProfile from '../components/NavBarProfile';
 
 const ContactUs = () => {
+  const {user} = AuthData();
   return (
     <>
     <div style ={{boxSizing: "border-box"}}>
-      <NavBar/>
+    {user.isAuthenticated ? <NavBarProfile/> : <NavBar/>}
       <div className="mainContainer">
         <div className="secureHeading">
           <div className="name" style ={{marginTop : "2.5rem"}}>
