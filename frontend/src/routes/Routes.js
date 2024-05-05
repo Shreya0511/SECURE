@@ -14,6 +14,7 @@ import EditProfileDetails from "../pages/EditProfileDetails.js";
 import ChangePw from "../pages/ChangePw.js";
 import History from "../pages/History";
 import HistoryGraphPage from "../pages/HistoryGraphPage";
+import Prediction from "../components/Prediction.js";
 
 const routes = [
 	{
@@ -62,6 +63,12 @@ const routes = [
 		path: "/readData/:sensorId",
 		component: <ReadData />,
 		name: "readData",
+		isPrivate: true,
+	},
+	{
+		path: "/prediction/:sensorId",
+		component: <Prediction />,
+		name: "prediction",
 		isPrivate: true,
 	},
 	{

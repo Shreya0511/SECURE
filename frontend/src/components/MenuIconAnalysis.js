@@ -27,6 +27,9 @@ const MenuIconAnalysis = ({sensor}) => {
     const handleHistory = () => {
       navigate(`/history/${sensor._id}`);
     }
+    const handlePrediction = () => {
+      navigate(`/prediction/${sensor._id}`);
+    }
 
     
   
@@ -48,7 +51,7 @@ const MenuIconAnalysis = ({sensor}) => {
                  {/* <Link style ={{textDecoration : "none"}} to = "/readData"> */}
                     <div style ={{fontSize : "1rem", fontWeight : "bold", color : "black", textDecoration: "none",  marginBottom : "0.5rem", cursor : "pointer"}} onClick = {handleHistory}>History</div>
                     {/* </Link>  */}
-                 <Link style ={{textDecoration : "none"}} to = "/readData">  <div style ={{fontSize : "1rem", fontWeight : "bold", color : "black", textDecoration: "none"}}>Predictions</div></Link> 
+                 <div style ={{fontSize : "1rem", fontWeight : "bold", color : "black", textDecoration: "none", marginBottom : "0.5rem", cursor : "pointer"}} onClick={handlePrediction}>Predictions</div>
 
                 </div>
               </Popover.Body>

@@ -1,7 +1,12 @@
 import { Sensor } from "../models/sensorModel.js";
 import catchAsync from "../Utils/catchAsync.js";
 import { User } from "../models/userModel.js";
+import axios from "axios";
+import moment from "moment";
+// const API_URL = "https://api.thingspeak.com/channels/2349053/feeds.json";
+const API_URL = " https://api.thingspeak.com/channels/2531546/feeds.json";
 
+const API_KEY = "5A1RDL7ABO68191I"; 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
   Object.keys(obj).forEach((el) => {
@@ -163,4 +168,20 @@ export const fetchLatest = catchAsync(async(req, res, next) => {
   });
 
 });
+
+export const predict = catchAsync(async (req, res, next) => {
+  const response = await axios.get(`${API_URL}?api_key=${API_KEY}&results=240}`);
+  const fetchedData = response.data.feeds;
+
+  const total = fetchedData.reduce((acc, feed) => acc + parseFloat(feed.field1), 0); 
+  const average=(total/240)/1000;
+  console.log(total);
+  console.log(average)
+  console.log("Request received for prediction");
+  res.status(200).json({
+    status: "success",
+    data: average.toFixed(6),
+  });
+});
+
 
