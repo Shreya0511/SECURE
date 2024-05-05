@@ -35,6 +35,9 @@ const ReadData = ({ children }) => {
   const [pauseData, setPauseData] = useState(false);
   const [lastDate, setLastDate] = useState("");
   const [results, setResults] = useState(100);
+  const [energy,setEnergy]=useState(0);
+  const [cost,setCost]=useState(0);
+  const [calculateClicked, setCalculateClicked] = useState(false);
 
   const parameter = useParams();
 
@@ -226,7 +229,28 @@ const ReadData = ({ children }) => {
     setTime(newTime);
   };
   // console.log(time.toString())
-
+  const handleCalculateCost = async() => {
+    let Data = {
+      id:parameter.sensorId,
+    };
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/v1/sensor/predict`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(Data),
+      }
+    ).then((response) => response.json())
+    const averageEnergy=response.data;
+    setEnergy(averageEnergy);
+    const daysInMonth = moment().daysInMonth(); // Get the number of days in the current month
+    const cst = averageEnergy * daysInMonth * 24*8; // Energy * days in the current month * 24 hours
+    setCost(cst);
+    console.log(cst,averageEnergy)
+    setCalculateClicked(true);
+  };
   return (
     <>
       <NavBarProfile id={parameter.sensorId} />
@@ -290,7 +314,36 @@ const ReadData = ({ children }) => {
             </div>
           </div>
         )}
-        
+        {/* Display energy and cost messages when "Calculate Cost" button is clicked */}
+        {calculateClicked && (
+          <div
+            style={{
+              position: "fixed",
+              bottom: "20px",
+              right: "20px",
+              background: "rgba(0, 0, 0, 0.5)",
+              color: "white",
+              padding: "10px",
+              borderRadius: "5px",
+              zIndex: "9999",
+            }}
+          >
+            <p>
+              Your average per hour energy consumption in KwH is {energy}. According to this, your estimated cost for the current month will be {cost.toFixed(2)}.
+            </p>
+          </div>
+        )}
+        <button
+          onClick={handleCalculateCost}
+          style={{
+            position: "fixed",
+            bottom: "20px",
+            right: "20px",
+            zIndex: "9999",
+          }}
+        >
+          Calculate Cost
+        </button>
       </div>
     </>
   );
