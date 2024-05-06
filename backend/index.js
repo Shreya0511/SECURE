@@ -56,8 +56,8 @@ app.post("/api/updateGlobal", (req, res) => {
     res.send("Global variable updated successfully");
 });
 
-// const fetchInterval = setInterval(() => {
-// 	// Call the function with the sensor ID (you may replace 'sensorId' with your actual sensor ID)
-// 	fetchDataFromAPI('6630e615c19278f19471895b',time);
-//   }, 20000); // Fetch data every 20 seconds
+const fetchInterval = setInterval(() => {
+	// Call the function with the sensor ID (you may replace 'sensorId' with your actual sensor ID)
+	fetchDataFromAPI('6630e615c19278f19471895b',time);
+  }, 20000); // Fetch data every 20 seconds
 
