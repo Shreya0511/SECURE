@@ -277,7 +277,7 @@ const ReadData = ({ children }) => {
             style={{
               cursor: "pointer",
               height: "2.3rem",
-              width: "10rem",
+              width: "10.5rem",
               backgroundColor: "#e5dfdfc9",
               borderRadius: "0.5rem",
               display: "flex",
@@ -443,7 +443,7 @@ const ReadData = ({ children }) => {
             Your average per hour energy consumption is{" "}
             <span style={{ fontWeight: "bold" }}>{energy} KwH</span>. According
             to this, your estimated cost for the current month will be{" "}
-            <span style={{ fontWeight: "bold" }}>{cost.toFixed(2)}</span>.
+            <span style={{ fontWeight: "bold" }}>Rs. {cost.toFixed(2)} </span>.
           </Modal.Body>
           <Modal.Footer>
             <Button
