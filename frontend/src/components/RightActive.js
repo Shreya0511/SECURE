@@ -37,9 +37,9 @@ const RightActive = () => {
                       </div>
                     </div>
                     <div className="sensorDetails">
-                      <p>Power Consumption : {sensor.powerConsumption}</p>
+                      {/* <p>Power Consumption : {sensor.powerConsumption}</p>
                       <p>Current Supply: {sensor.currentSupply}</p>
-                      <p>Voltage Supply: {sensor.voltageSupply}</p>
+                      <p>Voltage Supply: {sensor.voltageSupply}</p> */}
                     </div>
                   </div>
                 </div>

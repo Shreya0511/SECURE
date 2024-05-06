@@ -6,6 +6,7 @@ import { useState } from "react";
 import { AuthData } from "../services/AuthService";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 const VerticallyCenteredModal = (props) => {
   const navigate = useNavigate();
   const [id, setId] = useState("");
@@ -32,7 +33,10 @@ const VerticallyCenteredModal = (props) => {
   };
 
   const handleThres = (event) => {
-    setThresholdValue(event.target.value);
+    //assuming one unit cost is 8 rupees.
+    const thresh= (event.target.value*1000)/(moment().daysInMonth()*24*8)
+    setThresholdValue(thresh.toFixed(2));
+
   };
 
   const handleAddClick = async () => {
@@ -149,7 +153,7 @@ const VerticallyCenteredModal = (props) => {
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Threshold value</Form.Label>
+              <Form.Label>Aimed monthly cost (in Rupees)</Form.Label>
               <Form.Control
                 type="text"
                 id="thresholdValue"
