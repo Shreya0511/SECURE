@@ -9,6 +9,10 @@ import Threshold from "./Threshold";
 import { AuthData } from "../services/AuthService";
 import { useParams } from "react-router-dom";
 import Time from "./Time";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalculator } from "@fortawesome/free-solid-svg-icons";
 
 const API_URL = "https://api.thingspeak.com/channels/2349053/feeds.json";
 const API_KEY = "0H5Z4Y2DMQCL7ULK"; // Replace with your API key
@@ -29,14 +33,17 @@ const ReadData = ({ children }) => {
     selectedActiveSensor,
     setSelectedActiveSensor,
   } = AuthData();
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   const [dataStream, setDataStream] = useState([]);
   const [time, setTime] = useState(5);
   const navigate = useNavigate();
   const [pauseData, setPauseData] = useState(false);
   const [lastDate, setLastDate] = useState("");
   const [results, setResults] = useState(100);
-  const [energy,setEnergy]=useState(0);
-  const [cost,setCost]=useState(0);
+  const [energy, setEnergy] = useState(0);
+  const [cost, setCost] = useState(0);
   const [calculateClicked, setCalculateClicked] = useState(false);
 
   const parameter = useParams();
@@ -154,9 +161,8 @@ const ReadData = ({ children }) => {
 
   const login = async (email, password) => {
     let sensorData = {
-      id:parameter.sensorI,
+      id: parameter.sensorI,
     };
-   
 
     try {
       const response = await fetch(
@@ -168,8 +174,7 @@ const ReadData = ({ children }) => {
           },
           body: JSON.stringify(sensorData),
         }
-      )
-        .then((response) => response.json())
+      ).then((response) => response.json());
     } catch (err) {
       console.log(err);
       alert("Invalid Credentials!!");
@@ -182,7 +187,7 @@ const ReadData = ({ children }) => {
     //   (sensor) => sensor._id === parameter.sensorId
     // );
     let Data = {
-      id:parameter.sensorId,
+      id: parameter.sensorId,
     };
     const response = await fetch(
       `${process.env.REACT_APP_API_URL}/api/v1/sensor/fetchLast`,
@@ -193,15 +198,11 @@ const ReadData = ({ children }) => {
         },
         body: JSON.stringify(Data),
       }
-    ).then((response) => response.json())
-    const sensorData=response.data;
+    ).then((response) => response.json());
+    const sensorData = response.data;
     console.log(sensorData);
     if (sensorData) {
-      
-      setDataStream((prevDataStream) => [
-        ...prevDataStream,
-        sensorData,
-      ]); // Add the last point from sensor data to the existing dataStream
+      setDataStream((prevDataStream) => [...prevDataStream, sensorData]); // Add the last point from sensor data to the existing dataStream
       // setThreshold(sensorData.threshold);
     }
   };
@@ -220,18 +221,21 @@ const ReadData = ({ children }) => {
     setShowWarning(false);
   };
   const handleTimeChange = (newTime) => {
-    axios.post(`${process.env.REACT_APP_API_URL}/api/updateGlobal`, {
-      value: newTime,
-    }).then((response) => {
-      console.log(response.data);
-    });
+    console.log("handletime", newTime);
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/api/updateGlobal`, {
+        value: newTime,
+      })
+      .then((response) => {
+        console.log(response.data);
+      });
     window.alert(`Time changed to ${newTime} seconds`);
     setTime(newTime);
   };
   // console.log(time.toString())
-  const handleCalculateCost = async() => {
+  const handleCalculateCost = async () => {
     let Data = {
-      id:parameter.sensorId,
+      id: parameter.sensorId,
     };
     const response = await fetch(
       `${process.env.REACT_APP_API_URL}/api/v1/sensor/predict`,
@@ -242,14 +246,14 @@ const ReadData = ({ children }) => {
         },
         body: JSON.stringify(Data),
       }
-    ).then((response) => response.json())
-    const averageEnergy=response.data;
+    ).then((response) => response.json());
+    const averageEnergy = response.data;
     setEnergy(averageEnergy);
     const daysInMonth = moment().daysInMonth(); // Get the number of days in the current month
-    const cst = averageEnergy * daysInMonth * 24*8; // Energy * days in the current month * 24 hours
+    const cst = averageEnergy * daysInMonth * 24 * 8; // Energy * days in the current month * 24 hours
     setCost(cst);
-    console.log(cst,averageEnergy)
-    setCalculateClicked(true);
+    console.log("ye", cst, averageEnergy);
+    setShow(true);
   };
   return (
     <>
@@ -261,15 +265,134 @@ const ReadData = ({ children }) => {
           height={400}
           style={{ padding: "1.5rem" }}
         />
-        <Threshold onThresholdChange={handleThresholdChange} />
-        
-        <Time setTime={time.toString()}  />
-        <div style={{ marginBottom: '1rem', marginLeft: '2rem' }}>
-        <p>Change Time</p>
-          <button onClick={() => handleTimeChange(5)}>5</button>
-          <button onClick={() => handleTimeChange(10)}>10</button>
-          <button onClick={() => handleTimeChange(15)}>15</button>
+            <Threshold onThresholdChange={handleThresholdChange}/>
+
+        <div style ={{ display : "flex", flexDirection : "row", alignItems : "center"}}>
+         <div style ={{flex : "5"}}>
+            <Time setTime={time.toString()} />
+
+            </div>
+         <div style ={{flex : "1"}}>
+        <div
+            style={{
+              cursor: "pointer",
+              height: "2.3rem",
+              width: "10rem",
+              backgroundColor: "#e5dfdfc9",
+              borderRadius: "0.5rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginLeft: "2rem",
+              boxShadow:
+                "rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px",
+            }}
+            onClick={handleCalculateCost}
+          >
+            <div
+              style={{
+                flex: "2.5",
+                margin: "auto",
+                paddingLeft: "0.5rem",
+                color: "rgb(222, 143, 83)",
+                fontWeight: "500",
+              }}
+            >
+              Calculate Cost
+            </div>
+            <div
+              style={{
+                backgroundColor: "rgb(222, 143, 83)",
+                height: "100%",
+                width: "100%",
+                flex: "1",
+                display: "flex",
+                alignItems: "center",
+                justfiyContent: "center",
+                borderRadius: "0.5rem",
+              }}
+            >
+              <FontAwesomeIcon
+                style={{ fontSize: "1.2rem", margin: "auto" }}
+                icon={faCalculator}
+              />
+            </div>
+          </div>
+          </div>
+
+       
         </div>
+        {/* <Time setTime={time.toString()} /> */}
+        <div
+          style={{ marginBottom: "2rem", marginLeft: "2rem", display: "flex" }}
+        >
+          <div>
+            <p style={{ fontWeight: "bold", marginRight: "0.7rem" }}>
+              Change Time :{" "}
+            </p>
+          </div>
+          <div>
+            {" "}
+            <select
+              onChange={(e) => handleTimeChange(parseInt(e.target.value))}
+              style={{
+                height: "2rem",
+                width: "7rem",
+                borderRadius: "0.5rem",
+                padding: "0.1rem",
+                border: "0.5rem, solid, gray",
+              }}
+            >
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+            </select>
+          </div>
+          {/* <div
+            style={{
+              height: "2.3rem",
+              width: "10rem",
+              backgroundColor: "#e5dfdfc9",
+              borderRadius: "0.5rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginLeft: "2rem",
+              boxShadow:
+                "rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px",
+            }}
+            onClick={handleCalculateCost}
+          >
+            <div
+              style={{
+                flex: "2.5",
+                margin: "auto",
+                paddingLeft: "0.5rem",
+                color: "rgb(222, 143, 83)",
+                fontWeight: "500",
+              }}
+            >
+              Calculate Cost
+            </div>
+            <div
+              style={{
+                backgroundColor: "rgb(222, 143, 83)",
+                height: "100%",
+                width: "100%",
+                flex: "1",
+                display: "flex",
+                alignItems: "center",
+                justfiyContent: "center",
+                borderRadius: "0.5rem",
+              }}
+            >
+              <FontAwesomeIcon
+                style={{ fontSize: "1.2rem", margin: "auto" }}
+                icon={faCalculator}
+              />
+            </div>
+          </div> */}
+        </div>{" "}
         {showWarning && (
           <div
             className="warning-popup"
@@ -314,36 +437,23 @@ const ReadData = ({ children }) => {
             </div>
           </div>
         )}
-        {/* Display energy and cost messages when "Calculate Cost" button is clicked */}
-        {calculateClicked && (
-          <div
-            style={{
-              position: "fixed",
-              bottom: "20px",
-              right: "20px",
-              background: "rgba(0, 0, 0, 0.5)",
-              color: "white",
-              padding: "10px",
-              borderRadius: "5px",
-              zIndex: "9999",
-            }}
-          >
-            <p>
-              Your average per hour energy consumption in KwH is {energy}. According to this, your estimated cost for the current month will be {cost.toFixed(2)}.
-            </p>
-          </div>
-        )}
-        <button
-          onClick={handleCalculateCost}
-          style={{
-            position: "fixed",
-            bottom: "20px",
-            right: "20px",
-            zIndex: "9999",
-          }}
-        >
-          Calculate Cost
-        </button>
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Body>
+            {" "}
+            Your average per hour energy consumption is{" "}
+            <span style={{ fontWeight: "bold" }}>{energy} KwH</span>. According
+            to this, your estimated cost for the current month will be{" "}
+            <span style={{ fontWeight: "bold" }}>{cost.toFixed(2)}</span>.
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              onClick={handleClose}
+              style={{ backgroundColor: "rgb(222, 143, 83)" }}
+            >
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </>
   );

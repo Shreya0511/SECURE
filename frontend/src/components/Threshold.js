@@ -9,7 +9,7 @@ const Threshold = () => {
 
   return (
     <div style={{ marginBottom: '1rem', marginLeft : "2rem" }}>
-      <p style ={{fontWeight : "medium"}}>Currently Set Threshold: <span style ={{fontWeight : "bold"}}>{threshold}</span></p>
+      <p><span style ={{fontWeight : "bold"}}>Currently Set Threshold: </span><span style ={{}}>{threshold}</span></p>
     </div>
   );
 };
