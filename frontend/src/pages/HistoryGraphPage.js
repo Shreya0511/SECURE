@@ -98,7 +98,7 @@ const HistoryGraphPage = ({ children }) => {
     },
     yaxis: {
       min: 0,
-      max: 70,
+      max: 100,
     },
     tooltip: {
       x: {

@@ -95,7 +95,7 @@ const ReadData = ({ children }) => {
     },
     yaxis: {
       min: 0,
-      max: 75,
+      max: 100,
     },
     tooltip: {
       x: {
